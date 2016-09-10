@@ -21,6 +21,7 @@ public class RangedWeapon : MonoBehaviour {
 
     private bool infiniteAmmo;
     private bool isReloading;
+    private bool isPiercing;
 
 
     //Default Constructor
@@ -35,20 +36,23 @@ public class RangedWeapon : MonoBehaviour {
         infiniteAmmo = false;
         isReloading = false;
         nextFire = 0;
-
-        //should probably have a file that loads this
-        ammoCount = 100;
-        magazineSize = 10;
-        currentMagazine = 10;
-
-        damage = 5;
-        range = 10;
-        velocity = 1000;
-        fireRate = 0.5f;
-        reloadTime = 1.0f;
         reloadedTime = 0f;
 
-	}
+        //should probably have a file that loads this
+        ammoCount       = 100;
+        magazineSize    = 10;
+        currentMagazine = 10;
+
+        damage          = 1;
+        range           = 10;
+        velocity        = 1000;
+        fireRate        = 0.5f;
+        reloadTime      = 1.0f;
+
+        isPiercing      = true;
+
+
+    }
 	
 	// Update is called once per frame (for Input)
 	void Update ()
@@ -111,6 +115,7 @@ public class RangedWeapon : MonoBehaviour {
         bulletClone.GetComponent<BulletMover>().speed = velocity;
         bulletClone.GetComponent<BulletMover>().damage = damage;
         bulletClone.GetComponent<BulletMover>().range = range;
+        bulletClone.GetComponent<BulletMover>().isPiercing = isPiercing;
 
         //// This is how you would do a shotgun
         // Quaternion rotation2 = bulletSpawn.rotation;

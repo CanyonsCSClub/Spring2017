@@ -6,6 +6,7 @@ public class BulletMover : MonoBehaviour
     public float speed;
     public float range;
     public int damage;
+    public bool isPiercing;
     private Rigidbody2D bulletBody;
     private Vector2 start;
 
@@ -14,6 +15,9 @@ public class BulletMover : MonoBehaviour
         start = transform.position;
         bulletBody = GetComponent<Rigidbody2D>();
         bulletBody.AddForce(gameObject.transform.up * speed);
+
+        if (isPiercing == null)
+            isPiercing = false;
     }
 
     void FixedUpdate()
@@ -35,6 +39,11 @@ public class BulletMover : MonoBehaviour
             //Instantiate(bloodSplatter, target.transform.position + bloodPosDelta, target.transform.rotation);
             targetObject.GetComponent<ZombieScript>().Damage(damage);
 
+            if (!isPiercing)
+            {
+                Destroy(gameObject);
+                //Hit animation?
+            }
         }
 
     }

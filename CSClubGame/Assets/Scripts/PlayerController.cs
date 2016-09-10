@@ -25,8 +25,9 @@ public class PlayerController : MonoBehaviour {
         pistol = new RangedWeapon();
         PlayerRDB2D = GetComponent<Rigidbody2D>();
         meleeAnim = GetComponent<Animator>();
-        ammoText.text = string.Format("Ammo: {0}/{1}", pistol.getCurrentMagazine(), pistol.getAmmoCount());
 		health = 100;
+
+        ammoText.text = string.Format("Ammo: {0}/{1} \nHealth: {2}", pistol.getCurrentMagazine(), pistol.getAmmoCount(), health);
     }
 
     void Update ()
@@ -71,7 +72,7 @@ public class PlayerController : MonoBehaviour {
 
     void LateUpdate()
     {
-        ammoText.text = string.Format("Ammo: {0}/{1}", pistol.getCurrentMagazine(), pistol.getAmmoCount());
+        ammoText.text = string.Format("Ammo: {0}/{1} \nHealth: {2}", pistol.getCurrentMagazine(), pistol.getAmmoCount(), health);
         pistol.LateUpdate();
     }
 
