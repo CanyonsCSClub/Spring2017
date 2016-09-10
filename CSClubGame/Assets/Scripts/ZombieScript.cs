@@ -5,6 +5,8 @@ public class ZombieScript : MonoBehaviour {
 
     public float speed;
     public Transform player;
+    public GameObject deadZombie;
+
     private Rigidbody2D zombieRDB2D;
 
     private int health;
@@ -28,5 +30,17 @@ public class ZombieScript : MonoBehaviour {
 
         zombieRDB2D.AddForce(gameObject.transform.up * speed);
 
+    }
+
+    public void Damage(int hitDamage)
+    {
+        health = health - hitDamage;
+        if (health <= 0)
+            OnDeath();
+    }
+
+    void OnDeath()
+    {
+        Instantiate(deadZombie, transform.position, transform.rotation);
     }
 }
