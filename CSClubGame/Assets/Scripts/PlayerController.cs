@@ -10,11 +10,14 @@ public class PlayerController : MonoBehaviour {
     public Transform shotSpawn;
     public Text ammoText;
 
+	private int health;
+
     private Rigidbody2D PlayerRDB2D;
 
     private RangedWeapon pistol;
 
     Animator meleeAnim;
+
 
 	// Use this for initialization
 	void Start ()
@@ -23,6 +26,7 @@ public class PlayerController : MonoBehaviour {
         PlayerRDB2D = GetComponent<Rigidbody2D>();
         meleeAnim = GetComponent<Animator>();
         ammoText.text = string.Format("Ammo: {0}/{1}", pistol.getCurrentMagazine(), pistol.getAmmoCount());
+		health = 100;
     }
 
     void Update ()
@@ -35,7 +39,9 @@ public class PlayerController : MonoBehaviour {
         {
             meleeAnim.SetTrigger("MeleeAttack");
         }
-        if(Input.GetMouseButtonDown(2))
+
+		//goig to change this from mouse button 2 to the keyboard key R
+		if(Input.GetKeyDown(KeyCode.R) == true)
         {
             pistol.Reload();
         }
@@ -68,4 +74,11 @@ public class PlayerController : MonoBehaviour {
         ammoText.text = string.Format("Ammo: {0}/{1}", pistol.getCurrentMagazine(), pistol.getAmmoCount());
         pistol.LateUpdate();
     }
+
+	public void TakeDamage(int damageTaken){
+		health = health - damageTaken;
+		if (health <= 0) {
+			//you dead
+		}
+	}
 }
