@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class RangedWeapon : MonoBehaviour {
@@ -13,7 +13,6 @@ public class RangedWeapon : MonoBehaviour {
     private int magazineSize;
     private int currentMagazine;
 
-    private float bulletSpeed;
     private float fireRate;
     private float reloadTime;
 
@@ -42,7 +41,9 @@ public class RangedWeapon : MonoBehaviour {
         magazineSize = 10;
         currentMagazine = 10;
 
-        bulletSpeed = 100;
+        damage = 5;
+        range = 10;
+        velocity = 1000;
         fireRate = 0.5f;
         reloadTime = 1.0f;
         reloadedTime = 0f;
@@ -99,7 +100,11 @@ public class RangedWeapon : MonoBehaviour {
     //  Spawn the bullet
     public void BulletSpawn(GameObject bullet, Transform bulletSpawn)
     {
-        Instantiate(bullet, bulletSpawn.position, bulletSpawn.rotation);
+        GameObject bulletClone = (GameObject)Instantiate(bullet, bulletSpawn.position, bulletSpawn.rotation);
+
+        bulletClone.GetComponent<BulletMover>().speed = velocity;
+        bulletClone.GetComponent<BulletMover>().damage = damage;
+        bulletClone.GetComponent<BulletMover>().range = range;
 
         //// This is how you would do a shotgun
         // Quaternion rotation2 = bulletSpawn.rotation;
