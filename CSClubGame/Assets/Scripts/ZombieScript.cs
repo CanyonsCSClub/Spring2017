@@ -35,7 +35,9 @@ public class ZombieScript : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate ()
     {
-        Attack();
+        GameObject currentTarget = GetClosestTarget();
+        Move(currentTarget);
+        Attack(currentTarget);
 
 
         //float z = Mathf.Atan2((player.transform.position.y - transform.position.y), (player.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
@@ -59,10 +61,17 @@ public class ZombieScript : MonoBehaviour {
         Destroy(gameObject);
     }
 
-    void Attack()
+    void Move(GameObject currentTarget)
     {
-        GameObject currentTarget = GetClosestTarget();
+        // Rotation to Target
+        float z = Mathf.Atan2((player.transform.position.y - transform.position.y), (player.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
+        transform.eulerAngles = new Vector3(0, 0, z);
+        // Moving to Target
         transform.position = Vector3.MoveTowards(transform.position, currentTarget.transform.position, speed * Time.deltaTime);
+    }
+
+    void Attack(GameObject currentTarget)
+    {
         if (Time.time > nextAttack && CanIBite(currentTarget))
         {
             Vector3 bloodPosDelta = new Vector3(0, 0, 0.5f);
