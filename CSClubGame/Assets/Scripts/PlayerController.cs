@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
@@ -7,9 +8,9 @@ public class PlayerController : MonoBehaviour {
     public float fireRate;
     public GameObject shot;
     public Transform shotSpawn;
+    public Text ammoText;
 
     private Rigidbody2D PlayerRDB2D;
-    private float nextFire;
 
     private RangedWeapon pistol;
 
@@ -19,9 +20,9 @@ public class PlayerController : MonoBehaviour {
 	void Start ()
     {
         pistol = new RangedWeapon();
-        nextFire = 0;
         PlayerRDB2D = GetComponent<Rigidbody2D>();
         meleeAnim = GetComponent<Animator>();
+        ammoText.text = string.Format("Ammo: {0}/{1}", pistol.getCurrentMagazine(), pistol.getAmmoCount());
     }
 
     void Update ()
@@ -64,6 +65,7 @@ public class PlayerController : MonoBehaviour {
 
     void LateUpdate()
     {
+        ammoText.text = string.Format("Ammo: {0}/{1}", pistol.getCurrentMagazine(), pistol.getAmmoCount());
         pistol.LateUpdate();
     }
 }

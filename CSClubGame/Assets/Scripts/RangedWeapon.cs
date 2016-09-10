@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class RangedWeapon : MonoBehaviour {
@@ -68,7 +68,13 @@ public class RangedWeapon : MonoBehaviour {
             ReloadDelay(reloadedTime);
     }
 
-    // Fire function
+    /// <summary>
+    /// Fire, This is the function that the fire button should call
+    /// This will handle the logic for if it should fire
+    /// 
+    /// </summary>
+    /// <param name="bullet">This is where the bullet GameObject gets called (Must have BulletMover Script on it)</param>
+    /// <param name="bulletSpawn">This is the spawnpoint of the bullet, make sure it is attached to the player but not in the player</param>
     public void Fire(GameObject bullet, Transform bulletSpawn)
     {
         if (Time.time > nextFire && currentMagazine != 0  && !isReloading)
@@ -76,7 +82,7 @@ public class RangedWeapon : MonoBehaviour {
             if(!infiniteAmmo)
             {
                 currentMagazine--;
-                ammoCount--;
+                //ammoCount--;
             }
 
             nextFire = Time.time + fireRate;
@@ -140,11 +146,15 @@ public class RangedWeapon : MonoBehaviour {
 
         if (ammoCount > (magazineSize - currentMagazine))
         {
+            ammoCount = ammoCount - (magazineSize - currentMagazine);
             currentMagazine = magazineSize;
+            //ammoCount = ammoCount - (magazineSize - currentMagazine);
+            Debug.Log(string.Format("MagDelta: {0} - {1} = {2}", magazineSize, currentMagazine, magazineSize - currentMagazine));
         }
         else 
         {
             currentMagazine = ammoCount;
+            ammoCount = 0;
         }
         isReloading = false;
         Debug.Log(string.Format("Reloading Done: {0}/{1} : {2}", currentMagazine, magazineSize, ammoCount));
@@ -175,6 +185,10 @@ public class RangedWeapon : MonoBehaviour {
         return currentMagazine;
     }
 
+    public bool IsReloading()
+    {
+        return isReloading;
+    }
 
     /************
      *  Utility *

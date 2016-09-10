@@ -42,5 +42,6 @@ public class ZombieScript : MonoBehaviour {
     void OnDeath()
     {
         Instantiate(deadZombie, transform.position, transform.rotation);
+        Destroy(gameObject);
     }
 }
