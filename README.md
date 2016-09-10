@@ -3,7 +3,9 @@ Canyons CS Club Program
 
 Hello 2016 Club Members!
 
-This is the depot we will be using to upload, merge, branch and distribute our code.   
+This is the depot we will be using to upload, merge, branch and distribute our code.  
+
+To run this go to CSClubGame\Assets\\_Scenes and run Tbui_TestLevel.unity.  Feel add your own Scenes!
 
 Guide to how to use GitHub is here: https://guides.github.com/
 
