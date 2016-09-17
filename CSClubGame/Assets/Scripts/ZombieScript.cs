@@ -8,7 +8,8 @@ public class ZombieScript : MonoBehaviour {
     public GameObject deadZombie;
 	public GameObject bloodSplatter;
 
-   // private Rigidbody2D zombieRDB2D;
+    // private Rigidbody2D zombieRDB2D;
+    private SpriteRenderer enemyRender;
 
     private int health;
     private int level;
@@ -17,6 +18,7 @@ public class ZombieScript : MonoBehaviour {
     private float attackSpeed;
 
     private float nextAttack;
+    private float redTime;
 
     // Use this for initialization
     void Start ()
@@ -27,8 +29,9 @@ public class ZombieScript : MonoBehaviour {
         attackSpeed     = 2f;
 
         nextAttack = 0;
+        redTime = 0;
 
-
+        enemyRender = GetComponent<SpriteRenderer>();
        // zombieRDB2D = GetComponent<Rigidbody2D>();
     }
 	
@@ -39,7 +42,6 @@ public class ZombieScript : MonoBehaviour {
         Move(currentTarget);
         Attack(currentTarget);
 
-
         //float z = Mathf.Atan2((player.transform.position.y - transform.position.y), (player.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
 
         // transform.eulerAngles = new Vector3(0, 0, z);
@@ -47,10 +49,18 @@ public class ZombieScript : MonoBehaviour {
         // zombieRDB2D.AddForce(gameObject.transform.up * speed);
 
     }
+
+    void LateUpdate()
+    {
+        if (enemyRender.color == Color.red && health > 0 && redTime < Time.time)
+            enemyRender.color = Color.white;
+    }
 		
-    public void Damage(int hitDamage)
+    public void TakeDamage(int hitDamage)
     {
         health = health - hitDamage;
+        enemyRender.color = Color.red;
+        redTime = Time.time + 0.1f;
         if (health <= 0)
             OnDeath();
     }
