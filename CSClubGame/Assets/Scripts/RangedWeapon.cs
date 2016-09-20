@@ -43,7 +43,7 @@ public class RangedWeapon : MonoBehaviour {
         magazineSize    = 10;
         currentMagazine = 10;
 
-        damage          = 1;
+        damage          = 5;
         range           = 10;
         velocity        = 1000;
         fireRate        = 0.5f;
