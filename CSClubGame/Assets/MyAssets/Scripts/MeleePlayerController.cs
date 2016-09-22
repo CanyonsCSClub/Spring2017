@@ -8,7 +8,6 @@ public class MeleePlayerController : Player {
     public MeleePlayerController(string newPlayerName, GameObject newPlayerClass, Rigidbody2D newPlayerRB2D, bool newIsMelee, int newPlayerLevel, int newHealth, float newSpeed, int newExperience) : base(newPlayerName, newPlayerClass, newPlayerRB2D, newIsMelee, newPlayerLevel, newHealth, newSpeed, newExperience)
     {
         playerName = "Test";
-        //PlayerRB2D = GetComponent<Rigidbody2D>();
         isMelee = true;
         playerLevel =50;
         health = 100;

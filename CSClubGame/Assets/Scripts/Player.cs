@@ -19,7 +19,7 @@ public class Player : MonoBehaviour {
     {
         this.playerName = newPlayerName;
         this.playerClass = newPlayerClass;
-        this.PlayerRB2D = newPlayerRB2D;
+        this.PlayerRB2D = GetComponentInChildren<Rigidbody2D>();
         this.isMelee = newIsMelee;
         this.playerLevel = newPlayerLevel;
         this.health = newHealth;
