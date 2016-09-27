@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Enemy : MonoBehaviour{//is this needed? not sure...
+public class Enemy {
 
 	public GameObject bloodSplatter;
 	public GameObject deadZombie;
@@ -15,17 +15,17 @@ public class Enemy : MonoBehaviour{//is this needed? not sure...
 	//not sure how to work this in at the moment, maybe we dont need it, but just in case
 	protected int rank { get; set; } //0 - 10. 0 being a common, 10 being a boss-ish enemy
 	protected bool isMelee { get; set; }
-	protected float attackRange { get; set; } //0 - 5 for melee , 5 to infinity for ranged
+	public float attackRange { get; set; } //0 - 5 for melee , 5 to infinity for ranged
 	protected int level { get; set; }
-	protected int health { get; set; }
-	protected int MAXHEALTH; //used for a flinch mechanic...and whatever else tbh
-	protected float speed { get; set; }
-	protected int expGiven { get; set; }
+	public int health { get; set; }
+	public int MAXHEALTH; //used for a flinch mechanic...and whatever else tbh
+	public float speed { get; set; }
+	public int expGiven { get; set; }
 	/*this will "hardcoded" in each constructor to be proportional
 	 * to the enemy's level and "type" Ex; common vs boss type
 	 */
-	protected int attack { get; set; }
-	protected float attackSpeed { get; set; }
+	public int attack { get; set; }
+	public float attackSpeed { get; set; }
 	protected int armor { get; set; } //armor should always be greater than 1 for codes sake
 	//_________________________________________________________________________________________
 
@@ -38,12 +38,12 @@ public class Enemy : MonoBehaviour{//is this needed? not sure...
 	//flinching "being stunned" ____________
 	public bool flinchOn = true;
 	public bool isStunned = false;
-	float stunTime = 1f;
-	float timeStunned = 0;
+	public float stunTime = 1f;
+	public float timeStunned = 0;
 	//______________________________________
 
 	//frenzy ability _______________________
-	float lastTouchTime = 0;
+	public float lastTouchTime = 0;
 	//______________________________________
 
 	//bum Rush ability______________________
@@ -53,10 +53,11 @@ public class Enemy : MonoBehaviour{//is this needed? not sure...
 		// force a default character to be spawned
 	}
 
-	public Enemy(string newEnemyName, int newRank, bool newIsMelee, int newLevel, int newHealth, float newSpeed, int newAttack, float newAttackSpeed, int newArmor){
+	public Enemy(string newEnemyName, int newRank, bool newIsMelee, float newAttackRange, int newLevel, int newHealth, float newSpeed, int newAttack, float newAttackSpeed, int newArmor){
 		this.enemyName = newEnemyName;
 		this.rank = newRank;
 		this.isMelee = newIsMelee;
+		this.attackRange = newAttackRange;
 		this.level = newLevel;
 		this.health = newHealth;
 		this.MAXHEALTH = newHealth;
@@ -83,7 +84,9 @@ public class Enemy : MonoBehaviour{//is this needed? not sure...
 	/// looks for closest one
 	/// </summary>
 	/// <returns>returns the closest player object</returns>
-	protected GameObject GetClosestTarget()
+
+	/*
+	public GameObject GetClosestTarget()
 	{ 
 		GameObject[] enemies;
 		enemies = GameObject.FindGameObjectsWithTag ("Player");
@@ -101,7 +104,7 @@ public class Enemy : MonoBehaviour{//is this needed? not sure...
 		return closest;
 	}
 		
-	protected void Move(GameObject currentTarget)
+	public void Move(GameObject currentTarget)
 	{		//( false || __________) first term will always false unless No-flinch modifier is on
 		if ( true ){
 			if (LastTargetTouched (lastTouchTime) > 10f) {//10 seconds
@@ -121,11 +124,13 @@ public class Enemy : MonoBehaviour{//is this needed? not sure...
 		}
 	}
 
+*/
 	public bool CanIMove(){
 		return  !flinchOn || (Time.time - timeStunned >= stunTime);
 	}
 
-	protected void Attack(GameObject currentTarget)
+/*
+	public void Attack(GameObject currentTarget)
 	{
 		float nextAttack = 0;
 		if (Time.time > nextAttack  && CanIAttack(currentTarget))
@@ -149,24 +154,26 @@ public class Enemy : MonoBehaviour{//is this needed? not sure...
 		return false;
 	}
 
+	*/
+
 	public void RecieveHealing(int healing){
 		if (health > 0) {
 			health = health + healing;
 		}
 	}
-
-	public void TakeDamage(int damageTaken)
-	{
+	/*
+	public void TakeDamage(int damageTaken){
 		health = health - damageTaken;
 		//string damageString = damageTaken.ToString ();
 		//make a number of somesort pop above the enemy's head
-		Instantiate (damageTakenNumber, transform.position + new Vector3(0,0,1), transform.rotation);
+		//Instantiate (damageTakenNumber, transform.position + new Vector3(0,0,1), transform.rotation);
 		if (health <= 0)
-			OnDeath();
+//			OnDeath();
 		if ((double)damageTaken > (double)(MAXHEALTH * .1) && flinchOn == true) {
 			Flinch ();
 		}
 	}
+	*/
 
 	/*Skills and Modifiers_________________________________________________________________
 	*Modifiers Include: Flinch
@@ -174,7 +181,7 @@ public class Enemy : MonoBehaviour{//is this needed? not sure...
 	*Skills Include: BumRush, Frenzy
 	*/
 
-	void Flinch(){
+	public void Flinch(){
 		isStunned = true;
 		timeStunned = Time.time;
 	}
@@ -182,7 +189,7 @@ public class Enemy : MonoBehaviour{//is this needed? not sure...
 	/// <summary>
 	/// 1.5 * speed runs in straight line until a)hits a wall b)hits a player c)dies
 	/// </summary>
-	void BumRush(GameObject currentTarget){
+	public void BumRush(GameObject currentTarget){
 		//will i need to somehow stop the normal move method so the path stays straight?
 		isBumRushing = true;
 	
@@ -192,7 +199,7 @@ public class Enemy : MonoBehaviour{//is this needed? not sure...
 	/// The enemy who has this trait gets increased speed and next hit damage until it hits 
 	/// its next target. After which all stats go back to default.
 	/// </summary>
-	void Frenzy(bool isFrenzied){
+	public void Frenzy(bool isFrenzied){
 		if (isFrenzied) {
 			//statChanges
 			//Maybe the enemy GO does some sort of scream, so the players know
@@ -217,6 +224,7 @@ public class Enemy : MonoBehaviour{//is this needed? not sure...
 	 * 
 	 */
 
+	/*
 	void OnDeath()
 	{
 		for (int i = 0; i < expGiven; i++) {
@@ -229,13 +237,14 @@ public class Enemy : MonoBehaviour{//is this needed? not sure...
 		Instantiate(deadZombie, transform.position, transform.rotation);
 		Destroy(gameObject);
 	}
-		
+	*/
+
 	/// <summary>
 	/// Used in conjunction with activating the frenzy skill, returns the time of the last time 
 	/// a target was hit by an enemy. If it is greater than some"time" the target will Frenzy(true);
 	/// </summary>
 	/// <returns>Time of last touch...specifically time of last damage.</returns>
-	float LastTargetTouched(float lastTouched){
+	public float LastTargetTouched(float lastTouched){
 		return Time.time - lastTouched;
 	}
 

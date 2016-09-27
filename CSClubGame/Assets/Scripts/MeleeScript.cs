@@ -18,7 +18,7 @@ public class MeleeScript : MonoBehaviour {
         {
             Vector3 bloodPosDelta = new Vector3(0,0,0.5f);
             Instantiate(bloodSplatter,target.transform.position + bloodPosDelta, target.transform.rotation);
-            targetObject.GetComponent<ZombieScript>().Damage(damage);
+			targetObject.GetComponent<EnemyController>().TakeDamage(damage);
             
         }
             
