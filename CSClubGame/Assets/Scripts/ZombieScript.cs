@@ -73,8 +73,10 @@ public class ZombieScript : MonoBehaviour {
 
     void Move(GameObject currentTarget)
     {
+        if (currentTarget == null)
+            return; //idle?
         // Rotation to Target
-        float z = Mathf.Atan2((player.transform.position.y - transform.position.y), (player.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
+        float z = Mathf.Atan2((currentTarget.transform.position.y - transform.position.y), (currentTarget.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
         transform.eulerAngles = new Vector3(0, 0, z);
         // Moving to Target
         transform.position = Vector3.MoveTowards(transform.position, currentTarget.transform.position, speed * Time.deltaTime);
