@@ -10,8 +10,10 @@ public class BulletMover : MonoBehaviour
     private Rigidbody2D bulletBody;
     private Vector2 start;
 
+
     void Start()
     {
+		
         start = transform.position;
         bulletBody = GetComponent<Rigidbody2D>();
         bulletBody.AddForce(gameObject.transform.up * speed);
@@ -39,7 +41,7 @@ public class BulletMover : MonoBehaviour
         {
            // Vector3 bloodPosDelta = new Vector3(0, 0, 0.5f);
            // Instantiate(bloodSplatter, target.transform.position + bloodPosDelta, target.transform.rotation);
-			targetObject.GetComponent<EnemyController>().TakeDamage(damage);
+			targetObject.GetComponent<Enemy>().TakeDamage(damage, playerID);
 
 
             if (!isPiercing)

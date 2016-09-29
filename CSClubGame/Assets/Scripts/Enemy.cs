@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Enemy {
+public class Enemy : MonoBehaviour{
 
 	public GameObject bloodSplatter;
 	public GameObject deadZombie;
 	public GameObject expOrb;
 	public GameObject damageTakenNumber;
+	public CircleCollider2D enemySightRangeCollider;
 
 
 	//Enemy constructor variables_____________________________________________________________
@@ -46,88 +47,43 @@ public class Enemy {
 	public float lastTouchTime = 0;
 	//______________________________________
 
-	//bum Rush ability______________________
-	bool isBumRushing = false;
+	GameObject playerInRange = null;
+	GameObject aggroOnPlayer = null;
+	public float newRadius;
+
 
 	public Enemy(){
 		// force a default character to be spawned
 	}
 
 	public Enemy(string newEnemyName, int newRank, bool newIsMelee, float newAttackRange, int newLevel, int newHealth, float newSpeed, int newAttack, float newAttackSpeed, int newArmor){
-		this.enemyName = newEnemyName;
-		this.rank = newRank;
-		this.isMelee = newIsMelee;
-		this.attackRange = newAttackRange;
-		this.level = newLevel;
-		this.health = newHealth;
-		this.MAXHEALTH = newHealth;
-		this.speed = newSpeed;
-		this.attack = newAttack;
-		this.attackSpeed = newAttackSpeed;
-		this.armor = newArmor;
-		//this.expGiven = ((level * type) * (attack * armor)) / health;
-		//idk maybe something like this formula... but for now
-		this.expGiven = level;
-		Debug.Log (enemyName + " " + rank + " " + level + " " + health
-			+ " " + attack + " " + attackSpeed + " " + armor + " " + expGiven + "\n" + "has been created" );
-		this.defaultSpeed = speed;
-		this.defaultAttack = attack;
-		this.defaultAttackSpeed = attackSpeed;
-		this.defaultArmor = armor;
-	}
-
-
-	/// <summary>
-	/// Enemies in the zombies eyes are GO's tagged "Player"
-	/// will only ever be 4 players, because there is only 4 physical players
-	/// makes an array with all active players on map
-	/// looks for closest one
-	/// </summary>
-	/// <returns>returns the closest player object</returns>
-
-	/*
-	public GameObject GetClosestTarget()
-	{ 
-		GameObject[] enemies;
-		enemies = GameObject.FindGameObjectsWithTag ("Player");
-		GameObject closest = null;
-		float maxDistToTarget = 500;
-		Vector3 position = transform.position;
-		foreach (GameObject enemy in enemies) {
-			Vector3 dist = enemy.transform.position - position;
-			float currentDistance = dist.sqrMagnitude;
-			if (currentDistance < maxDistToTarget && enemy.activeInHierarchy) {
-				closest = enemy;
-				maxDistToTarget = currentDistance;
-			}
-		}
-		return closest;
+		ConfigEnemy (newEnemyName, newRank, newIsMelee, newAttackRange,
+			newLevel, newHealth, newSpeed, newAttack, newAttackSpeed, newArmor); 
 	}
 		
-	public void Move(GameObject currentTarget)
-	{		//( false || __________) first term will always false unless No-flinch modifier is on
-		if ( true ){
-			if (LastTargetTouched (lastTouchTime) > 10f) {//10 seconds
-				Frenzy (true);
-			} else {
-				Frenzy (false);
-			}
-			// Rotation to Target
-			//Since there is going to be up to 4 players, i think there should be no reference to a player
-			//but instead a reference to a target which can be any player.
+	//Movement____________________________________________________________
+	public void Move(GameObject currentTarget){	
+		Debug.Log ("Move(arg) Health: " + health);
+
 			float z = Mathf.Atan2 ((currentTarget.transform.position.y - transform.position.y),
 				         (currentTarget.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
 			transform.eulerAngles = new Vector3 (0, 0, z);
 			// Moving to Target
 			transform.position = Vector3.MoveTowards (transform.position, 
 				currentTarget.transform.position, speed * Time.deltaTime);
-		}
+		
 	}
 
-*/
-	public bool CanIMove(){
-		return  !flinchOn || (Time.time - timeStunned >= stunTime);
+	public void Move(){
+		Debug.Log ("Move() Health: " + health);
+
+		var rotationVector = transform.rotation.eulerAngles;
+		rotationVector.z += Random.Range (-5f, 5f);
+		transform.rotation = Quaternion.Euler (rotationVector);
+		transform.position += transform.up * Time.deltaTime * speed;
 	}
+
+	//End Movement_____________________________________________________________
 
 /*
 	public void Attack(GameObject currentTarget)
@@ -145,7 +101,7 @@ public class Enemy {
 			lastTouchTime = 0f;
 		}
 	}
-
+*/
 	public bool CanIAttack(GameObject currentTarget){
 		float distanceToTarget = (transform.position - currentTarget.transform.position).sqrMagnitude;
 		if (distanceToTarget < attackRange && currentTarget.tag == "Player") {
@@ -153,103 +109,148 @@ public class Enemy {
 		}
 		return false;
 	}
-
-	*/
-
+		
 	public void RecieveHealing(int healing){
 		if (health > 0) {
 			health = health + healing;
 		}
 	}
-	/*
-	public void TakeDamage(int damageTaken){
+
+	public void TakeDamage(int damageTaken, GameObject GO){
+		if (GO.CompareTag ("Player")) {
+			aggroOnPlayer = GO;
+		}
 		health = health - damageTaken;
-		//string damageString = damageTaken.ToString ();
-		//make a number of somesort pop above the enemy's head
+
+		//damage Taken numbers ..... (if we want em)
 		//Instantiate (damageTakenNumber, transform.position + new Vector3(0,0,1), transform.rotation);
 		if (health <= 0)
-//			OnDeath();
-		if ((double)damageTaken > (double)(MAXHEALTH * .1) && flinchOn == true) {
-			Flinch ();
-		}
-	}
-	*/
-
-	/*Skills and Modifiers_________________________________________________________________
-	*Modifiers Include: Flinch
-	*
-	*Skills Include: BumRush, Frenzy
-	*/
-
-	public void Flinch(){
-		isStunned = true;
-		timeStunned = Time.time;
+			OnDeath();
 	}
 
-	/// <summary>
-	/// 1.5 * speed runs in straight line until a)hits a wall b)hits a player c)dies
-	/// </summary>
-	public void BumRush(GameObject currentTarget){
-		//will i need to somehow stop the normal move method so the path stays straight?
-		isBumRushing = true;
-	
-	}
-
-	/// <summary>
-	/// The enemy who has this trait gets increased speed and next hit damage until it hits 
-	/// its next target. After which all stats go back to default.
-	/// </summary>
-	public void Frenzy(bool isFrenzied){
-		if (isFrenzied) {
-			//statChanges
-			//Maybe the enemy GO does some sort of scream, so the players know
-					//or glows red or something?
-			speed = speed * 1.5f;
-			attack = attack * 2;
-
-		} else {
-			//stat roll back
-			speed = defaultSpeed;
-			attack = defaultAttack;
-		}
-
-
-	}
-	//End Skills and Modifiers_______________________________________________________
 
 
 	/*Utilities______________________________________________________________________
-	 *Utilities Include: OnDeath, LastTargetTouched
-	 * 
-	 * 
+	 *Utilities Include: OnDeath
+	 *
 	 */
 
-	/*
+
 	void OnDeath()
 	{
-		for (int i = 0; i < expGiven; i++) {
-			Instantiate (expOrb, transform.position, transform.rotation);
-		}
-		//add a small explosive force, with no damage, to "explode" expOrbs from an enemy
-		//kinda like minecraft? 
-		//we can also do, for performance sake, Instantiate one exp orb with an exp value 
-				//and just drop at death location?
+		Debug.Log ("OnDeath Health: " + health);
+
+		//Instantiae expOrb
 		Instantiate(deadZombie, transform.position, transform.rotation);
-		Destroy(gameObject);
+		Destroy(this.gameObject); //until pooling
 	}
-	*/
-
-	/// <summary>
-	/// Used in conjunction with activating the frenzy skill, returns the time of the last time 
-	/// a target was hit by an enemy. If it is greater than some"time" the target will Frenzy(true);
-	/// </summary>
-	/// <returns>Time of last touch...specifically time of last damage.</returns>
-	public float LastTargetTouched(float lastTouched){
-		return Time.time - lastTouched;
-	}
-
-
 
 	//End Utilities_____________________________________________________________________
+
+
+	//Event & Update Handelers__________________________________________________________
+
+	// Update is called once per frame
+
+	void Start(){
+
+	}
+
+	void Update ()
+	{
+	
+	}
+
+	void FixedUpdate(){
+		Debug.Log ("FixedUpdate Health: " + health);
+
+		if (playerInRange == null && aggroOnPlayer == null) {
+			Move ();
+		} else {
+			//do Nothing?
+		}
+	}
+
+	void OnTriggerEnter2D(Collider2D other){
+		Debug.Log ("Enter2D Health: " + health);
+
+		if (other.CompareTag ("Player") && playerInRange == null) {
+			playerInRange = other.gameObject;
+		} else {
+			//do Nothing?
+		}
+	}
+
+	void OnTriggerExit2D(Collider2D other){
+		Debug.Log ("Exit2D Health: " + health);
+
+		if (other.gameObject == playerInRange) {//if the object leaving was the same as the player in range 
+			playerInRange = null;
+		} else {
+			//do Nothing?
+		}
+	}
+
+	void OnTriggerStay2D(Collider2D other){
+		Debug.Log ("Stay2D Health: " + health);
+
+		if(other.CompareTag("Player")){
+			
+			if(aggroOnPlayer == playerInRange){//if they are the same
+				if (playerInRange != null) {
+					Move (playerInRange);
+				}
+			} else { //if they aren't the same \/
+				
+				if (other.gameObject == playerInRange && aggroOnPlayer == null) {//if the other in range is the same target as the
+					//playerInRange and the enemy is not aggro'd
+					Move (other.gameObject);
+				} else if(other.gameObject != playerInRange && aggroOnPlayer == null){
+					//if the player in the collider is not the playerInRange 
+					Move(playerInRange);
+					//ignore them
+				} else if (aggroOnPlayer != null) { //if the enemy is aggro'd on somebody
+					if ((aggroOnPlayer.transform.position - this.transform.position).sqrMagnitude < enemySightRangeCollider.radius * enemySightRangeCollider.radius) {
+						//if the aggro'd target is in range move to them
+						Move (aggroOnPlayer);
+					}
+				} 
+
+			}
+
+		} else {
+			//if the tag is not a player do.....
+		}
+
+	//End Event & Update Handelers____________________________________________________
+	}
+
+
+	public void ConfigEnemy(string newEnemyName, int newRank, bool newIsMelee, float newAttackRange, int newLevel,
+		int newHealth, float newSpeed, int newAttack, float newAttackSpeed, int newArmor ){
+			this.enemyName = newEnemyName;
+			this.rank = newRank;
+			this.isMelee = newIsMelee;
+			this.attackRange = newAttackRange;
+			this.level = newLevel;
+			this.health = newHealth;
+			Debug.Log ("Constructor Health: " + health);
+			this.MAXHEALTH = newHealth;
+			this.speed = newSpeed;
+			this.attack = newAttack;
+			this.attackSpeed = newAttackSpeed;
+			this.armor = newArmor;
+			//this.expGiven = ((level * type) * (attack * armor)) / health;
+			//idk maybe something like this formula... but for now 
+			this.expGiven = level;
+
+			this.defaultSpeed = speed;
+			this.defaultAttack = attack;
+			this.defaultAttackSpeed = attackSpeed;
+			this.defaultArmor = armor;
+
+	}
+
+
 
 }
