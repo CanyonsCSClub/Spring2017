@@ -39,10 +39,16 @@ public class BulletMover : MonoBehaviour
 
         if (target.tag == "Enemy")
         {
+<<<<<<< HEAD
            // Vector3 bloodPosDelta = new Vector3(0, 0, 0.5f);
            // Instantiate(bloodSplatter, target.transform.position + bloodPosDelta, target.transform.rotation);
 			targetObject.GetComponent<Enemy>().TakeDamage(damage, playerID);
 
+=======
+            //Vector3 bloodPosDelta = new Vector3(0, 0, 0.5f);
+            //Instantiate(bloodSplatter, target.transform.position + bloodPosDelta, target.transform.rotation);
+            targetObject.GetComponent<ZombieScript>().TakeDamage(damage);
+>>>>>>> master
 
             if (!isPiercing)
             {
@@ -53,14 +59,25 @@ public class BulletMover : MonoBehaviour
 
     }
 
+
+    public void setParm(float inSpeed, float inRange, int inDamage, bool inPiercing)
+    {
+        setSpeed(inSpeed);
+        setRange(inRange);
+        this.damage = inDamage;
+        this.isPiercing = inPiercing;
+    }
+
     public void setSpeed(float inputSpeed)
     {
-        speed = inputSpeed;
+        if(inputSpeed > 0)
+            speed = inputSpeed;
     }
 
     public void setRange(float inputRange)
     {
-        range = inputRange;
+        if(inputRange > 0)
+            range = inputRange;
     }
     
 }
