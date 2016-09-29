@@ -6,15 +6,20 @@ public class PlayerController : MonoBehaviour {
 
     public float speed;
     public float fireRate;
-    public GameObject shot;
     public Transform shotSpawn;
     public Text ammoText;
+    public Image healthBar;
 
 	private int health;
+    private int maxHealth;
+    private float redTime;
+    private Vector3 healthBarScale;
+    private float healthBarScaleMax;
 
     private Rigidbody2D PlayerRDB2D;
+    private SpriteRenderer PlayerRender;
 
-    private RangedWeapon pistol;
+    private SubMachineGun rangedAttack;
 
     Animator meleeAnim;
 
@@ -22,19 +27,32 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        pistol = new RangedWeapon();
+        redTime = 0;
+        rangedAttack = new SubMachineGun();
+
         PlayerRDB2D = GetComponent<Rigidbody2D>();
+        PlayerRender = GetComponent<SpriteRenderer>();
         meleeAnim = GetComponent<Animator>();
 		health = 100;
+        maxHealth = 100;
+        healthBarScaleMax = healthBar.rectTransform.localScale.y;
 
-        ammoText.text = string.Format("Ammo: {0}/{1} \nHealth: {2}", pistol.getCurrentMagazine(), pistol.getAmmoCount(), health);
+        playerHUD();
     }
 
     void Update ()
     {
         if(Input.GetMouseButtonDown(0))
         {
-            pistol.Fire(shot, shotSpawn);
+            rangedAttack.Attack(shotSpawn);
+        }
+        if(Input.GetMouseButton(0))
+        {
+            rangedAttack.AttackHold(shotSpawn);
+        }
+        if(Input.GetMouseButtonUp(0))
+        {
+            rangedAttack.AttackRelease(shotSpawn);
         }
         if(Input.GetMouseButtonDown(1))
         {
@@ -44,7 +62,7 @@ public class PlayerController : MonoBehaviour {
 		//goig to change this from mouse button 2 to the keyboard key R
 		if(Input.GetKeyDown(KeyCode.R) == true)
         {
-            pistol.Reload();
+            rangedAttack.Reload();
         }
     }
 	
@@ -72,14 +90,34 @@ public class PlayerController : MonoBehaviour {
 
     void LateUpdate()
     {
-        ammoText.text = string.Format("Ammo: {0}/{1} \nHealth: {2}", pistol.getCurrentMagazine(), pistol.getAmmoCount(), health);
-        pistol.LateUpdate();
+        //HUD
+        playerHUD();
+
+
+        rangedAttack.LateUpdate();
+        if (PlayerRender.color == Color.red && health > 0 && redTime < Time.time)
+            PlayerRender.color = Color.white;
     }
 
 	public void TakeDamage(int damageTaken){
 		health = health - damageTaken;
-		if (health <= 0) {
-			//you dead
-		}
+        PlayerRender.color = Color.red;
+        redTime = Time.time + 0.1f;
+
+        if (health <= 0) {
+            PlayerRender.color = Color.grey;
+            //you dead
+        }
 	}
+
+    void playerHUD()
+    {
+        //HUD
+        ammoText.text = string.Format("Ammo: \n{0}/{1} \n", rangedAttack.getCurrentMagazine(), rangedAttack.getAmmoCount());
+        float hbScale = ((float)health / (float)maxHealth) * healthBarScaleMax;
+        if (hbScale < 0)
+            hbScale = 0;
+        healthBarScale = new Vector3(healthBar.rectTransform.localScale.x, hbScale, 1);
+        healthBar.rectTransform.localScale = healthBarScale;
+    }
 }
