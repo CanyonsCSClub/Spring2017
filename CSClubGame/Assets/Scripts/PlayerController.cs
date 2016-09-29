@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour {
         meleeAnim = GetComponent<Animator>();
 		health = 100;
         maxHealth = 100;
-        healthBarScaleMax = 1.2f;
+        healthBarScaleMax = healthBar.rectTransform.localScale.y;
 
         playerHUD();
     }
@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviour {
         float hbScale = ((float)health / (float)maxHealth) * healthBarScaleMax;
         if (hbScale < 0)
             hbScale = 0;
-        healthBarScale = new Vector3(2, hbScale, 1);
+        healthBarScale = new Vector3(healthBar.rectTransform.localScale.x, hbScale, 1);
         healthBar.rectTransform.localScale = healthBarScale;
     }
 }
