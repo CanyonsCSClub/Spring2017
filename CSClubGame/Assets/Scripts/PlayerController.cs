@@ -8,9 +8,13 @@ public class PlayerController : MonoBehaviour {
     public float fireRate;
     public Transform shotSpawn;
     public Text ammoText;
+    public Image healthBar;
 
 	private int health;
+    private int maxHealth;
     private float redTime;
+    private Vector3 healthBarScale;
+    private float healthBarScaleMax;
 
     private Rigidbody2D PlayerRDB2D;
     private SpriteRenderer PlayerRender;
@@ -30,8 +34,10 @@ public class PlayerController : MonoBehaviour {
         PlayerRender = GetComponent<SpriteRenderer>();
         meleeAnim = GetComponent<Animator>();
 		health = 100;
+        maxHealth = 100;
+        healthBarScaleMax = healthBar.rectTransform.localScale.y;
 
-        ammoText.text = string.Format("Ammo: {0}/{1} \nHealth: {2}", rangedAttack.getCurrentMagazine(), rangedAttack.getAmmoCount(), health);
+        playerHUD();
     }
 
     void Update ()
@@ -84,7 +90,10 @@ public class PlayerController : MonoBehaviour {
 
     void LateUpdate()
     {
-        ammoText.text = string.Format("Ammo: {0}/{1} \nHealth: {2}", rangedAttack.getCurrentMagazine(), rangedAttack.getAmmoCount(), health);
+        //HUD
+        playerHUD();
+
+
         rangedAttack.LateUpdate();
         if (PlayerRender.color == Color.red && health > 0 && redTime < Time.time)
             PlayerRender.color = Color.white;
@@ -100,4 +109,15 @@ public class PlayerController : MonoBehaviour {
             //you dead
         }
 	}
+
+    void playerHUD()
+    {
+        //HUD
+        ammoText.text = string.Format("Ammo: \n{0}/{1} \n", rangedAttack.getCurrentMagazine(), rangedAttack.getAmmoCount());
+        float hbScale = ((float)health / (float)maxHealth) * healthBarScaleMax;
+        if (hbScale < 0)
+            hbScale = 0;
+        healthBarScale = new Vector3(healthBar.rectTransform.localScale.x, hbScale, 1);
+        healthBar.rectTransform.localScale = healthBarScale;
+    }
 }
