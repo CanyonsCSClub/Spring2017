@@ -79,7 +79,7 @@ public class RangedWeapon : MonoBehaviour {
     /// </summary>
     /// <param name="bullet">This is where the bullet GameObject gets called (Must have BulletMover Script on it)</param>
     /// <param name="bulletSpawn">This is the spawnpoint of the bullet, make sure it is attached to the player but not in the player</param>
-    public void Attack(Transform bulletSpawn)
+    public virtual void Attack(Transform bulletSpawn)
     {
         if (Time.time > nextFire && currentMagazine != 0  && !isReloading)
         {
@@ -98,7 +98,7 @@ public class RangedWeapon : MonoBehaviour {
     /// AttackHold() is used when the player is holding down the button
     /// Fully Automatic fire should be controlled here or charging.
     /// </summary>
-    public void AttackHold(Transform bulletSpawn)
+    public virtual void AttackHold(Transform bulletSpawn)
     {
 
     }
@@ -108,13 +108,13 @@ public class RangedWeapon : MonoBehaviour {
     /// This is a great way to activate a charged weapon.
     /// </summary>
     /// <param name="chargeTime"></param>
-    public void AttackRelease(Transform bulletSpawn)
+    public virtual void AttackRelease(Transform bulletSpawn)
     {
 
     }
 
     //  Spawn the bullet
-    public void BulletSpawn(GameObject bullet, Transform bulletSpawn)
+    public virtual void BulletSpawn(GameObject bullet, Transform bulletSpawn)
     {
         GameObject bulletClone = (GameObject)Instantiate(bullet, bulletSpawn.position, bulletSpawn.rotation);
 
@@ -128,7 +128,7 @@ public class RangedWeapon : MonoBehaviour {
     }
 
     // Reloading, starts thread so other methods are not delayed
-    public void Reload()
+    public virtual void Reload()
     {
         if (ammoCount != 0)
         {
