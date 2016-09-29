@@ -35,7 +35,8 @@ public class PlayerController : MonoBehaviour {
         meleeAnim = GetComponent<Animator>();
 		health = 100;
         maxHealth = 100;
-        healthBarScaleMax = healthBar.rectTransform.localScale.y;
+        if (healthBar != null)
+            healthBarScaleMax = healthBar.rectTransform.localScale.y;
 
         playerHUD();
     }
@@ -113,11 +114,20 @@ public class PlayerController : MonoBehaviour {
     void playerHUD()
     {
         //HUD
-        ammoText.text = string.Format("Ammo: \n{0}/{1} \n", rangedAttack.getCurrentMagazine(), rangedAttack.getAmmoCount());
+        if(ammoText != null)
+            ammoText.text = string.Format("Ammo: \n{0}/{1} \n", rangedAttack.getCurrentMagazine(), rangedAttack.getAmmoCount());
+
+        if (healthBar == null)
+            return;
         float hbScale = ((float)health / (float)maxHealth) * healthBarScaleMax;
         if (hbScale < 0)
             hbScale = 0;
         healthBarScale = new Vector3(healthBar.rectTransform.localScale.x, hbScale, 1);
         healthBar.rectTransform.localScale = healthBarScale;
+    }
+
+    public RangedWeapon getRangedWeapon()
+    {
+        return rangedAttack;
     }
 }
