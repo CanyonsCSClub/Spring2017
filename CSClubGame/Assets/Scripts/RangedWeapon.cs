@@ -5,23 +5,23 @@ public class RangedWeapon : MonoBehaviour {
 
     public GameObject shot;
 
-    protected int damage;
-    protected float range;
-    protected float velocity;
+    private int damage;
+    private float range;
+    private float velocity;
 
-    protected int ammoCount;
-    protected int magazineSize;
-    protected int currentMagazine;
+    private int ammoCount;
+    private int magazineSize;
+    private int currentMagazine;
 
-    protected float fireRate;
-    protected float reloadTime;
+    private float fireRate;
+    private float reloadTime;
 
-    protected float nextFire;
-    protected float reloadedTime;
+    private float nextFire;
+    private float reloadedTime;
 
-    protected bool infiniteAmmo;
-    protected bool isReloading;
-    protected bool isPiercing;
+    private bool infiniteAmmo;
+    private bool isReloading;
+    private bool isPiercing;
 
 
     //Default Constructor
@@ -39,19 +39,19 @@ public class RangedWeapon : MonoBehaviour {
         reloadedTime = 0f;
 
         //should probably have a file that loads this
-        ammoCount = 100;
-        magazineSize = 10;
+        ammoCount       = 100;
+        magazineSize    = 10;
         currentMagazine = 10;
 
-        damage = 5;
-        range = 10;
-        velocity = 1000;
-        fireRate = 0.5f;
-        reloadTime = 1.0f;
+        damage          = 5;
+        range           = 10;
+        velocity        = 1000;
+        fireRate        = 0.5f;
+        reloadTime      = 1.0f;
 
-        isPiercing = true;
+        isPiercing      = true;
 
-        shot = Resources.Load("Bullet", typeof(GameObject)) as GameObject;
+
     }
 	
 	// Update is called once per frame (for Input)
@@ -73,42 +73,36 @@ public class RangedWeapon : MonoBehaviour {
     }
 
     /// <summary>
-    /// Attack, This is the function that the fire button should call
-    /// This will handle the logic for if it should fire, this is for semi auto
+    /// Fire, This is the function that the fire button should call
+    /// This will handle the logic for if it should fire
     /// 
     /// </summary>
     /// <param name="bullet">This is where the bullet GameObject gets called (Must have BulletMover Script on it)</param>
     /// <param name="bulletSpawn">This is the spawnpoint of the bullet, make sure it is attached to the player but not in the player</param>
-    public void Attack(Transform bulletSpawn)
+    public void Fire(GameObject bullet, Transform bulletSpawn)
     {
         if (Time.time > nextFire && currentMagazine != 0  && !isReloading)
         {
             if(!infiniteAmmo)
             {
                 currentMagazine--;
+                //ammoCount--;
             }
 
             nextFire = Time.time + fireRate;
-            BulletSpawn(shot, bulletSpawn);          //change to charge if its a charge up attack
+            BulletSpawn(bullet, bulletSpawn);          //change to charge if its a charge up attack
             Debug.Log(string.Format("Firing: {0}/{1} : {2}",currentMagazine, magazineSize, ammoCount));
         }
     }
 
-    /// <summary>
-    /// AttackHold() is used when the player is holding down the button
-    /// Fully Automatic fire should be controlled here or charging.
-    /// </summary>
-    public void AttackHold(Transform bulletSpawn)
+    // Start Charging up weapon if it is charged
+    public void ChargingFire()
     {
 
     }
 
-    /// <summary>
-    /// AttackRelease() is the function for when the player releases the button
-    /// This is a great way to activate a charged weapon.
-    /// </summary>
-    /// <param name="chargeTime"></param>
-    public void AttackRelease(Transform bulletSpawn)
+    // Fire Charged Weapon
+    public void ChargedFire(float chargeTime)
     {
 
     }
@@ -118,8 +112,10 @@ public class RangedWeapon : MonoBehaviour {
     {
         GameObject bulletClone = (GameObject)Instantiate(bullet, bulletSpawn.position, bulletSpawn.rotation);
 
-        if(bulletClone != null)
-            bulletClone.GetComponent<BulletMover>().setParm(velocity, range, damage, isPiercing);
+        bulletClone.GetComponent<BulletMover>().speed = velocity;
+        bulletClone.GetComponent<BulletMover>().damage = damage;
+        bulletClone.GetComponent<BulletMover>().range = range;
+        bulletClone.GetComponent<BulletMover>().isPiercing = isPiercing;
 
         //// This is how you would do a shotgun
         // Quaternion rotation2 = bulletSpawn.rotation;
