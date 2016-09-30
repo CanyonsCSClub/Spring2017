@@ -23,16 +23,16 @@ public class Player : MonoBehaviour
 
     public Player(string newPlayerName, string newPlayerClass, Rigidbody2D newPlayerRB2D, bool newIsMelee, int newPlayerLevel, int newHealth, float newSpeed, int newExperience, Animator newAnim)
     {
-        this.playerName = newPlayerName;
-        this.playerClass = newPlayerClass;
-        this.PlayerRB2D = newPlayerRB2D;
-        this.isMelee = newIsMelee;
-        this.playerLevel = newPlayerLevel;
-        this.health = newHealth;
-        this.BASE_HEALTH = health;
-        this.speed = newSpeed;
-        this.experience = newExperience;
-        this.anim = newAnim;
+        this.playerName     = newPlayerName;
+        this.playerClass    = newPlayerClass;
+        this.PlayerRB2D     = newPlayerRB2D;
+        this.isMelee        = newIsMelee;
+        this.playerLevel    = newPlayerLevel;
+        this.health         = newHealth;
+        this.BASE_HEALTH    = health;
+        this.speed          = newSpeed;
+        this.experience     = newExperience;
+        this.anim           = newAnim;
 
         Debug.Log(playerName + " " + playerClass + " " + playerLevel + " " + health
              + " " + isMelee + " " + speed + "  " + experience + "\n" + "has been created");
@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        
+        DefaultSettings();
     }
 
     // Update is called once per frame
@@ -61,7 +61,21 @@ public class Player : MonoBehaviour
         LevelSystem();
     }
 
-    public void Movement()
+    public void DefaultSettings()
+    {
+        this.playerName     = "Default";
+        this.playerClass    = "Default";
+        this.PlayerRB2D     = GetComponent<Rigidbody2D>();
+        this.isMelee        = false;
+        this.playerLevel    = 1;
+        this.health         = 100;
+        this.BASE_HEALTH    = 100;
+        this.speed          = 100;
+        this.experience     = 0;
+        this.anim           = GetComponent<Animator>();
+    }
+
+    public virtual void Movement()
     {
         //Inputs
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -81,7 +95,7 @@ public class Player : MonoBehaviour
         PlayerRB2D.angularVelocity = 0;
     }
 
-    public void Attack()
+    public virtual void Attack()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -94,7 +108,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damageTaken)
+    public virtual void TakeDamage(int damageTaken)
     {
         health = health - damageTaken;
         if (health <= 0)
