@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour {
     public Transform shotSpawn;
     public Text ammoText;
 
+	private int exp;
 	private int health;
     private float redTime;
 
@@ -100,4 +101,18 @@ public class PlayerController : MonoBehaviour {
             //you dead
         }
 	}
+
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		if (other.gameObject.CompareTag ("Pickups")) 
+		{
+			other.gameObject.SetActive (false);
+		}
+	}
+
+	public void GiveExp(int expGiven)
+	{
+		this.exp += expGiven;
+	}
 }
+
