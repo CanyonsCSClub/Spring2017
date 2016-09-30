@@ -184,5 +184,22 @@ public class Player : MonoBehaviour
     }
 
 
+   /// </summary>
+   /// <returns></returns>
+
+
+    public float getHealth()
+    {
+        float healthPercent = 0.5f + health / BASE_HEALTH;
+        return healthPercent;
+    }
+
+    public float getExp()
+    {
+        float expPercent = 0.5f + experience / currentLevelCeiling;
+        return expPercent;
+    }
+
+
 }
 

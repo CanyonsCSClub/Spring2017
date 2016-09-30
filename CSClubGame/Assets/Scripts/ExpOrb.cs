@@ -10,7 +10,7 @@ public class ExpOrb : MonoBehaviour
 	{
 		float speed = 50f;
 		orbBody = GetComponent<Rigidbody2D> ();
-		expValue = 10;
+		expValue = 8;
 		Vector2 movement = new Vector2 (Random.Range (-1f, 1f), Random.Range (-1f, 1f));
 		movement.Normalize ();
 		orbBody.AddForce (movement * speed);
@@ -25,7 +25,7 @@ public class ExpOrb : MonoBehaviour
 	{
 		if(target.CompareTag("Player"))
 		{
-		    target.GetComponent<PlayerController> ().GiveExp (expValue);
+		    target.GetComponent<Player> ().GiveExp (expValue);
             Destroy(gameObject);
 		}
 	}

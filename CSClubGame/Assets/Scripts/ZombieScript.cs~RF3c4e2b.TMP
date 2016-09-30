@@ -88,7 +88,7 @@ public class ZombieScript : MonoBehaviour {
         {
             Vector3 bloodPosDelta = new Vector3(0, 0, 0.5f);
             Instantiate(bloodSplatter, currentTarget.transform.position + bloodPosDelta, currentTarget.transform.rotation);
-            currentTarget.GetComponent<Player>().TakeDamage(attackDamage); // Had to change from GetComponent<PlayerController> to <Player> to work with Player Super Class
+            currentTarget.GetComponent<Player>().TakeDamage(attackDamage);
             nextAttack = Time.time + attackSpeed;
         }
     }
@@ -129,8 +129,6 @@ public class ZombieScript : MonoBehaviour {
 		}
 		return false;
 	}
-
-
 
 
 		
