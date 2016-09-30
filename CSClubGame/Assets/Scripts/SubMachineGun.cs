@@ -28,7 +28,7 @@ public class SubMachineGun : RangedWeapon
 
         isPiercing = false;
 
-        shot = Resources.Load("Bullet", typeof(GameObject)) as GameObject;
+        shot = Resources.Load("bullet", typeof(GameObject)) as GameObject;
     }
 
     // Use this for initialization
@@ -36,7 +36,22 @@ public class SubMachineGun : RangedWeapon
 
     }
 
-    public void AttackHold(Transform bulletSpawn)
+    public override void Attack(Transform bulletSpawn)
+    {
+        if (Time.time > nextFire && currentMagazine != 0 && !isReloading)
+        {
+            if (!infiniteAmmo)
+            {
+                currentMagazine--;
+            }
+
+            nextFire = Time.time + fireRate;
+            BulletSpawn(shot, bulletSpawn);          //change to charge if its a charge up attack
+            Debug.Log(string.Format("Firing: {0}/{1} : {2}", currentMagazine, magazineSize, ammoCount));
+        }
+    }
+
+    public override void AttackHold(Transform bulletSpawn)
     {
         if (Time.time > nextFire && currentMagazine != 0 && !isReloading)
         {
@@ -52,7 +67,7 @@ public class SubMachineGun : RangedWeapon
     }
 
     //  Spawn the bullet
-    public void BulletSpawn(GameObject bullet, Transform bulletSpawn)
+    public override void BulletSpawn(GameObject bullet, Transform bulletSpawn)
     {
         Quaternion rotation2 = bulletSpawn.rotation;
         rotation2.Set(bulletSpawn.rotation.x, bulletSpawn.rotation.y, bulletSpawn.rotation.z + Random.Range(-0.1f,0.1f), bulletSpawn.rotation.w);
