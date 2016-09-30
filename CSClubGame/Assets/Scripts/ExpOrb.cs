@@ -16,15 +16,17 @@ public class ExpOrb : MonoBehaviour
 		orbBody.AddForce (movement * speed);
 	}
 
-	void Update () {
-	
+	void Update () 
+	{
+		transform.Rotate (new Vector3 (0, 0, 45) * Time.deltaTime);
 	}
 
 	void OnTriggerEnter2D(Collider2D target)
 	{
 		if(target.CompareTag("Player"))
 		{
-		target.GetComponent<PlayerController> ().GiveExp (expValue);
+		    target.GetComponent<PlayerController> ().GiveExp (expValue);
+            Destroy(gameObject);
 		}
 	}
 }
