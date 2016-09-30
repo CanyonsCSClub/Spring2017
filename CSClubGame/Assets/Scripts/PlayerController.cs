@@ -7,18 +7,12 @@ public class PlayerController : MonoBehaviour {
     public float speed;
     public float fireRate;
     public Transform shotSpawn;
-    public Text ammoText;
-	public Image healthBar;
-    public Image expBar;
 
     private int exp;
     private int expTIL;
     private int health;
 	private int maxHealth;
     private float redTime;
-	private Vector3 healthBarScale;
-    private float healthBarScaleMax;
-    private float xpBarScaleMax;
 
     private Rigidbody2D PlayerRDB2D;
     private SpriteRenderer PlayerRender;
@@ -41,13 +35,6 @@ public class PlayerController : MonoBehaviour {
 		health = 100;
         expTIL = 100;
         maxHealth = health;
-        if (healthBar != null)
-            healthBarScaleMax = healthBar.rectTransform.localScale.y;
-
-        if(expBar != null)
-            xpBarScaleMax = healthBar.rectTransform.localScale.y;
-
-        playerHUD();
 	}
 
     void Update ()
@@ -100,8 +87,6 @@ public class PlayerController : MonoBehaviour {
 
     void LateUpdate()
     {
-		//HUD
-        playerHUD();
 		rangedAttack.LateUpdate();
         if (PlayerRender.color == Color.red && health > 0 && redTime < Time.time)
             PlayerRender.color = Color.white;
@@ -123,25 +108,20 @@ public class PlayerController : MonoBehaviour {
 		this.exp += expGiven;
 	}
 	
-    void playerHUD()
+
+    public string getHUDString()
     {
-        //HUD
-        if(ammoText != null)
-            ammoText.text = string.Format("Ammo: \n{0}/{1} \n", rangedAttack.getCurrentMagazine(), rangedAttack.getAmmoCount());
+        return string.Format("Ammo: \n{0}/{1} \n", rangedAttack.getCurrentMagazine(), rangedAttack.getAmmoCount());
+    }
 
-        if (healthBar == null)
-            return;
+    public float healthPercent()
+    {
+        return ((float)health / (float)maxHealth);
+    }
 
-        float hbScale = ((float)health / (float)maxHealth) * healthBarScaleMax;
-        if (hbScale < 0)
-            hbScale = 0;
-        healthBarScale = new Vector3(healthBar.rectTransform.localScale.x, hbScale, 1);
-        healthBar.rectTransform.localScale = healthBarScale;
-
-        if(expBar != null)
-        {
-            expBar.rectTransform.localScale = new Vector3(expBar.rectTransform.localScale.x, (((float)exp / (float)expTIL) * xpBarScaleMax), 1);
-        }
+    public float expPercent()
+    {
+        return ((float)exp / (float)expTIL);
     }
 
     public RangedWeapon getRangedWeapon()
