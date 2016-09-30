@@ -23,10 +23,17 @@ public class RangedWeapon : MonoBehaviour {
     protected bool isReloading;
     protected bool isPiercing;
 
+	protected GameObject playerID;
+
+	public RangedWeapon(){
+		Start ();
+	}
+
 
     //Default Constructor
-    public RangedWeapon()
+	public RangedWeapon(GameObject playerid	)
     {
+		playerID = playerid;
         Start();
     }
 
@@ -119,7 +126,7 @@ public class RangedWeapon : MonoBehaviour {
         GameObject bulletClone = (GameObject)Instantiate(bullet, bulletSpawn.position, bulletSpawn.rotation);
 
         if(bulletClone != null)
-            bulletClone.GetComponent<BulletMover>().setParm(velocity, range, damage, isPiercing);
+			bulletClone.GetComponent<BulletMover>().setParm(this.gameObject, velocity, range, damage, isPiercing);
 
         //// This is how you would do a shotgun
         // Quaternion rotation2 = bulletSpawn.rotation;

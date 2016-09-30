@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour {
 	void Start ()
     {
         redTime = 0;
-        rangedAttack = new SubMachineGun();
+		rangedAttack = new SubMachineGun(this.gameObject);
 
         PlayerRDB2D = GetComponent<Rigidbody2D>();
         PlayerRender = GetComponent<SpriteRenderer>();
@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour {
         maxHealth = 100;
         healthBarScaleMax = healthBar.rectTransform.localScale.y;
 
-        playerHUD();
+        //playerHUD();
     }
 
     void Update ()
@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour {
     void LateUpdate()
     {
         //HUD
-        playerHUD();
+        //playerHUD();
 
 
         rangedAttack.LateUpdate();
@@ -109,15 +109,16 @@ public class PlayerController : MonoBehaviour {
             //you dead
         }
 	}
-
+	/*
     void playerHUD()
     {
         //HUD
-        ammoText.text = string.Format("Ammo: \n{0}/{1} \n", rangedAttack.getCurrentMagazine(), rangedAttack.getAmmoCount());
+		ammoText.text = string.Format("Ammo: \n{0}/{1} \n", rangedAttack.getCurrentMagazine(), rangedAttack.getAmmoCount());
         float hbScale = ((float)health / (float)maxHealth) * healthBarScaleMax;
         if (hbScale < 0)
-            hbScale = 0;
-        healthBarScale = new Vector3(healthBar.rectTransform.localScale.x, hbScale, 1);
+            hbScale = 0;        
+		healthBarScale = new Vector3(healthBar.rectTransform.localScale.x, hbScale, 1);
         healthBar.rectTransform.localScale = healthBarScale;
     }
+    */
 }

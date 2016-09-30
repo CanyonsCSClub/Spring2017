@@ -50,7 +50,7 @@ public class Enemy : MonoBehaviour{
 	GameObject playerInRange = null;
 	GameObject aggroOnPlayer = null;
 	public float newRadius;
-
+	public float moveArgSpeedModifier;
 
 	public Enemy(){
 		// force a default character to be spawned
@@ -63,25 +63,33 @@ public class Enemy : MonoBehaviour{
 		
 	//Movement____________________________________________________________
 	public void Move(GameObject currentTarget){	
-		Debug.Log ("Move(arg) Health: " + health);
 
 			float z = Mathf.Atan2 ((currentTarget.transform.position.y - transform.position.y),
 				         (currentTarget.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
 			transform.eulerAngles = new Vector3 (0, 0, z);
 			// Moving to Target
 			transform.position = Vector3.MoveTowards (transform.position, 
-				currentTarget.transform.position, speed * Time.deltaTime);
+				currentTarget.transform.position, moveArgSpeedModifier* speed * Time.deltaTime);
+		
 		
 	}
 
 	public void Move(){
-		Debug.Log ("Move() Health: " + health);
+
+		//Vector3 RandomPos = new Vector3 (transform.position.x + Random.Range (-0.1f, 0.1f),
+		//	transform.position.y + Random.Range (-0.1f, 0.1f), transform.position.z);
+		//float z = Mathf.Atan2 ((RandomPos.y - transform.position.y), 
+		//	(RandomPos.x - transform.position.x)) * Mathf.Rad2Deg - 90;
+		//transform.eulerAngles = new Vector3 (0, 0, z);
+		//transform.position = Vector3.MoveTowards (transform.position, RandomPos, speed * Time.deltaTime);
 
 		var rotationVector = transform.rotation.eulerAngles;
 		rotationVector.z += Random.Range (-5f, 5f);
 		transform.rotation = Quaternion.Euler (rotationVector);
 		transform.position += transform.up * Time.deltaTime * speed;
+
 	}
+
 
 	//End Movement_____________________________________________________________
 
@@ -117,11 +125,14 @@ public class Enemy : MonoBehaviour{
 	}
 
 	public void TakeDamage(int damageTaken, GameObject GO){
+
 		if (GO.CompareTag ("Player")) {
 			aggroOnPlayer = GO;
+			Debug.Log ("aggro: " + aggroOnPlayer);
 		}
-		health = health - damageTaken;
 
+		health = health - damageTaken;
+		Debug.Log ("Enemy Health" + health);
 		//damage Taken numbers ..... (if we want em)
 		//Instantiate (damageTakenNumber, transform.position + new Vector3(0,0,1), transform.rotation);
 		if (health <= 0)
@@ -138,7 +149,6 @@ public class Enemy : MonoBehaviour{
 
 	void OnDeath()
 	{
-		Debug.Log ("OnDeath Health: " + health);
 
 		//Instantiae expOrb
 		Instantiate(deadZombie, transform.position, transform.rotation);
@@ -162,17 +172,17 @@ public class Enemy : MonoBehaviour{
 	}
 
 	void FixedUpdate(){
-		Debug.Log ("FixedUpdate Health: " + health);
 
-		if (playerInRange == null && aggroOnPlayer == null) {
+		if (playerInRange == null && aggroOnPlayer == null) {//if there are no targets
 			Move ();
+		} else if (playerInRange != null && aggroOnPlayer == null) {
+			Move (playerInRange);
 		} else {
-			//do Nothing?
+			Move ();
 		}
 	}
-
+	/*
 	void OnTriggerEnter2D(Collider2D other){
-		Debug.Log ("Enter2D Health: " + health);
 
 		if (other.CompareTag ("Player") && playerInRange == null) {
 			playerInRange = other.gameObject;
@@ -182,20 +192,21 @@ public class Enemy : MonoBehaviour{
 	}
 
 	void OnTriggerExit2D(Collider2D other){
-		Debug.Log ("Exit2D Health: " + health);
-
+		Debug.Log ("exitingCollider: " + other + "PIR: " + playerInRange);
+		Debug.Log (other == playerInRange);
 		if (other.gameObject == playerInRange) {//if the object leaving was the same as the player in range 
 			playerInRange = null;
+			Debug.Log ("ExitingPIR: " + playerInRange);
+				
 		} else {
 			//do Nothing?
 		}
 	}
 
 	void OnTriggerStay2D(Collider2D other){
-		Debug.Log ("Stay2D Health: " + health);
 
 		if(other.CompareTag("Player")){
-			
+			Debug.Log ("aggro:" + aggroOnPlayer + "PIR: " + playerInRange);
 			if(aggroOnPlayer == playerInRange){//if they are the same
 				if (playerInRange != null) {
 					Move (playerInRange);
@@ -214,17 +225,21 @@ public class Enemy : MonoBehaviour{
 						//if the aggro'd target is in range move to them
 						Move (aggroOnPlayer);
 					}
-				} 
+				} else {
+					Move ();
+				}
 
 			}
 
 		} else {
+			
 			//if the tag is not a player do.....
 		}
-
-	//End Event & Update Handelers____________________________________________________
 	}
+*/
+	//End Event & Update Handelers____________________________________________________
 
+	
 
 	public void ConfigEnemy(string newEnemyName, int newRank, bool newIsMelee, float newAttackRange, int newLevel,
 		int newHealth, float newSpeed, int newAttack, float newAttackSpeed, int newArmor ){
@@ -234,7 +249,7 @@ public class Enemy : MonoBehaviour{
 			this.attackRange = newAttackRange;
 			this.level = newLevel;
 			this.health = newHealth;
-			Debug.Log ("Constructor Health: " + health);
+			//Debug.Log ("Constructor Health: " + health);
 			this.MAXHEALTH = newHealth;
 			this.speed = newSpeed;
 			this.attack = newAttack;
@@ -251,6 +266,25 @@ public class Enemy : MonoBehaviour{
 
 	}
 
+	public void setPlayerInRange(GameObject newPlayerInRange){
+		if(playerInRange ==null){
+			playerInRange = newPlayerInRange;
+		}
+	}
+
+	public GameObject getPlayerInRange(){
+		return playerInRange;
+	}
 
 
+
+
+	public GameObject getAggro(){
+		return aggroOnPlayer;
+	}
 }
+
+
+//add Lerping to Move()
+//trigger into child? give own tag
+	//-script possibly 

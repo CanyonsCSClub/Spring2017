@@ -9,7 +9,7 @@ public class BulletMover : MonoBehaviour
     public bool isPiercing;
     private Rigidbody2D bulletBody;
     private Vector2 start;
-
+	private GameObject playerID;
 
     void Start()
     {
@@ -39,19 +39,17 @@ public class BulletMover : MonoBehaviour
 
         if (target.tag == "Enemy")
         {
-<<<<<<< HEAD
            // Vector3 bloodPosDelta = new Vector3(0, 0, 0.5f);
            // Instantiate(bloodSplatter, target.transform.position + bloodPosDelta, target.transform.rotation);
+			Debug.Log(damage);
 			targetObject.GetComponent<Enemy>().TakeDamage(damage, playerID);
 
-=======
             //Vector3 bloodPosDelta = new Vector3(0, 0, 0.5f);
             //Instantiate(bloodSplatter, target.transform.position + bloodPosDelta, target.transform.rotation);
-            targetObject.GetComponent<ZombieScript>().TakeDamage(damage);
->>>>>>> master
+            //targetObject.GetComponent<ZombieScript>().TakeDamage(damage);
+ 
 
-            if (!isPiercing)
-            {
+            if (!isPiercing){
                 Destroy(gameObject);
                 //Hit animation?
             }
@@ -60,8 +58,9 @@ public class BulletMover : MonoBehaviour
     }
 
 
-    public void setParm(float inSpeed, float inRange, int inDamage, bool inPiercing)
+    public void setParm(GameObject GO, float inSpeed, float inRange, int inDamage, bool inPiercing)
     {
+		this.playerID = GO;
         setSpeed(inSpeed);
         setRange(inRange);
         this.damage = inDamage;
