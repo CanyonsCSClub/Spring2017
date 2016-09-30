@@ -74,7 +74,11 @@ public class ZombieScript : MonoBehaviour {
     void Move(GameObject currentTarget)
     {
         if (currentTarget == null)
-            return; //idle?
+        {
+            //idle move
+            //Debug.Log("No Target");
+            return;
+        }
         // Rotation to Target
         float z = Mathf.Atan2((currentTarget.transform.position.y - transform.position.y), (currentTarget.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
         transform.eulerAngles = new Vector3(0, 0, z);
@@ -84,6 +88,11 @@ public class ZombieScript : MonoBehaviour {
 
     void Attack(GameObject currentTarget)
     {
+        if (currentTarget == null)
+        {
+            //Debug.Log("No Target");
+            return;
+        }
         if (Time.time > nextAttack && CanIBite(currentTarget))
         {
             Vector3 bloodPosDelta = new Vector3(0, 0, 0.5f);

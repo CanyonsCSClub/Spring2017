@@ -116,12 +116,19 @@ public class PlayerController : MonoBehaviour {
 
     public float healthPercent()
     {
-        return ((float)health / (float)maxHealth);
+		float output = ((float)health / (float)maxHealth);
+		if(output < 0)
+			return 0;
+        return output;
     }
 
     public float expPercent()
     {
-        return ((float)exp / (float)expTIL);
+
+		float output = ((float)exp / (float)expTIL);
+		if(output < 0)
+			return 0;
+        return output;
     }
 
     public RangedWeapon getRangedWeapon()
