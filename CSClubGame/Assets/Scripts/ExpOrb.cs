@@ -10,7 +10,7 @@ public class ExpOrb : MonoBehaviour
 	{
 		float speed = 50f;
 		orbBody = GetComponent<Rigidbody2D> ();
-		expValue = 8;
+		expValue = 10;
 		Vector2 movement = new Vector2 (Random.Range (-1f, 1f), Random.Range (-1f, 1f));
 		movement.Normalize ();
 		orbBody.AddForce (movement * speed);

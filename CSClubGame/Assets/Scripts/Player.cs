@@ -68,8 +68,8 @@ public class Player : MonoBehaviour
         this.PlayerRB2D     = GetComponent<Rigidbody2D>();
         this.isMelee        = false;
         this.playerLevel    = 1;
-        this.health         = 100;
-        this.BASE_HEALTH    = 100;
+        this.health         = 40;
+        this.BASE_HEALTH    = health;
         this.speed          = 100;
         this.experience     = 0;
         this.anim           = GetComponent<Animator>();
@@ -110,7 +110,9 @@ public class Player : MonoBehaviour
 
     public virtual void TakeDamage(int damageTaken)
     {
-        health = health - damageTaken;
+        if (health > 0)
+            health = health - damageTaken;
+        Debug.Log(damageTaken + " dmg taken. Started at " + BASE_HEALTH + " and now at " + health + " Percent rem:" + getHealth());
         if (health <= 0)
         {
             Debug.Log("You dead mofo");
@@ -156,7 +158,8 @@ public class Player : MonoBehaviour
 
     public void LevelUp()
     {
-        health = health + 20; //Edit, placeholder value. Also may effect other attributes ie. speed, attack speed
+        GiveHealth(20);
+        BASE_HEALTH += 20; //Edit, placeholder value. Also may effect other attributes ie. speed, attack speed
         playerLevel++;
         Debug.Log(playerLevel + "   " + health);
     }
@@ -174,7 +177,7 @@ public class Player : MonoBehaviour
     public void GiveHealth(int value) //Compare to BASE_HEALTH to check and potentially overheal 
     {
         if (health < BASE_HEALTH)
-            health += value;
+            health = health + value;
     }
 
     public void GiveAmmo(int value) 
@@ -190,15 +193,21 @@ public class Player : MonoBehaviour
 
     public float getHealth()
     {
-        float healthPercent = 0.5f + health / BASE_HEALTH;
-        return healthPercent;
+
+        return ((float)health / (float)BASE_HEALTH);
     }
 
     public float getExp()
     {
-        float expPercent = 0.5f + experience / currentLevelCeiling;
-        return expPercent;
+        return ((float)experience / (float)currentLevelCeiling);
     }
+
+    public string getHUDString()
+    {
+        return string.Format("Health:" + health + "/" + BASE_HEALTH);
+    }
+
+
 
 
 }

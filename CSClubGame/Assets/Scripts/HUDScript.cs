@@ -20,9 +20,7 @@ public class HUDScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-<<<<<<< HEAD
 
-=======
         ammoText = GetComponentInChildren<Text>();
         Image[] imagesHUD = GetComponentsInChildren<Image>();
 
@@ -51,7 +49,7 @@ public class HUDScript : MonoBehaviour
 
         if (SpecialBar != null)
             specialBarScaleMax = SpecialBar.rectTransform.localScale.y;
->>>>>>> refs/remotes/origin/master
+
     }
 
     // Update is called once per frame
@@ -81,14 +79,14 @@ public class HUDScript : MonoBehaviour
 
     void TextHUD()
     {
-        ammoText.text = player.GetComponent<PlayerController>().getHUDString();
+        ammoText.text = player.GetComponent<Player>().getHUDString();
     }
 
     void HealthHUD()
     {
         HealthBar.rectTransform.localScale = new Vector3(
             HealthBar.rectTransform.localScale.x,
-            player.GetComponent<PlayerController>().healthPercent() * this.healthBarScaleMax,
+            player.GetComponent<Player>().getHealth() * this.healthBarScaleMax,
             HealthBar.rectTransform.localScale.z
             );
     }
@@ -97,7 +95,7 @@ public class HUDScript : MonoBehaviour
     {
         ExpBar.rectTransform.localScale = new Vector3(
             ExpBar.rectTransform.localScale.x,
-            player.GetComponent<PlayerController>().expPercent() * this.expBarScaleMax,
+            player.GetComponent<Player>().getExp() * this.expBarScaleMax,
             ExpBar.rectTransform.localScale.z
             );
 

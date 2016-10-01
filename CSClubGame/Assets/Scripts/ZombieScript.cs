@@ -25,7 +25,7 @@ public class ZombieScript : MonoBehaviour {
     {
 		
         health          = 25;
-        attackDamage    = 10;
+        attackDamage    = 14;
         attackSpeed     = 2f;
 
         nextAttack = 0;
