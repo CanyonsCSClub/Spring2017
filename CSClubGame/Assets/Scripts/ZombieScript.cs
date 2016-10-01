@@ -9,16 +9,16 @@ public class ZombieScript : MonoBehaviour {
 	public GameObject bloodSplatter;
 
     // private Rigidbody2D zombieRDB2D;
-    private SpriteRenderer enemyRender;
+    protected SpriteRenderer enemyRender;
 
-    private int health;
-    private int level;
-    private int exp;
-    private int attackDamage;
-    private float attackSpeed;
+    protected int health;
+    protected int level;
+    protected int exp;
+    protected int attackDamage;
+    protected float attackSpeed;
 
-    private float nextAttack;
-    private float redTime;
+    protected float nextAttack;
+    protected float redTime;
 
     // Use this for initialization
     void Start ()
@@ -56,7 +56,7 @@ public class ZombieScript : MonoBehaviour {
             enemyRender.color = Color.white;
     }
 		
-    public void TakeDamage(int hitDamage)
+    public virtual void TakeDamage(int hitDamage)
     {
         health = health - hitDamage;
         enemyRender.color = Color.red;
@@ -71,7 +71,7 @@ public class ZombieScript : MonoBehaviour {
         Destroy(gameObject);
     }
 
-    void Move(GameObject currentTarget)
+    public virtual void Move(GameObject currentTarget)
     {
         if (currentTarget == null)
         {
@@ -86,7 +86,7 @@ public class ZombieScript : MonoBehaviour {
         transform.position = Vector3.MoveTowards(transform.position, currentTarget.transform.position, speed * Time.deltaTime);
     }
 
-    void Attack(GameObject currentTarget)
+    public virtual void Attack(GameObject currentTarget)
     {
         if (currentTarget == null)
         {
