@@ -86,7 +86,7 @@ public class HUDScript : MonoBehaviour
     {
         HealthBar.rectTransform.localScale = new Vector3(
             HealthBar.rectTransform.localScale.x,
-            player.GetComponent<Player>().getHealth() * this.healthBarScaleMax,
+            player.GetComponent<Player>().getHealthPercent() * this.healthBarScaleMax,
             HealthBar.rectTransform.localScale.z
             );
     }
@@ -95,7 +95,7 @@ public class HUDScript : MonoBehaviour
     {
         ExpBar.rectTransform.localScale = new Vector3(
             ExpBar.rectTransform.localScale.x,
-            player.GetComponent<Player>().getExp() * this.expBarScaleMax,
+            player.GetComponent<Player>().getExpPercent() * this.expBarScaleMax,
             ExpBar.rectTransform.localScale.z
             );
 

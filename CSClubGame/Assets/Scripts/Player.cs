@@ -112,9 +112,10 @@ public class Player : MonoBehaviour
     {
         if (health > 0)
             health = health - damageTaken;
-        Debug.Log(damageTaken + " dmg taken. Started at " + BASE_HEALTH + " and now at " + health + " Percent rem:" + getHealth());
+        Debug.Log(damageTaken + " dmg taken. Started at " + BASE_HEALTH + " and now at " + health + " Percent rem:" + getHealthPercent());
         if (health <= 0)
         {
+            health = 0;
             Debug.Log("You dead mofo");
         }
     }
@@ -160,6 +161,7 @@ public class Player : MonoBehaviour
     {
         GiveHealth(20);
         BASE_HEALTH += 20; //Edit, placeholder value. Also may effect other attributes ie. speed, attack speed
+        health = BASE_HEALTH;
         playerLevel++;
         Debug.Log(playerLevel + "   " + health);
     }
@@ -177,7 +179,11 @@ public class Player : MonoBehaviour
     public void GiveHealth(int value) //Compare to BASE_HEALTH to check and potentially overheal 
     {
         if (health < BASE_HEALTH)
-            health = health + value;
+            if (health + value > BASE_HEALTH)
+                health = BASE_HEALTH;
+            else
+                health += value;
+
     }
 
     public void GiveAmmo(int value) 
@@ -187,17 +193,29 @@ public class Player : MonoBehaviour
     }
 
 
-   /// </summary>
-   /// <returns></returns>
+    /// </summary>
+    /// <returns></returns>
 
-
-    public float getHealth()
+    public int getHealth()
+    {
+        return health;
+    }
+    public int getBASE_HEALTH()
+    {
+        return BASE_HEALTH;
+    }
+    public float getHealthPercent()
     {
 
         return ((float)health / (float)BASE_HEALTH);
     }
 
-    public float getExp()
+
+    public int getExp()
+    {
+        return experience;
+    }
+    public float getExpPercent()
     {
         return ((float)experience / (float)currentLevelCeiling);
     }
