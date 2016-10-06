@@ -17,7 +17,7 @@ public class HealthOrb : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        transform.Rotate(new Vector3(0, 0, 45) * Time.deltaTime * 2);
+        transform.Rotate(new Vector3(0, 0, 45) * Time.deltaTime * 4);
     }
 
     void OnTriggerEnter2D(Collider2D target)
@@ -26,7 +26,7 @@ public class HealthOrb : MonoBehaviour {
         currentBASE_HEALTH = target.GetComponent<Player>().getBASE_HEALTH();
         if (target.CompareTag("Player"))
         {
-            if (currentPlayerHealth < currentBASE_HEALTH)
+            if (currentPlayerHealth < currentBASE_HEALTH && target.GetComponent<Player>().getAlive())
             {
                 target.GetComponent<Player>().GiveHealth(healthValue);
                 Destroy(gameObject);

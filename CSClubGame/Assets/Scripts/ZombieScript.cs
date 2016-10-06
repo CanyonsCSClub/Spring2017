@@ -121,12 +121,17 @@ public class ZombieScript : MonoBehaviour {
 		float maxDistToTarget = 500;
 		Vector3 position = transform.position;
 		foreach (GameObject enemy in enemies) {
-			Vector3 dist = enemy.transform.position - position;
-			float currentDistance = dist.sqrMagnitude;
-			if (currentDistance < maxDistToTarget && enemy.activeInHierarchy) {
-				closest = enemy;
-				maxDistToTarget = currentDistance;
-			}
+              bool alive = enemy.GetComponent<Player>().getAlive();      //Added this bool to ignore dead players
+              if (alive)
+              {
+                Vector3 dist = enemy.transform.position - position;
+                float currentDistance = dist.sqrMagnitude;
+                if (currentDistance < maxDistToTarget && enemy.activeInHierarchy)
+                {
+                    closest = enemy;
+                    maxDistToTarget = currentDistance;
+                }
+            }
 		}
 		return closest;
 	}
