@@ -23,13 +23,15 @@ public class HealthOrb : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D target)
     {
         currentPlayerHealth = target.GetComponent<Player>().getHealth();
+        int preHeal = currentPlayerHealth;
         currentBASE_HEALTH = target.GetComponent<Player>().getBASE_HEALTH();
         if (target.CompareTag("Player"))
         {
-            if (currentPlayerHealth < currentBASE_HEALTH && target.GetComponent<Player>().getAlive())
+            if (currentPlayerHealth < currentBASE_HEALTH)
             {
                 target.GetComponent<Player>().GiveHealth(healthValue);
-                Destroy(gameObject);
+                if (target.GetComponent<Player>().getHealth() > preHeal)
+                    Destroy(gameObject);
             }
         }
     }

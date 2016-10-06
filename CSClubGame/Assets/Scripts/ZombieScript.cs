@@ -121,7 +121,7 @@ public class ZombieScript : MonoBehaviour {
 		float maxDistToTarget = 500;
 		Vector3 position = transform.position;
 		foreach (GameObject enemy in enemies) {
-              bool alive = enemy.GetComponent<Player>().getAlive();      //Added this bool to ignore dead players
+              bool alive = enemy.GetComponent<Player>().isAlive();      //Added this bool to ignore dead players
               if (alive)
               {
                 Vector3 dist = enemy.transform.position - position;

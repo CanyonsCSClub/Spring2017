@@ -1,26 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MeleeScript : MonoBehaviour {
-
-    public GameObject bloodSplatter;
-
-    public int damage;
-
-    void OnTriggerEnter2D(Collider2D target)
+public class MeleeScript : Player
+{
+    public MeleeScript(string newPlayerName, string newPlayerClass, Rigidbody2D newPlayerRB2D, bool newIsMelee, int newPlayerLevel, int newHealth, float newSpeed, int newExperience, Animator newAnim) : base(newPlayerName, newPlayerClass, newPlayerRB2D, newIsMelee, newPlayerLevel, newHealth, newSpeed, newExperience, newAnim)
     {
 
-        //Debug.Log("Target = " + target.name);
-
-        GameObject targetObject = target.gameObject;
-
-        if(target.tag == "Enemy")
-        {
-            Vector3 bloodPosDelta = new Vector3(0,0,0.5f);
-            Instantiate(bloodSplatter,target.transform.position + bloodPosDelta, target.transform.rotation);
-            targetObject.GetComponent<ZombieScript>().TakeDamage(damage);
-            
-        }
-            
     }
+
+    public void loadData() {
+        this.playerName = "RZA";
+        this.playerClass = "RoboSamurai";
+        this.PlayerRB2D = GetComponent<Rigidbody2D>();
+        this.isMelee = true;
+        this.playerLevel = 1;
+        this.health = 40;
+        this.speed = 100;
+        this.experience = 0;
+        this.anim = GetComponent<Animator>();
+    }
+
+
 }

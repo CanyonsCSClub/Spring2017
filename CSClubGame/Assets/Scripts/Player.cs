@@ -34,11 +34,6 @@ public class Player : MonoBehaviour
         this.experience     = newExperience;
         this.anim           = newAnim;
 
-        Debug.Log(playerName + " " + playerClass + " " + playerLevel + " " + health
-             + " " + isMelee + " " + speed + "  " + experience + "\n" + "has been created");
-
-
-
     }
 
     /// <summary>
@@ -49,6 +44,9 @@ public class Player : MonoBehaviour
     {
         DefaultSettings();
         alive = true;
+        GetComponentInChildren<MeleeScript>().loadData();
+        Debug.Log(playerName + " " + playerClass + " " + playerLevel + " " + health
+        + " " + isMelee + " " + speed + "  " + experience + "\n" + "has been created");
     }
 
     // Update is called once per frame
@@ -119,12 +117,12 @@ public class Player : MonoBehaviour
         {
             alive = false;
             death();
-            Debug.Log("Dead or alive: " + alive + "Test 2" + getAlive());
+            Debug.Log("Dead or alive: " + alive + "Test 2" + isAlive());
             health = 0;
             Debug.Log("You dead mofo");
         }
     }
-
+    
     public void death()
     {
         Debug.Log("DEATH TEST");
@@ -133,7 +131,6 @@ public class Player : MonoBehaviour
         GetComponent<BoxCollider2D>().enabled = false;
         transform.Translate(0, 0, -10);
     }
-
 
     /// <summary>
     /// Simplistic leveling system, framework subject to change with group's input.
@@ -240,7 +237,7 @@ public class Player : MonoBehaviour
     /// alive state
     /// </summary>
     /// <returns></returns>
-    public bool getAlive() {
+    public bool isAlive() {
         if (alive)
             return true;
         else
@@ -286,6 +283,8 @@ public class Player : MonoBehaviour
     {
         return string.Format("Health:" + health + "/" + BASE_HEALTH);
     }
+
+
 
 
 
