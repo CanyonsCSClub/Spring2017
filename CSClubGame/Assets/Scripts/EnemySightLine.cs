@@ -4,12 +4,10 @@ using System.Collections;
 public class EnemySightLine : MonoBehaviour {
 
 	public CircleCollider2D enemySight;
-	public float ColliderRadius;
-	public static GameObject owner;
+	private float ColliderRadius;
 	// Use this for initialization
 	void Start () {
 		enemySight = GetComponent<CircleCollider2D> ();
-		enemySight.radius = ColliderRadius;
 	}
 	// Update is called once per frame
 	void Update () {
@@ -18,22 +16,19 @@ public class EnemySightLine : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D entering2D){
 		if (entering2D.gameObject.CompareTag ("Player")) {
-			
-			owner.GetComponent<Enemy>().setPlayerInRange (entering2D.gameObject);
-			Debug.Log (entering2D.gameObject);
-			Debug.Log (owner.GetComponent<Enemy> ().getPlayerInRange());
-
+			GetComponentInParent<Enemy>().setPlayerInRange (entering2D.gameObject);
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D exiting2D){
 		if (exiting2D.gameObject.CompareTag ("Player")
-		   && (exiting2D.gameObject == owner.GetComponent<Enemy> ().getPlayerInRange ())) {
-			owner.GetComponent<Enemy> ().setPlayerInRange (null);
+			&& (exiting2D.gameObject == GetComponentInParent<Enemy> ().getPlayerInRange ())) {
+			//Debug.Log ("Is this going on exit");
+			GetComponentInParent<Enemy> ().setPlayerInRange (null);
 		}
 		
 	}
-		
+	/*	
 	void OnTriggerStay2D(Collider2D staying2D){
 
 		if(staying2D.CompareTag("Player")){
@@ -69,6 +64,11 @@ public class EnemySightLine : MonoBehaviour {
 			//if the tag is not a player do.....
 		}
 	}
+	*/
 
 
+	public void setColliderRadius(float val){
+		enemySight.radius = val;
+		Debug.Log ("Radius" + enemySight.radius);
+	}
 }

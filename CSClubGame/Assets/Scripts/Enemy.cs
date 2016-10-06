@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour{
 	protected int rank { get; set; } //0 - 10. 0 being a common, 10 being a boss-ish enemy
 	protected bool isMelee { get; set; }
 	public float attackRange { get; set; } //0 - 5 for melee , 5 to infinity for ranged
+	public float sightLine { get; set; } 
 	protected int level { get; set; }
 	public int health { get; set; }
 	public int MAXHEALTH; //used for a flinch mechanic...and whatever else tbh
@@ -56,25 +57,50 @@ public class Enemy : MonoBehaviour{
 		// force a default character to be spawned
 	}
 
-	public Enemy(string newEnemyName, int newRank, bool newIsMelee, float newAttackRange, int newLevel, int newHealth, float newSpeed, int newAttack, float newAttackSpeed, int newArmor){
-		ConfigEnemy (newEnemyName, newRank, newIsMelee, newAttackRange,
+	public Enemy(string newEnemyName, int newRank, bool newIsMelee, float newAttackRange, float newSightLine, int newLevel, int newHealth, float newSpeed, int newAttack, float newAttackSpeed, int newArmor){
+		ConfigEnemy (newEnemyName, newRank, newIsMelee, newAttackRange, newSightLine,
 			newLevel, newHealth, newSpeed, newAttack, newAttackSpeed, newArmor); 
 	}
 		
 	//Movement____________________________________________________________
-	public void Move(GameObject currentTarget){	
+
+	//Updated Movement
+	private void Move(GameObject PIR,GameObject AGGRO){
+		//Debug.Log ("PIR: " + PIR + "    AGGRO: " + AGGRO);
+		float distanceToAGGRO = -1;
+		if (AGGRO != null) {
+			distanceToAGGRO = Vector3.Distance (this.transform.position, AGGRO.transform.position);
+		}
+
+		if ((distanceToAGGRO < 3 * sightLine) & (distanceToAGGRO > 0)) {
+			Move (AGGRO);
+		} else {
+			Move (PIR);
+		}
+
+
+
+	}
+
+
+	public void Move(GameObject currentTarget){	//how you move to a target
+		//Debug.Log ("CurrentTarget" + currentTarget);
+		if (currentTarget != null) {
+			
 
 			float z = Mathf.Atan2 ((currentTarget.transform.position.y - transform.position.y),
-				         (currentTarget.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
+				          (currentTarget.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
 			transform.eulerAngles = new Vector3 (0, 0, z);
 			// Moving to Target
 			transform.position = Vector3.MoveTowards (transform.position, 
-				currentTarget.transform.position, moveArgSpeedModifier* speed * Time.deltaTime);
-		
+				currentTarget.transform.position, moveArgSpeedModifier * speed * Time.deltaTime);
+		} else {
+			Move ();
+		}
 		
 	}
 
-	public void Move(){
+	public void Move(){// " Ai " movement
 
 		//Vector3 RandomPos = new Vector3 (transform.position.x + Random.Range (-0.1f, 0.1f),
 		//	transform.position.y + Random.Range (-0.1f, 0.1f), transform.position.z);
@@ -93,23 +119,14 @@ public class Enemy : MonoBehaviour{
 
 	//End Movement_____________________________________________________________
 
-/*
+
 	public void Attack(GameObject currentTarget)
 	{
-		float nextAttack = 0;
-		if (Time.time > nextAttack  && CanIAttack(currentTarget))
-		{
-			Vector3 bloodPosDelta = new Vector3(0, 0, 0.5f);
-			Instantiate(bloodSplatter, currentTarget.transform.position + bloodPosDelta, 
-				currentTarget.transform.rotation);
-			currentTarget.GetComponent<PlayerController>().TakeDamage(attack);
-			nextAttack = Time.time + attackSpeed;
-			lastTouchTime = Time.time;
-			Frenzy (false); 
-			lastTouchTime = 0f;
-		}
+		
+			//currentTarget.GetComponent<PlayerController>().TakeDamage(attack);
+		
 	}
-*/
+
 	public bool CanIAttack(GameObject currentTarget){
 		float distanceToTarget = (transform.position - currentTarget.transform.position).sqrMagnitude;
 		if (distanceToTarget < attackRange && currentTarget.tag == "Player") {
@@ -127,7 +144,7 @@ public class Enemy : MonoBehaviour{
 	public void TakeDamage(int damageTaken, GameObject GO){
 
 		if (GO.CompareTag ("Player")) {
-			aggroOnPlayer = GO;
+			setAggro (GO);
 			Debug.Log ("aggro: " + aggroOnPlayer);
 		}
 
@@ -160,8 +177,6 @@ public class Enemy : MonoBehaviour{
 
 	//Event & Update Handelers__________________________________________________________
 
-	// Update is called once per frame
-
 	void Start(){
 
 	}
@@ -173,35 +188,10 @@ public class Enemy : MonoBehaviour{
 
 	void FixedUpdate(){
 
-		if (playerInRange == null && aggroOnPlayer == null) {//if there are no targets
-			Move ();
-		} else if (playerInRange != null && aggroOnPlayer == null) {
-			Move (playerInRange);
-		} else {
-			Move ();
-		}
+		//Debug.Log ("FU" + getPlayerInRange () + "_" + getAggro() + "_");
+		Move (getPlayerInRange(), getAggro());
 	}
 	/*
-	void OnTriggerEnter2D(Collider2D other){
-
-		if (other.CompareTag ("Player") && playerInRange == null) {
-			playerInRange = other.gameObject;
-		} else {
-			//do Nothing?
-		}
-	}
-
-	void OnTriggerExit2D(Collider2D other){
-		Debug.Log ("exitingCollider: " + other + "PIR: " + playerInRange);
-		Debug.Log (other == playerInRange);
-		if (other.gameObject == playerInRange) {//if the object leaving was the same as the player in range 
-			playerInRange = null;
-			Debug.Log ("ExitingPIR: " + playerInRange);
-				
-		} else {
-			//do Nothing?
-		}
-	}
 
 	void OnTriggerStay2D(Collider2D other){
 
@@ -241,12 +231,14 @@ public class Enemy : MonoBehaviour{
 
 	
 
-	public void ConfigEnemy(string newEnemyName, int newRank, bool newIsMelee, float newAttackRange, int newLevel,
+	public void ConfigEnemy(string newEnemyName, int newRank, bool newIsMelee, float newAttackRange, float newSightLine, int newLevel,
 		int newHealth, float newSpeed, int newAttack, float newAttackSpeed, int newArmor ){
 			this.enemyName = newEnemyName;
 			this.rank = newRank;
 			this.isMelee = newIsMelee;
 			this.attackRange = newAttackRange;
+			this.sightLine = newSightLine;
+			GetComponentInChildren<EnemySightLine> ().setColliderRadius (newSightLine);
 			this.level = newLevel;
 			this.health = newHealth;
 			//Debug.Log ("Constructor Health: " + health);
@@ -267,8 +259,10 @@ public class Enemy : MonoBehaviour{
 	}
 
 	public void setPlayerInRange(GameObject newPlayerInRange){
-		if(playerInRange ==null){
+		if (getPlayerInRange () == null) {
 			playerInRange = newPlayerInRange;
+		} else {
+			playerInRange = null;
 		}
 	}
 
@@ -277,7 +271,15 @@ public class Enemy : MonoBehaviour{
 	}
 
 
+	public void setAggro(GameObject newAggro){
+		this.aggroOnPlayer = newAggro;
+	}
 
+	public void updateAggro(){
+		if(!getAggro().activeInHierarchy){
+			setAggro (null);
+		}
+	}
 
 	public GameObject getAggro(){
 		return aggroOnPlayer;
