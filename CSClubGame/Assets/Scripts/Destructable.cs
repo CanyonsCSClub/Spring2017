@@ -4,12 +4,13 @@ using System.Collections;
 public class Destructable : ZombieScript
 {
 
-    public int health;
+    public int objHealth;
     
 
 	// Use this for initialization
 	void Start () {
         redTime = 0;
+		health = objHealth;
 
         enemyRender = GetComponent<SpriteRenderer>();
 
