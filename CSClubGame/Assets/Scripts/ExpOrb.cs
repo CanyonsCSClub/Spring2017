@@ -23,10 +23,10 @@ public class ExpOrb : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D target)
 	{
-		if(target.CompareTag("Player"))
+        if (target.CompareTag("Player"))
 		{
-		    target.GetComponent<PlayerController> ().GiveExp (expValue);
-            Destroy(gameObject);
+                if (target.GetComponent<Player>().GiveExp(expValue))
+                    Destroy(gameObject);
 		}
 	}
 }
