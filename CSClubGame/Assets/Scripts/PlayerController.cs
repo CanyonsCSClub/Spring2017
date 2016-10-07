@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour {
 	void Start ()
     {
         redTime = 0;
-        rangedAttack = new SubMachineGun();
+        rangedAttack = new SubMachineGun(gameObject);
 
         PlayerRDB2D = GetComponent<Rigidbody2D>();
         PlayerRender = GetComponent<SpriteRenderer>();

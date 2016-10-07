@@ -26,7 +26,7 @@ public class AmmoBox : MonoBehaviour
 	{
 		if(target.CompareTag("Player"))
 		{
-			target.GetComponent<PlayerController>().GiveAmmo(10);
+			target.GetComponent<Player>().GiveAmmo(10);
 			Destroy (gameObject);
 		}
 	}

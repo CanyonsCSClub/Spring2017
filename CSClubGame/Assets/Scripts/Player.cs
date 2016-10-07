@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        InputControls();
     }
 
     void FixedUpdate()
@@ -75,10 +75,13 @@ public class Player : MonoBehaviour
         this.alive          = true;
     }
 
+    /// <summary>
+    /// Move system for your character goes here.  Note becareful with editing this.
+    /// </summary>
     public virtual void Movement()
     {
         //Inputs
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mousePos = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
@@ -88,11 +91,18 @@ public class Player : MonoBehaviour
         PlayerRB2D.AddForce(movement * speed);
 
         //Player rotation
-        Quaternion rot = Quaternion.LookRotation(transform.position - mousePos, Vector3.forward);
+        float z = Mathf.Atan2(((mousePos.y) - transform.position.y), ((mousePos.x) - transform.position.x)) * Mathf.Rad2Deg - 90;
+        transform.eulerAngles = new Vector3(0, 0, z);
 
-        transform.rotation = rot;
-        transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z);
         PlayerRB2D.angularVelocity = 0;
+    }
+
+    /// <summary>
+    /// Default Controls for your player character goes in this function.
+    /// </summary>
+    public virtual void InputControls()
+    {
+
     }
 
     /// <summary>
@@ -284,7 +294,7 @@ public class Player : MonoBehaviour
             return ((float)experience / (float)currentLevelCeiling);
     }
 
-    public string getHUDString()
+    public virtual string getHUDString()
     {
         return string.Format("Health:" + health + "/" + BASE_HEALTH);
     }
