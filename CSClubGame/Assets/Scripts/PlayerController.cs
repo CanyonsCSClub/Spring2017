@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour {
 	void FixedUpdate ()
     {
         //Inputs
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mousePos = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
@@ -77,10 +77,9 @@ public class PlayerController : MonoBehaviour {
         PlayerRDB2D.AddForce(movement * speed);
 
         //Player rotation
-        Quaternion rot = Quaternion.LookRotation(transform.position - mousePos,Vector3.forward);
-
-        transform.rotation = rot;
-        transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z);
+        float z = Mathf.Atan2(((mousePos.y ) - transform.position.y), ((mousePos.x ) - transform.position.x)) * Mathf.Rad2Deg - 90;
+        transform.eulerAngles = new Vector3(0, 0, z);
+		
         PlayerRDB2D.angularVelocity = 0;
 
     }
