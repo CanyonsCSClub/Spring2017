@@ -7,14 +7,12 @@ public class PlayerController : MonoBehaviour {
     public float speed;
     public float fireRate;
     public Transform shotSpawn;
-    public Text ammoText;
-    public Image healthBar;
 
-	private int health;
-    private int maxHealth;
+    private int exp;
+    private int expTIL;
+    private int health;
+	private int maxHealth;
     private float redTime;
-    private Vector3 healthBarScale;
-    private float healthBarScaleMax;
 
     private Rigidbody2D PlayerRDB2D;
     private SpriteRenderer PlayerRender;
@@ -33,13 +31,11 @@ public class PlayerController : MonoBehaviour {
         PlayerRDB2D = GetComponent<Rigidbody2D>();
         PlayerRender = GetComponent<SpriteRenderer>();
         meleeAnim = GetComponent<Animator>();
+        exp = 0;
 		health = 100;
-        maxHealth = 100;
-        if (healthBar != null)
-            healthBarScaleMax = healthBar.rectTransform.localScale.y;
-
-        playerHUD();
-    }
+        expTIL = 100;
+        maxHealth = health;
+	}
 
     void Update ()
     {
@@ -71,7 +67,7 @@ public class PlayerController : MonoBehaviour {
 	void FixedUpdate ()
     {
         //Inputs
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mousePos = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
@@ -81,21 +77,16 @@ public class PlayerController : MonoBehaviour {
         PlayerRDB2D.AddForce(movement * speed);
 
         //Player rotation
-        Quaternion rot = Quaternion.LookRotation(transform.position - mousePos,Vector3.forward);
-
-        transform.rotation = rot;
-        transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z);
+        float z = Mathf.Atan2(((mousePos.y ) - transform.position.y), ((mousePos.x ) - transform.position.x)) * Mathf.Rad2Deg - 90;
+        transform.eulerAngles = new Vector3(0, 0, z);
+		
         PlayerRDB2D.angularVelocity = 0;
 
     }
 
     void LateUpdate()
     {
-        //HUD
-        playerHUD();
-
-
-        rangedAttack.LateUpdate();
+		rangedAttack.LateUpdate();
         if (PlayerRender.color == Color.red && health > 0 && redTime < Time.time)
             PlayerRender.color = Color.white;
     }
@@ -111,23 +102,38 @@ public class PlayerController : MonoBehaviour {
         }
 	}
 
-    void playerHUD()
-    {
-        //HUD
-        if(ammoText != null)
-            ammoText.text = string.Format("Ammo: \n{0}/{1} \n", rangedAttack.getCurrentMagazine(), rangedAttack.getAmmoCount());
+	public void GiveExp(int expGiven)
+	{
+		this.exp += expGiven;
+	}
+	
 
-        if (healthBar == null)
-            return;
-        float hbScale = ((float)health / (float)maxHealth) * healthBarScaleMax;
-        if (hbScale < 0)
-            hbScale = 0;
-        healthBarScale = new Vector3(healthBar.rectTransform.localScale.x, hbScale, 1);
-        healthBar.rectTransform.localScale = healthBarScale;
+    public string getHUDString()
+    {
+        return string.Format("Ammo: \n{0}/{1} \n", rangedAttack.getCurrentMagazine(), rangedAttack.getAmmoCount());
+    }
+
+    public float healthPercent()
+    {
+		float output = ((float)health / (float)maxHealth);
+		if(output < 0)
+			return 0;
+        return output;
+    }
+
+    public float expPercent()
+    {
+
+		float output = ((float)exp / (float)expTIL);
+		if(output < 0)
+			return 0;
+        return output;
     }
 
     public RangedWeapon getRangedWeapon()
     {
         return rangedAttack;
     }
+
 }
+
