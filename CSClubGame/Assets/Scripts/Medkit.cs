@@ -26,7 +26,7 @@ public class Medkit : MonoBehaviour
 	{
 		if(target.CompareTag("Player"))
 		{
-			target.GetComponent<PlayerController> ().GiveHealth (hpValue);
+			target.GetComponent<Player> ().GiveHealth (hpValue);
 			Destroy (gameObject);
 		}
 	}

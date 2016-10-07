@@ -24,10 +24,17 @@ public class RangedWeapon : MonoBehaviour {
     protected bool isReloading;
     protected bool isPiercing;
 
+	protected GameObject playerID;
+
+	public RangedWeapon(){
+		Start ();
+	}
+
 
     //Default Constructor
-    public RangedWeapon()
+	public RangedWeapon(GameObject playerid	)
     {
+		playerID = playerid;
         Start();
     }
 
@@ -92,7 +99,7 @@ public class RangedWeapon : MonoBehaviour {
 
             nextFire = Time.time + fireRate;
             BulletSpawn(shot, bulletSpawn);          //change to charge if its a charge up attack
-            Debug.Log(string.Format("Firing: {0}/{1} : {2}",currentMagazine, magazineSize, ammoCount));
+            //Debug.Log(string.Format("Firing: {0}/{1} : {2}",currentMagazine, magazineSize, ammoCount));
         }
     }
 
@@ -121,7 +128,7 @@ public class RangedWeapon : MonoBehaviour {
         GameObject bulletClone = (GameObject)Instantiate(bullet, bulletSpawn.position, bulletSpawn.rotation);
 
         if(bulletClone != null)
-            bulletClone.GetComponent<BulletMover>().setParm(velocity, range, damage, isPiercing);
+			bulletClone.GetComponent<BulletMover>().setParm(this.gameObject, velocity, range, damage, isPiercing);
 
         //// This is how you would do a shotgun
         // Quaternion rotation2 = bulletSpawn.rotation;
@@ -136,8 +143,7 @@ public class RangedWeapon : MonoBehaviour {
         {
             isReloading = true;
             reloadedTime = Time.time + reloadTime;
-            Debug.Log(string.Format("Reloading Start: {0}/{1} : {2}", currentMagazine, magazineSize, ammoCount));
-            //Invoke("Reloading", reloadTime);
+            //Debug.Log(string.Format("Reloading Start: {0}/{1} : {2}", currentMagazine, magazineSize, ammoCount));
         }
 
 
@@ -159,7 +165,6 @@ public class RangedWeapon : MonoBehaviour {
         {
             ammoCount = ammoCount - (magazineSize - currentMagazine);
             currentMagazine = magazineSize;
-            //ammoCount = ammoCount - (magazineSize - currentMagazine);
             //Debug.Log(string.Format("MagDelta: {0} - {1} = {2}", magazineSize, currentMagazine, magazineSize - currentMagazine));
         }
         else 

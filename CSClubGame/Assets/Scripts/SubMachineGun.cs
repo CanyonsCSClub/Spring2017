@@ -7,9 +7,9 @@ public class SubMachineGun : RangedWeapon
 
 
 
-    public SubMachineGun()
+	public SubMachineGun(GameObject playerid)
     {
-        
+		playerID        = playerid;
         infiniteAmmo    = false;
         isReloading     = false;
         nextFire        = 0;
@@ -73,7 +73,7 @@ public class SubMachineGun : RangedWeapon
         Quaternion rotation2 = bulletSpawn.rotation;
         rotation2.Set(bulletSpawn.rotation.x, bulletSpawn.rotation.y, bulletSpawn.rotation.z + Random.Range(-0.1f,0.1f), bulletSpawn.rotation.w);
         GameObject bulletClone = (GameObject)Instantiate(bullet, bulletSpawn.position, rotation2);
-        bulletClone.GetComponent<BulletMover>().setParm(velocity, range, damage, isPiercing);
+		bulletClone.GetComponent<BulletMover>().setParm(playerID, velocity, range, damage, isPiercing);
 
         //// This is how you would do a shotgun
         // Quaternion rotation2 = bulletSpawn.rotation;
