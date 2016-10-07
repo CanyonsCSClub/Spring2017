@@ -33,18 +33,18 @@ public class DefaultPlayer : Player
     void LoadDate()
     {
         DefaultSettings();
-        this.playerName = "RZA";
-        this.playerClass = "RoboSamurai";
-        this.PlayerRB2D = GetComponent<Rigidbody2D>();
-        this.isMelee = true;
-        this.playerLevel = 1;
-        this.health = 40;
-        this.speed = 100;
-        this.experience = 0;
-        this.anim = GetComponent<Animator>();
-        this.alive = true;
+        this.playerName     = "Default";
+        this.playerClass    = "Default";
+        this.PlayerRB2D     = GetComponent<Rigidbody2D>();
+        this.isMelee        = true;
+        this.playerLevel    = 1;
+        this.health         = 40;
+        this.speed          = 100;
+        this.experience     = 0;
+        this.anim           = GetComponent<Animator>();
+        this.alive          = true;
 
-        this.rangedAttack = new SubMachineGun(gameObject);
+        this.rangedAttack   = new SubMachineGun(gameObject);
     }
 
     public override void InputControls()
