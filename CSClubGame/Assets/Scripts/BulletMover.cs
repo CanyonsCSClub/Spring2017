@@ -36,6 +36,9 @@ public class BulletMover : MonoBehaviour
         //Debug.Log("Target = " + target.name);
 
         GameObject targetObject = target.gameObject;
+		
+		if(target.tag == "World")
+			Destroy(gameObject);
 
         if (target.tag == "Enemy")
         {

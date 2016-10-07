@@ -9,23 +9,23 @@ public class ZombieScript : MonoBehaviour {
 	public GameObject bloodSplatter;
 
     // private Rigidbody2D zombieRDB2D;
-    private SpriteRenderer enemyRender;
+    protected SpriteRenderer enemyRender;
 
-    private int health;
-    private int level;
-    private int exp;
-    private int attackDamage;
-    private float attackSpeed;
+    protected int health;
+    protected int level;
+    protected int exp;
+    protected int attackDamage;
+    protected float attackSpeed;
 
-    private float nextAttack;
-    private float redTime;
+    protected float nextAttack;
+    protected float redTime;
 
     // Use this for initialization
     void Start ()
     {
 		
         health          = 25;
-        attackDamage    = 10;
+        attackDamage    = 14;
         attackSpeed     = 2f;
 
         nextAttack = 0;
@@ -56,7 +56,7 @@ public class ZombieScript : MonoBehaviour {
             enemyRender.color = Color.white;
     }
 		
-    public void TakeDamage(int hitDamage)
+    public virtual void TakeDamage(int hitDamage)
     {
         health = health - hitDamage;
         enemyRender.color = Color.red;
@@ -71,10 +71,14 @@ public class ZombieScript : MonoBehaviour {
         Destroy(gameObject);
     }
 
-    void Move(GameObject currentTarget)
+    public virtual void Move(GameObject currentTarget)
     {
         if (currentTarget == null)
-            return; //idle?
+        {
+            //idle move
+            //Debug.Log("No Target");
+            return;
+        }
         // Rotation to Target
         float z = Mathf.Atan2((currentTarget.transform.position.y - transform.position.y), (currentTarget.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
         transform.eulerAngles = new Vector3(0, 0, z);
@@ -82,13 +86,18 @@ public class ZombieScript : MonoBehaviour {
         transform.position = Vector3.MoveTowards(transform.position, currentTarget.transform.position, speed * Time.deltaTime);
     }
 
-    void Attack(GameObject currentTarget)
+    public virtual void Attack(GameObject currentTarget)
     {
+        if (currentTarget == null)
+        {
+            //Debug.Log("No Target");
+            return;
+        }
         if (Time.time > nextAttack && CanIBite(currentTarget))
         {
             Vector3 bloodPosDelta = new Vector3(0, 0, 0.5f);
             Instantiate(bloodSplatter, currentTarget.transform.position + bloodPosDelta, currentTarget.transform.rotation);
-            currentTarget.GetComponent<PlayerController>().TakeDamage(attackDamage);
+            currentTarget.GetComponent<Player>().TakeDamage(attackDamage); // Had to change from GetComponent<PlayerController> to <Player> to work with Player Super Class
             nextAttack = Time.time + attackSpeed;
         }
     }
@@ -112,12 +121,17 @@ public class ZombieScript : MonoBehaviour {
 		float maxDistToTarget = 500;
 		Vector3 position = transform.position;
 		foreach (GameObject enemy in enemies) {
-			Vector3 dist = enemy.transform.position - position;
-			float currentDistance = dist.sqrMagnitude;
-			if (currentDistance < maxDistToTarget && enemy.activeInHierarchy) {
-				closest = enemy;
-				maxDistToTarget = currentDistance;
-			}
+              bool alive = enemy.GetComponent<Player>().isAlive();      //Added this bool to ignore dead players
+              if (alive)
+              {
+                Vector3 dist = enemy.transform.position - position;
+                float currentDistance = dist.sqrMagnitude;
+                if (currentDistance < maxDistToTarget && enemy.activeInHierarchy)
+                {
+                    closest = enemy;
+                    maxDistToTarget = currentDistance;
+                }
+            }
 		}
 		return closest;
 	}
@@ -129,6 +143,8 @@ public class ZombieScript : MonoBehaviour {
 		}
 		return false;
 	}
+
+
 
 
 		
