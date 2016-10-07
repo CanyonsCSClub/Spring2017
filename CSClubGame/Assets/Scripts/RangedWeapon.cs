@@ -9,6 +9,7 @@ public class RangedWeapon : MonoBehaviour {
     protected float range;
     protected float velocity;
 
+	protected int ammoMax;
     protected int ammoCount;
     protected int magazineSize;
     protected int currentMagazine;
@@ -40,6 +41,7 @@ public class RangedWeapon : MonoBehaviour {
 
         //should probably have a file that loads this
         ammoCount = 100;
+		ammoMax = 200;
         magazineSize = 10;
         currentMagazine = 10;
 
@@ -158,7 +160,7 @@ public class RangedWeapon : MonoBehaviour {
             ammoCount = ammoCount - (magazineSize - currentMagazine);
             currentMagazine = magazineSize;
             //ammoCount = ammoCount - (magazineSize - currentMagazine);
-            Debug.Log(string.Format("MagDelta: {0} - {1} = {2}", magazineSize, currentMagazine, magazineSize - currentMagazine));
+            //Debug.Log(string.Format("MagDelta: {0} - {1} = {2}", magazineSize, currentMagazine, magazineSize - currentMagazine));
         }
         else 
         {
@@ -166,14 +168,18 @@ public class RangedWeapon : MonoBehaviour {
             ammoCount = 0;
         }
         isReloading = false;
-        Debug.Log(string.Format("Reloading Done: {0}/{1} : {2}", currentMagazine, magazineSize, ammoCount));
+        //Debug.Log(string.Format("Reloading Done: {0}/{1} : {2}", currentMagazine, magazineSize, ammoCount));
     }
 
 
     public void AddAmmo()
-    {
-        ammoCount += magazineSize;
-    }
+	{
+		ammoCount = ammoCount + (magazineSize / 4);
+		//Debug.Log ("Adding ammo. ammoCount=" + ammoCount + "ammoMax=" + ammoMax);
+		if (ammoCount > ammoMax) {
+			ammoCount = ammoMax;
+		}
+	}
 
     /************
      *  Getters *
