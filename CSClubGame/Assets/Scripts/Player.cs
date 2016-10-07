@@ -43,10 +43,6 @@ public class Player : MonoBehaviour
     void Start()
     {
         DefaultSettings();
-        alive = true;
-        GetComponentInChildren<MeleeScript>().loadData();
-        Debug.Log(playerName + " " + playerClass + " " + playerLevel + " " + health
-        + " " + isMelee + " " + speed + "  " + experience + "\n" + "has been created");
     }
 
     // Update is called once per frame
@@ -59,7 +55,6 @@ public class Player : MonoBehaviour
     {
         Movement();
         LevelSystem();
-
     }
 
     /// <summary>
@@ -77,6 +72,7 @@ public class Player : MonoBehaviour
         this.speed          = 100;
         this.experience     = 0;
         this.anim           = GetComponent<Animator>();
+        this.alive          = true;
     }
 
     public virtual void Movement()
@@ -117,15 +113,12 @@ public class Player : MonoBehaviour
         {
             alive = false;
             death();
-            Debug.Log("Dead or alive: " + alive + "Test 2" + isAlive());
             health = 0;
-            Debug.Log("You dead mofo");
         }
     }
     
     public void death()
     {
-        Debug.Log("DEATH TEST");
         speed = 0;
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<BoxCollider2D>().enabled = false;
@@ -178,7 +171,7 @@ public class Player : MonoBehaviour
     /// to determine if LevelUp() is called
     /// </summary>
     /// <param name="value"></param>
-    public void GiveExp(int value)
+    public bool GiveExp(int value)
     {
         if (alive)
         {
@@ -188,7 +181,10 @@ public class Player : MonoBehaviour
             {
                 LevelUp();
             }
+            return true;
+            
         }
+        return false;
     }
 
     /// <summary>
@@ -208,13 +204,22 @@ public class Player : MonoBehaviour
     /// Also, caps health at BASE_HEALTH. We can implement an overheal mechanic or a shielding system by modifiying this.
     /// </summary>
     /// <param name="value"></param>
-    public void GiveHealth(int value) //Compare to BASE_HEALTH to check and potentially overheal 
+    public bool GiveHealth(int value) //Compare to BASE_HEALTH to check and potentially overheal 
     {
         if (health < BASE_HEALTH && alive)
+        {
             if (health + value > BASE_HEALTH)
+            {
                 health = BASE_HEALTH;
+                return true;
+            }
             else
+            {
                 health += value;
+                return true;
+            }
+        }
+        return false;
 
     }
 
