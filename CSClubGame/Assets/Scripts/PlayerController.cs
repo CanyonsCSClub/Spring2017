@@ -122,7 +122,17 @@ public class PlayerController : MonoBehaviour {
 	{
 		this.exp += expGiven;
 	}
-	
+
+	public void GiveHealth (int healthGiven)
+	{
+		this.health += healthGiven;
+	}
+
+	public void GiveAmmo (int ammoGiven)
+	{
+		rangedAttack.AddAmmo ();
+	}
+
     void playerHUD()
     {
         //HUD
