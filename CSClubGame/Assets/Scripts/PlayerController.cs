@@ -108,6 +108,19 @@ public class PlayerController : MonoBehaviour {
 		this.exp += expGiven;
 	}
 	
+	
+	public void GiveHealth (int healthGiven)
+	{
+		this.health += healthGiven;
+		if(this.health > maxHealth)
+			this.health = maxHealth;
+	}
+
+	public void GiveAmmo (int ammoGiven)
+	{
+		rangedAttack.AddAmmo ();
+	}
+	
 
     public string getHUDString()
     {
