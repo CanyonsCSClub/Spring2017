@@ -9,7 +9,7 @@ public class SubMachineGun : RangedWeapon
 
 	public SubMachineGun(GameObject playerid)
     {
-		playerID = playerid;
+		playerID        = playerid;
         infiniteAmmo    = false;
         isReloading     = false;
         nextFire        = 0;

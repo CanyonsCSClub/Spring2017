@@ -99,7 +99,7 @@ public class RangedWeapon : MonoBehaviour {
 
             nextFire = Time.time + fireRate;
             BulletSpawn(shot, bulletSpawn);          //change to charge if its a charge up attack
-            Debug.Log(string.Format("Firing: {0}/{1} : {2}",currentMagazine, magazineSize, ammoCount));
+            //Debug.Log(string.Format("Firing: {0}/{1} : {2}",currentMagazine, magazineSize, ammoCount));
         }
     }
 
@@ -143,8 +143,7 @@ public class RangedWeapon : MonoBehaviour {
         {
             isReloading = true;
             reloadedTime = Time.time + reloadTime;
-            Debug.Log(string.Format("Reloading Start: {0}/{1} : {2}", currentMagazine, magazineSize, ammoCount));
-            //Invoke("Reloading", reloadTime);
+            //Debug.Log(string.Format("Reloading Start: {0}/{1} : {2}", currentMagazine, magazineSize, ammoCount));
         }
 
 
@@ -166,7 +165,6 @@ public class RangedWeapon : MonoBehaviour {
         {
             ammoCount = ammoCount - (magazineSize - currentMagazine);
             currentMagazine = magazineSize;
-            //ammoCount = ammoCount - (magazineSize - currentMagazine);
             //Debug.Log(string.Format("MagDelta: {0} - {1} = {2}", magazineSize, currentMagazine, magazineSize - currentMagazine));
         }
         else 
