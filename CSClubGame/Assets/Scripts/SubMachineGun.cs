@@ -17,6 +17,7 @@ public class SubMachineGun : RangedWeapon
 
         //should probably have a file that loads this
         ammoCount       = 300;
+		ammoMax 		= 400;
         magazineSize    = 30;
         currentMagazine = 30;
 
