@@ -133,15 +133,17 @@ public class Enemy : MonoBehaviour{
 		}
 		//multiplied *3 because for some reason dist is by a factor of 3 smaller than the radius of 
 		//the circle collider in enemySightLine
-		if ((distanceToAGGRO < 3 * sightLine) & (distanceToAGGRO > 0)) {
+		if ((distanceToAGGRO < 3 * sightLine) & (distanceToAGGRO > 0)) {//aggro is in range
 			Move (AGGRO);
-		} else {
+		} else if (PIR != null) {//aggro out of range and there is a player in range
 			Move (PIR);
+		} else { 
+			Move ();
 		}
 	}
 
 
-	public void Move(GameObject currentTarget){	//how you move to a target
+	public virtual void Move(GameObject currentTarget){	//how you move to a target
 		//Debug.Log ("CurrentTarget" + currentTarget);
 		if (currentTarget != null) {
 			float z = Mathf.Atan2 ((currentTarget.transform.position.y - transform.position.y),
@@ -156,7 +158,7 @@ public class Enemy : MonoBehaviour{
 		
 	}
 
-	public void Move(){// " Ai " movement
+	public virtual void Move(){// " Ai " movement
 		var rotationVector = transform.rotation.eulerAngles;
 		rotationVector.z += Random.Range (-5f, 5f);
 		transform.rotation = Quaternion.Euler (rotationVector);
@@ -171,7 +173,7 @@ public class Enemy : MonoBehaviour{
 	/// Will need to be overridden in the individual enemy child
 	/// </summary>
 	/// <param name="currentTarget">Current target GameObject.</param>
-	public void Attack(GameObject currentTarget)
+	public virtual void Attack(GameObject currentTarget)
 	{
 			//currentTarget.GetComponent<PlayerController>().TakeDamage(attack);	
 	}
