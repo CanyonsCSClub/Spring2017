@@ -15,35 +15,42 @@ public class Pause_Menu : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//turning the pause on and off
-		if (paused) {
+		if (paused) {//on
 			Time.timeScale = 0f;
-			HUD.SetActive (false);
+			HUD.SetActive (false);//de-activates the HUD
 			pauseMenu.SetActive (true);
-
-		} else {
+		} else {//off
 			Time.timeScale = 1f;
-			HUD.SetActive (true);
+			HUD.SetActive (true);//re-activates the HUD
 			pauseMenu.SetActive (false);
 		}
 		//press the escape key to pause/un-pause
 		if(Input.GetKeyDown(KeyCode.Escape)){
 			paused = !paused;
 		}
-
-		
-
 	}
 
 	public void Resume(){
 		paused = false;
 	}
 
-	public void OpenSettings(){
+	//other options?
 
+	public void OpenSettings(){
+		//scene with:
+			//volume
+			//brightness?
+			//???
 	}
 
 	public void QuitToMain(){
 
 	}
-	//other button methods in the future
 }
+
+//bulletMover? to stop bullets from being spawned while paused
+/*
+ * if (Time.timeScale >= 1f){
+ * 	//do all the shot spawn stuff
+ * }
+ */

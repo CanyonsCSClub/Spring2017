@@ -56,7 +56,40 @@ public class Cardboard_Box : Enemy {
 			//yikes
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//set a time scale so that these can only flip every idk....10 seconds?
+	private void Enlarge(){//if 0<hp<.5MAXHEALTH
+		//get bigger by 2 and multiply armor by 2
+		//movement by half
+		this.transform.localScale = new Vector3(transform.localScale.x * 2,transform.localScale.y * 2,1);
+		this.armor = this.armor * 2;
+		this.speed = this.speed / 2;
+	}
+	private void Shrink(){//if for some reason he is healed to above .5MAXHEALTH
+		this.transform.localScale = new Vector3(transform.localScale.x / 2,transform.localScale.y / 2,1);
+		this.armor = this.armor / 2;
+		this.speed = this.speed * 2;
+	}
 }
 
 
-//lock position until aggro'd....will not move even if touched
+
+
+/*Notes______________________
+ * 
+ * 
+ * 
+ * 
+ */
