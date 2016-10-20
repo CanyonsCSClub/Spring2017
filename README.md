@@ -11,7 +11,7 @@ Guide to how to use GitHub is here: https://guides.github.com/
 
 Tools needed.
 
-Visual Studio   - https://beta.visualstudio.com/downloads/ 
+Visual Studio   - https://beta.visualstudio.com/downloads/ Or use MonoDevelop
 
 Unity           - https://unity3d.com/unity 
 
