@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour{
 	public GameObject damageTakenNumber;
 	public CircleCollider2D enemySightRangeCollider;
 
-
+	#region Variables
 	//Enemy constructor variables_____________________________________________________________
 	protected string enemyName { get; set; }
 	protected int rank { get; set; } //0 - 10. 0 being a common, 10 being a boss-ish enemy
@@ -46,6 +46,7 @@ public class Enemy : MonoBehaviour{
 	GameObject aggroOnPlayer = null;
 	public float moveArgSpeedModifier;//having a wierd result in movement speeds...in certain situations
 	//this was my solution
+	#endregion
 
 	public Enemy(){
 		// force a default character to be spawned
@@ -54,6 +55,7 @@ public class Enemy : MonoBehaviour{
 	public Enemy(string newEnemyName, int newRank, bool newIsMelee, float newAttackRange, float newSightLine, int newLevel, int newHealth, float newSpeed, int newAttack, float newAttackSpeed, int newArmor){
 		ConfigEnemy (newEnemyName, newRank, newIsMelee, newAttackRange, newSightLine,
 			newLevel, newHealth, newSpeed, newAttack, newAttackSpeed, newArmor); 
+		//level, rank, armor >0
 	}
 
 	public void ConfigEnemy(string newEnemyName, int newRank, bool newIsMelee, float newAttackRange, float newSightLine, int newLevel,
@@ -98,7 +100,7 @@ public class Enemy : MonoBehaviour{
 	}
 
 
-	public void setAggro(GameObject newAggro){
+	public virtual void setAggro(GameObject newAggro){
 		this.aggroOnPlayer = newAggro;
 	}
 
@@ -133,15 +135,17 @@ public class Enemy : MonoBehaviour{
 		}
 		//multiplied *3 because for some reason dist is by a factor of 3 smaller than the radius of 
 		//the circle collider in enemySightLine
-		if ((distanceToAGGRO < 3 * sightLine) & (distanceToAGGRO > 0)) {
+		if ((distanceToAGGRO < 3 * sightLine) & (distanceToAGGRO > 0)) {//aggro is in range
 			Move (AGGRO);
-		} else {
+		} else if (PIR != null) {//aggro out of range and there is a player in range
 			Move (PIR);
+		} else { 
+			Move ();
 		}
 	}
 
 
-	public void Move(GameObject currentTarget){	//how you move to a target
+	public virtual void Move(GameObject currentTarget){	//how you move to a target
 		//Debug.Log ("CurrentTarget" + currentTarget);
 		if (currentTarget != null) {
 			float z = Mathf.Atan2 ((currentTarget.transform.position.y - transform.position.y),
@@ -156,7 +160,7 @@ public class Enemy : MonoBehaviour{
 		
 	}
 
-	public void Move(){// " Ai " movement
+	public virtual void Move(){// " Ai " movement
 		var rotationVector = transform.rotation.eulerAngles;
 		rotationVector.z += Random.Range (-5f, 5f);
 		transform.rotation = Quaternion.Euler (rotationVector);
@@ -171,19 +175,19 @@ public class Enemy : MonoBehaviour{
 	/// Will need to be overridden in the individual enemy child
 	/// </summary>
 	/// <param name="currentTarget">Current target GameObject.</param>
-	public void Attack(GameObject currentTarget)
+	public virtual void Attack(GameObject currentTarget)
 	{
 			//currentTarget.GetComponent<PlayerController>().TakeDamage(attack);	
 	}
 		
-	public void RecieveHealing(int healing){
+	public virtual void RecieveHealing(int healing){
 		if (health > 0) {
 			health = health + healing;
 		}
 	}
 
 	int timesDamaged;
-	public void TakeDamage(int damageTaken, GameObject GO){
+	public virtual void TakeDamage(int damageTaken, GameObject GO){
 		
 		if (GO.CompareTag ("Player")) {
 			setAggro (GO);
