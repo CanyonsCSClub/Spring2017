@@ -10,4 +10,9 @@ public class Drone1 : Enemy {
         //enemySightRangeCollider.radius = newRadius;
 
     }
+
+    public override void Attack(GameObject currentTarget)
+    {
+
+    }
 }
