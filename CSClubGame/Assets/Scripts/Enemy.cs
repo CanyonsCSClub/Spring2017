@@ -199,7 +199,8 @@ public class Enemy : MonoBehaviour{
 		//damage Taken numbers ..... (if we want em)
 		//Instantiate (damageTakenNumber, transform.position + new Vector3(0,0,1), transform.rotation);
 		if(timesDamaged%4 == 0 || damageTaken > MAXHEALTH/4){//limits the amount of blood on the screen at once
-			Instantiate(bloodSplatter,transform.position + new Vector3(0,0, .5f),transform.rotation);
+            if(this.bloodSplatter != null)
+			    Instantiate(bloodSplatter,transform.position + new Vector3(0,0, .5f),transform.rotation);
 		//maybe you want sparks instead of blood for drones....eyes on you Prescott
 		}
 		if (health <= 0)
@@ -223,7 +224,9 @@ public class Enemy : MonoBehaviour{
 	{
 
 		//Instantiae expOrb
-		Instantiate(deadZombie, transform.position, transform.rotation);
+        if(this.deadZombie != null)
+		    Instantiate(deadZombie, transform.position, transform.rotation);
+
 		Destroy(this.gameObject); //until pooling
 	}
 	#endregion 

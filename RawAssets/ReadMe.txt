@@ -1,0 +1,1 @@
+An area for raw assets from artists.

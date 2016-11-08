@@ -11,7 +11,7 @@ Guide to how to use GitHub is here: https://guides.github.com/
 
 Tools needed.
 
-Visual Studio   - https://beta.visualstudio.com/downloads/ 
+Visual Studio   - https://beta.visualstudio.com/downloads/ Or use MonoDevelop
 
 Unity           - https://unity3d.com/unity 
 
@@ -21,7 +21,7 @@ Other Tools.
 GitHub Desktop  - https://github.com/integrations/github-desktop (Easier way to Download/Upload from GitHub)
 
 1) Download:  https://desktop.github.com/ <p>
-2) Do the Tutorial.<p>
+2) Do the Tutorial. Delete Tutorial.<p>
 3) Go to: https://github.com/Tb64/canyonsCSclub<p>
 4) Click on the Green "Clone or download" button, then select Open in Desktop<p>
 5) Click on the branch, and make a branch with your name.<p>
