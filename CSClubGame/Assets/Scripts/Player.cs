@@ -92,7 +92,10 @@ public class Player : MonoBehaviour
 
         //Player rotation
         float z = Mathf.Atan2(((mousePos.y) - transform.position.y), ((mousePos.x) - transform.position.x)) * Mathf.Rad2Deg - 90;
-        transform.eulerAngles = new Vector3(0, 0, z);
+        //transform.eulerAngles = new Vector3(0, 0, z);
+        transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, 0, z), 10.0f);
+        //Vector3 rotationLerp = new Vector3(0, 0, z);
+
 
         PlayerRB2D.angularVelocity = 0;
     }
@@ -126,7 +129,25 @@ public class Player : MonoBehaviour
             health = 0;
         }
     }
-    
+
+    public virtual void TakeDamage(int damageTaken, GameObject gObj)
+    {
+        if (health > 0)
+        {
+            if (health - damageTaken <= 0)
+                health = 0;
+            else
+                health = health - damageTaken;
+        }
+        Debug.Log(damageTaken + " dmg taken. Started at " + BASE_HEALTH + " and now at " + health + " Percent rem:" + getHealthPercent());
+        if (health <= 0)
+        {
+            alive = false;
+            death();
+            health = 0;
+        }
+    }
+
     public void death()
     {
         speed = 0;
