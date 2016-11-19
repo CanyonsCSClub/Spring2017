@@ -44,7 +44,7 @@ public class BulletMover : MonoBehaviour
         {
            // Vector3 bloodPosDelta = new Vector3(0, 0, 0.5f);
            // Instantiate(bloodSplatter, target.transform.position + bloodPosDelta, target.transform.rotation);
-			Debug.Log(damage);
+			//Debug.Log(damage);
 			targetObject.GetComponent<Enemy>().TakeDamage(damage, playerID);
 
             //Vector3 bloodPosDelta = new Vector3(0, 0, 0.5f);

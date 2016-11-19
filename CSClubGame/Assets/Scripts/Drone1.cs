@@ -18,6 +18,7 @@ public class Drone1 : Enemy {
         //enemySightRangeCollider.radius = newRadius;
         weapon = new AIWeapon(this.gameObject);
         weapon.setPerm(this.damage, this.range, this.weaponVelocity, this.fireRate);
+        this.sightLine = 20;
 
     }
 
@@ -27,9 +28,14 @@ public class Drone1 : Enemy {
             return;
         if(shotSpawn == null)
             return;
+        //if (weapon == null)
+            //return;
 
-        weapon.Attack(shotSpawn);
-        //Debug.Log("Enemy attack");
+
+        if(shotSpawn != null)
+            weapon.Attack(shotSpawn);
+        else
+            Debug.Log("shotSpawn null");
     }
 
     void Update()
