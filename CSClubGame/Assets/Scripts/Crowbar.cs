@@ -18,7 +18,8 @@ public class Crowbar : MonoBehaviour
         if (target.tag == "Enemy")
         {
             Vector3 bloodPosDelta = new Vector3(0, 0, 0.5f);
-            Instantiate(bloodSplatter, target.transform.position + bloodPosDelta, target.transform.rotation);
+            if(bloodSplatter != null)
+                Instantiate(bloodSplatter, target.transform.position + bloodPosDelta, target.transform.rotation);
             targetObject.GetComponent<Enemy>().TakeDamage(damage, transform.parent.gameObject);
 
         }

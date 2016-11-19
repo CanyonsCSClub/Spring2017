@@ -68,6 +68,11 @@ public class EnemySightLine : MonoBehaviour {
 
 
 	public void setColliderRadius(float val){
+        if(enemySight == null)
+        {
+            Debug.Log("Enemy Sight is null");
+            return;
+        }
 		enemySight.radius = val;
 		Debug.Log ("Radius" + enemySight.radius);
 	}

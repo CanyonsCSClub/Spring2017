@@ -6,12 +6,16 @@ public class DoorwaySpawner : MonoBehaviour {
     public GameObject[] spawners;
     public GameObject enemy;
     public float spawnCooldown;
+    public bool multipleWave;
+    public int NumWaves;
 
     private float nextSpawnTime;
+    private int waves;
 
 	// Use this for initialization
 	void Start () {
         nextSpawnTime = 0f;
+        waves = 0;
     }
 	
 	// Update is called once per frame
@@ -21,6 +25,8 @@ public class DoorwaySpawner : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (enemy == null)
+            return;
         if (Time.time < nextSpawnTime)
             return;
         if (!other.tag.Contains("Player"))
@@ -30,7 +36,18 @@ public class DoorwaySpawner : MonoBehaviour {
         {
             Instantiate(enemy, spawner.transform.position, spawner.transform.rotation );
             nextSpawnTime = Time.time + spawnCooldown;
+            waves++;
         }
         //Destroy(gameObject);
+
+        if(!multipleWave)
+        {
+            Destroy(gameObject);
+        }
+
+        if (waves > NumWaves)
+        {
+            Destroy(gameObject);
+        }
     }
 }
