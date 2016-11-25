@@ -277,14 +277,15 @@ public class Player : MonoBehaviour
     /// Checks 
     /// </summary>
     /// <param name="value"></param>
-    public void GiveAmmo(int value)
+    public virtual void GiveAmmo(int value)
     {
-        if (ammo < maxAmmo && alive)
+        if (alive)
         {
             if (ammo + value > maxAmmo)
                 ammo = maxAmmo;
             else
-                ammo += value; }
+                ammo += value;
+        }
 
     }
 

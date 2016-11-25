@@ -73,8 +73,8 @@ GameObject:
   - 212: {fileID: 212000013241940640}
   - 95: {fileID: 95000011799462970}
   - 50: {fileID: 50000010580847998}
-  - 61: {fileID: 61000013776601952}
   - 114: {fileID: 114000011790174506}
+  - 58: {fileID: 58000012707603376}
   m_Layer: 0
   m_Name: Drone1
   m_TagString: Enemy
@@ -500,8 +500,8 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 20
---- !u!61 &61000013776601952
-BoxCollider2D:
+--- !u!58 &58000012707603376
+CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -513,7 +513,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Radius: 0.71
 --- !u!95 &95000011799462970
 Animator:
   serializedVersion: 3
