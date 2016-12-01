@@ -76,6 +76,12 @@ public class DefaultPlayer : Player
         }
     }
 
+    public override void GiveAmmo(int value)
+    {
+        if(alive)
+        this.rangedAttack.AddAmmo();
+    }
+
     public override string getHUDString()
     {
         return string.Format("Ammo: \n{0}/{1} \n", rangedAttack.getCurrentMagazine(), rangedAttack.getAmmoCount());

@@ -217,7 +217,7 @@ public class RangedWeapon : MonoBehaviour {
 
     public void AddAmmo()
 	{
-		ammoCount = ammoCount + (magazineSize / 4);
+		ammoCount = ammoCount + (magazineSize);
 		//Debug.Log ("Adding ammo. ammoCount=" + ammoCount + "ammoMax=" + ammoMax);
 		if (ammoCount > ammoMax) {
 			ammoCount = ammoMax;
