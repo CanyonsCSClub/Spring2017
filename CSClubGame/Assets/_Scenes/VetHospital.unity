@@ -101,7 +101,7 @@ GameObject:
   - 33: {fileID: 37462794}
   - 64: {fileID: 37462793}
   - 23: {fileID: 37462792}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -447,6 +447,14 @@ Prefab:
     - target: {fileID: 100000, guid: 959511580a4e742a2a3d5d6de87c0e74, type: 3}
       propertyPath: m_NavMeshLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 959511580a4e742a2a3d5d6de87c0e74, type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 959511580a4e742a2a3d5d6de87c0e74, type: 3}
+      propertyPath: m_Layer
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 959511580a4e742a2a3d5d6de87c0e74, type: 3}

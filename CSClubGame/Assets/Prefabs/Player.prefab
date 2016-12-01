@@ -59,7 +59,7 @@ GameObject:
   - 114: {fileID: 114000011463371754}
   m_Layer: 0
   m_Name: crowbar
-  m_TagString: Untagged
+  m_TagString: World
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -190,8 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9289d8591c9a264e9f9a61bc94d9180, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bloodSplatter: {fileID: 1000011363098636, guid: fdb14c7404b4f71419083408cc7083aa,
-    type: 2}
+  bloodSplatter: {fileID: 0, guid: fdb14c7404b4f71419083408cc7083aa, type: 2}
   damage: 10
 --- !u!212 &212000013043985218
 SpriteRenderer:

@@ -213,6 +213,9 @@ public class Enemy : MonoBehaviour{
 	#region Utilities
 
 	public bool CanIAttack(GameObject currentTarget){
+        if (currentTarget == null)
+            return false;
+
 		float distanceToTarget = (transform.position - currentTarget.transform.position).sqrMagnitude;
 		if (distanceToTarget < attackRange && currentTarget.tag == "Player") {
 			return true;

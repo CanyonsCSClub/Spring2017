@@ -23,8 +23,11 @@ public class RangedWeapon : MonoBehaviour {
     protected bool infiniteAmmo;
     protected bool isReloading;
     protected bool isPiercing;
+    protected bool isAttached;
 
-	protected GameObject playerID;
+    protected string[] targetTags;
+
+    protected GameObject playerID;
 
 	public RangedWeapon(){
 		Start ();
@@ -43,6 +46,8 @@ public class RangedWeapon : MonoBehaviour {
     {
         infiniteAmmo = false;
         isReloading = false;
+        isPiercing = true;
+        isAttached = false;
         nextFire = 0;
         reloadedTime = 0f;
 
@@ -58,13 +63,35 @@ public class RangedWeapon : MonoBehaviour {
         fireRate = 0.5f;
         reloadTime = 1.0f;
 
-        isPiercing = true;
+        targetTags = new string[] { "Enemy" };
 
         shot = Resources.Load("Bullet", typeof(GameObject)) as GameObject;
     }
-	
-	// Update is called once per frame (for Input)
-	void Update ()
+
+    void DefaultSettings()
+    {
+        infiniteAmmo = false;
+        isReloading = false;
+        isAttached = false;
+        nextFire = 0;
+        reloadedTime = 0f;
+
+        ammoCount = 100;
+        ammoMax = 200;
+        magazineSize = 10;
+        currentMagazine = 10;
+
+        damage = 5;
+        range = 10;
+        velocity = 1000;
+        fireRate = 0.5f;
+        reloadTime = 1.0f;
+
+        targetTags = new string[] { "Enemy" };
+    }
+
+    // Update is called once per frame (for Input)
+    void Update ()
     {
 	
 	}
@@ -125,9 +152,20 @@ public class RangedWeapon : MonoBehaviour {
     //  Spawn the bullet
     public virtual void BulletSpawn(GameObject bullet, Transform bulletSpawn)
     {
-        GameObject bulletClone = (GameObject)Instantiate(bullet, bulletSpawn.position, bulletSpawn.rotation);
+        GameObject bulletClone;
+        if (!this.isAttached)
+        {
+            bulletClone = (GameObject)Instantiate(bullet, bulletSpawn.position, bulletSpawn.rotation);
 
-        if(bulletClone != null)
+        }
+        else
+        {
+            bulletClone = (GameObject)Instantiate(bullet, bulletSpawn.position, bulletSpawn.rotation);
+            bulletClone.transform.parent = transform;
+        }
+
+
+        if (bulletClone != null)
 			bulletClone.GetComponent<BulletMover>().setParm(this.gameObject, velocity, range, damage, isPiercing);
 
         //// This is how you would do a shotgun
@@ -179,7 +217,7 @@ public class RangedWeapon : MonoBehaviour {
 
     public void AddAmmo()
 	{
-		ammoCount = ammoCount + (magazineSize / 4);
+		ammoCount = ammoCount + (magazineSize);
 		//Debug.Log ("Adding ammo. ammoCount=" + ammoCount + "ammoMax=" + ammoMax);
 		if (ammoCount > ammoMax) {
 			ammoCount = ammoMax;
@@ -216,6 +254,6 @@ public class RangedWeapon : MonoBehaviour {
 
     public void InfiniteAmmo()
     {
-        
+        infiniteAmmo = true;
     }
 }

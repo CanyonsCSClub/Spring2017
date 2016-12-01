@@ -38,7 +38,8 @@ public class DefaultPlayer : Player
         this.PlayerRB2D     = GetComponent<Rigidbody2D>();
         this.isMelee        = true;
         this.playerLevel    = 1;
-        this.health         = 40;
+        this.health         = 100;
+        this.BASE_HEALTH    = health;
         this.speed          = 100;
         this.experience     = 0;
         this.anim           = GetComponent<Animator>();
@@ -73,6 +74,12 @@ public class DefaultPlayer : Player
         {
             rangedAttack.Reload();
         }
+    }
+
+    public override void GiveAmmo(int value)
+    {
+        if(alive)
+        this.rangedAttack.AddAmmo();
     }
 
     public override string getHUDString()

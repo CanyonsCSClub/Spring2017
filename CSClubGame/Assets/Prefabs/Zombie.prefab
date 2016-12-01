@@ -28,6 +28,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1000013296664402
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000013015094396}
+  - 61: {fileID: 61000010085174030}
+  - 114: {fileID: 114000010055866642}
+  m_Layer: 0
+  m_Name: Melee
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1000013682263354
 GameObject:
   m_ObjectHideFlags: 0
@@ -73,8 +90,22 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000010080165444}
+  - {fileID: 4000013015094396}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!4 &4000013015094396
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013296664402}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.068, y: 0.406, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 4000012317845040}
+  m_RootOrder: 1
 --- !u!50 &50000011393540708
 Rigidbody2D:
   serializedVersion: 2
@@ -106,6 +137,20 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 10
+--- !u!61 &61000010085174030
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013296664402}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 0.4, y: 0.26}
 --- !u!61 &61000012544137576
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -137,6 +182,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114000010055866642
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013296664402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f1f0a27de35c674cb3adeb28083e221, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114000013902012374
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -151,10 +207,11 @@ MonoBehaviour:
   bloodSplatter: {fileID: 1000011363098636, guid: fdb14c7404b4f71419083408cc7083aa,
     type: 2}
   deadZombie: {fileID: 1000010579206802, guid: 6244e05d74394534ea44af8bd63017f5, type: 2}
-  expOrb: {fileID: 0}
+  expOrb: {fileID: 1000012765999876, guid: d089b0a57bfb9b04689ddf8b383b3af0, type: 2}
   damageTakenNumber: {fileID: 0}
   enemySightRangeCollider: {fileID: 0}
   moveArgSpeedModifier: 0.5
+  zMelee: {fileID: 1000013296664402}
 --- !u!114 &114000014148520994
 MonoBehaviour:
   m_ObjectHideFlags: 1

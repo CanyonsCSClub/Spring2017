@@ -21,6 +21,10 @@ public class Player : MonoBehaviour
     protected int ammo;
     protected int maxAmmo;
 
+    private float damageShaderTime;
+    private float damageShaderCooldown;
+    private SpriteRenderer PlayerRender;
+
     public Player(string newPlayerName, string newPlayerClass, Rigidbody2D newPlayerRB2D, bool newIsMelee, int newPlayerLevel, int newHealth, float newSpeed, int newExperience, Animator newAnim)
     {
         this.playerName     = newPlayerName;
@@ -55,6 +59,7 @@ public class Player : MonoBehaviour
     {
         Movement();
         LevelSystem();
+        shaderController();
     }
 
     /// <summary>
@@ -73,6 +78,10 @@ public class Player : MonoBehaviour
         this.experience     = 0;
         this.anim           = GetComponent<Animator>();
         this.alive          = true;
+
+        this.damageShaderCooldown   = 0.1f;
+        this.damageShaderTime       = 0f;
+        PlayerRender = GetComponent<SpriteRenderer>();
     }
 
     /// <summary>
@@ -92,7 +101,10 @@ public class Player : MonoBehaviour
 
         //Player rotation
         float z = Mathf.Atan2(((mousePos.y) - transform.position.y), ((mousePos.x) - transform.position.x)) * Mathf.Rad2Deg - 90;
-        transform.eulerAngles = new Vector3(0, 0, z);
+        //transform.eulerAngles = new Vector3(0, 0, z);
+        transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, 0, z), 10.0f);
+        //Vector3 rotationLerp = new Vector3(0, 0, z);
+
 
         PlayerRB2D.angularVelocity = 0;
     }
@@ -113,6 +125,8 @@ public class Player : MonoBehaviour
     {
         if (health > 0)
         {
+            PlayerRender.color = Color.red;
+            this.damageShaderTime = Time.time + this.damageShaderCooldown;
             if (health - damageTaken <= 0)
                 health = 0;
             else
@@ -126,13 +140,39 @@ public class Player : MonoBehaviour
             health = 0;
         }
     }
-    
+
+    public virtual void TakeDamage(int damageTaken, GameObject gObj)
+    {
+        if (health > 0)
+        {
+            PlayerRender.color = Color.red;
+            this.damageShaderTime = Time.time + this.damageShaderCooldown;
+            if (health - damageTaken <= 0)
+                health = 0;
+            else
+                health = health - damageTaken;
+        }
+        Debug.Log(damageTaken + " dmg taken. Started at " + BASE_HEALTH + " and now at " + health + " Percent rem:" + getHealthPercent());
+        if (health <= 0)
+        {
+            alive = false;
+            death();
+            health = 0;
+        }
+    }
+
     public void death()
     {
         speed = 0;
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<BoxCollider2D>().enabled = false;
         transform.Translate(0, 0, -10);
+    }
+
+    void shaderController()
+    {
+        if (PlayerRender.color == Color.red && health > 0 && damageShaderTime < Time.time)
+            PlayerRender.color = Color.white;
     }
 
     /// <summary>
@@ -237,14 +277,15 @@ public class Player : MonoBehaviour
     /// Checks 
     /// </summary>
     /// <param name="value"></param>
-    public void GiveAmmo(int value)
+    public virtual void GiveAmmo(int value)
     {
-        if (ammo < maxAmmo && alive)
+        if (alive)
         {
             if (ammo + value > maxAmmo)
                 ammo = maxAmmo;
             else
-                ammo += value; }
+                ammo += value;
+        }
 
     }
 
