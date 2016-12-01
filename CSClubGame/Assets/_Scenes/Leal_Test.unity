@@ -834,6 +834,8 @@ MonoBehaviour:
   - {fileID: 1000407391}
   enemy: {fileID: 1000013682263354, guid: a802a3a6921935c4ea8dcf30f3ff83a9, type: 2}
   spawnCooldown: 10
+  multipleWave: 0
+  NumWaves: 0
 --- !u!61 &178571048
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9992,6 +9994,48 @@ MeshFilter:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 38905eedc2fe93347831d9ed264a7912, type: 3}
   m_PrefabInternal: {fileID: 1309165853}
+--- !u!1001 &1491996357
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4000010008554036, guid: 170e4239438cc4054af8ebb97a5c6150, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 8.889353
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010008554036, guid: 170e4239438cc4054af8ebb97a5c6150, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.8787333
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010008554036, guid: 170e4239438cc4054af8ebb97a5c6150, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 59.29014
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010008554036, guid: 170e4239438cc4054af8ebb97a5c6150, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010008554036, guid: 170e4239438cc4054af8ebb97a5c6150, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010008554036, guid: 170e4239438cc4054af8ebb97a5c6150, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010008554036, guid: 170e4239438cc4054af8ebb97a5c6150, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010008554036, guid: 170e4239438cc4054af8ebb97a5c6150, type: 2}
+      propertyPath: m_RootOrder
+      value: 19
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 170e4239438cc4054af8ebb97a5c6150, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1495401009 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1000013682263354, guid: a802a3a6921935c4ea8dcf30f3ff83a9,
@@ -12444,6 +12488,8 @@ MonoBehaviour:
   - {fileID: 637227149}
   enemy: {fileID: 1000013682263354, guid: a802a3a6921935c4ea8dcf30f3ff83a9, type: 2}
   spawnCooldown: 10
+  multipleWave: 0
+  NumWaves: 0
 --- !u!61 &1937273623
 BoxCollider2D:
   m_ObjectHideFlags: 0
