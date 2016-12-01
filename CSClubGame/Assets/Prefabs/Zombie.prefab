@@ -209,7 +209,7 @@ MonoBehaviour:
   deadZombie: {fileID: 1000010579206802, guid: 6244e05d74394534ea44af8bd63017f5, type: 2}
   expOrb: {fileID: 1000012765999876, guid: d089b0a57bfb9b04689ddf8b383b3af0, type: 2}
   damageTakenNumber: {fileID: 0}
-  enemySightRangeCollider: {fileID: 0}
+  enemySightRangeCollider: {fileID: 58000013959532488}
   moveArgSpeedModifier: 0.5
   zMelee: {fileID: 1000013296664402}
 --- !u!114 &114000014148520994

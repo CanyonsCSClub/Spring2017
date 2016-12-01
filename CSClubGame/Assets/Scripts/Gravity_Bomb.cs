@@ -5,10 +5,16 @@ public class Gravity_Bomb : MonoBehaviour {
 
 	public CircleCollider2D bombRadius;
 	private float bombColliderRadius;
+
+    private float gravityStr = 100f;
+
+    private float durationTime = 5f;
+
 	void Start () {
 		bombRadius = GetComponent<CircleCollider2D> ();
 		bombColliderRadius = bombRadius.radius;
-	}
+        Invoke("DurationEnd", durationTime);
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -28,7 +34,7 @@ public class Gravity_Bomb : MonoBehaviour {
 				//Debug.Log ((entering2D.gameObject.transform.position - transform.position)
 				//* (bombColliderRadius - distance) * Time.smoothDeltaTime);
 				entering2D.gameObject.GetComponent<Rigidbody2D> ().AddForce ((entering2D.gameObject.transform.position - transform.position)
-				* -400 * (bombColliderRadius - distance) * Time.smoothDeltaTime);
+				* gravityStr * (bombColliderRadius - distance) * Time.smoothDeltaTime);
 			}
 		}
 	}
@@ -46,9 +52,15 @@ public class Gravity_Bomb : MonoBehaviour {
 			//	*(bombColliderRadius - distance) * Time.smoothDeltaTime);
 			
 			staying2D.gameObject.GetComponent<Rigidbody2D>().AddForce((staying2D.gameObject.transform.position - transform.position)
-				*-400*(bombColliderRadius - distance) * Time.smoothDeltaTime);
+				* gravityStr * (bombColliderRadius - distance) * Time.smoothDeltaTime);
 		}
 	
 	}
+
+    void DurationEnd()
+    {
+        Debug.Log("Gravity Bomb ended.");
+        Destroy(gameObject);
+    }
 
 }

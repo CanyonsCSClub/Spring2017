@@ -4,30 +4,51 @@ using System.Collections;
 public class FactoryBoss : Enemy
 {
 
-    AIWeapon weapon;
+    BossWeapon1 weapon;
+    BossWeapon2 rocket;
     public Transform shotSpawn;
+    public Transform rocketSpawn;
 
-    private int damage = 5;
-    private float sight = 20f;
-    private float range = 20f;
-    private float weaponVelocity = 500f;
-    private float fireRate = 0.5f;
-    private int health = 500;
+    public GameObject [] waypoints;
+
+    public GameObject bosstarget;
+
+    private Vector3[] vectorWaypoints;
+
+    private int setdamage = 5;
+    private float setsight = 20f;
+    private float setrange = 20f;
+    private float setweaponVelocity = 500f;
+    private float setfireRate = 0.5f;
+    private int sethealth = 500;
+
+    private float moveTime = 50f;
 
     void Start()
     {
-        ConfigEnemy("Drone Boss", 1, true, range, sight, 10, health, 5, damage, fireRate, 5);
+        ConfigEnemy("Drone Boss", 1, true, setrange, setsight, 10, sethealth, 5, setdamage, setfireRate, 5);
         //enemySightRangeCollider = GetComponent<CircleCollider2D> ();
         //enemySightRangeCollider.radius = newRadius;
-        weapon = new AIWeapon(this.gameObject);
-        weapon.setPerm(this.damage, this.range, this.weaponVelocity, this.fireRate);
+        weapon = new BossWeapon1(this.gameObject);
+        rocket = new BossWeapon2(this.gameObject);
+        weapon.setPerm(this.setdamage, this.setrange, this.setweaponVelocity, this.setfireRate);
         this.sightLine = 20;
+        convertGObj2Vector3();
+    }
+
+    void Update()
+    {
+        Attack(getPlayerInRange());
 
     }
 
+
     public override void Move()
     {
-        
+        if (bosstarget == null)
+            return;
+        transform.position = Vector3.MoveTowards(transform.position,
+                bosstarget.transform.position, moveArgSpeedModifier * speed * Time.deltaTime);
     }
 
     public override void Attack(GameObject currentTarget)
@@ -38,7 +59,8 @@ public class FactoryBoss : Enemy
             return;
         //if (weapon == null)
         //return;
-
+        if (rocketSpawn != null)
+            rocket.Attack(rocketSpawn);
 
         if (shotSpawn != null)
             weapon.Attack(shotSpawn);
@@ -46,8 +68,29 @@ public class FactoryBoss : Enemy
             Debug.Log("shotSpawn null");
     }
 
-    void Update()
+    public override void TakeDamage(int damageTaken, GameObject GO)
     {
-        Attack(getPlayerInRange());
+
+        base.TakeDamage(damageTaken, GO);
+
+        Debug.Log("Boss Health: " + health);
     }
+
+    void convertGObj2Vector3()
+    {
+        int index = 0;
+        vectorWaypoints = new Vector3[waypoints.Length];
+        foreach(GameObject gobj in waypoints)
+        {
+            Debug.Log("Getting waypoint @ " + gobj.transform.position);
+            this.vectorWaypoints[index] = gobj.transform.position;
+            index++;
+        }
+    }
+
+    public void setTarget(GameObject gobj)
+    {
+        this.bosstarget = gobj;
+    }
+
 }
