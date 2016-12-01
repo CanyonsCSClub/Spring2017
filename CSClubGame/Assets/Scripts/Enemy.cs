@@ -127,7 +127,7 @@ public class Enemy : MonoBehaviour{
 	/// </summary>
 	/// <param name="PIR">Player In Range GameObject.</param>
 	/// <param name="AGGRO">AggroOnPlayer GameObject.</param>
-	private void Move(GameObject PIR,GameObject AGGRO){
+	public virtual void Move(GameObject PIR,GameObject AGGRO){
 		//Debug.Log ("PIR: " + PIR + "    AGGRO: " + AGGRO);
 		float distanceToAGGRO = -1;
 		if (AGGRO != null) {
@@ -157,7 +157,6 @@ public class Enemy : MonoBehaviour{
 		} else {
 			Move ();
 		}
-		
 	}
 
 	public virtual void Move(){// " Ai " movement

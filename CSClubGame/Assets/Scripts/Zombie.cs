@@ -10,7 +10,7 @@ public class Zombie : Enemy{
 	}
 
 	void Start(){
-		ConfigEnemy ("Zombie", 1, true, 5, 7, 10, 100, 5, 5, 5, 5);
+		ConfigEnemy ("Zombie", 1, true, 5, 7, 10, 60, 5, 5, 5, 5);
         //enemySightRangeCollider = GetComponent<CircleCollider2D> ();
         //enemySightRangeCollider.radius = newRadius;
 

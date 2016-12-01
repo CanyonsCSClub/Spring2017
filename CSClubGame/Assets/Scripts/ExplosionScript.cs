@@ -22,6 +22,10 @@ public class ExplosionScript : MonoBehaviour {
     {
         if (drops == null)
             return;
+
+        if (drops.Length == 0)
+            return; 
+
         float randomNum = Random.value;
         int dropIndex = (int)(randomNum * ((float)drops.Length));
         Debug.Log("Dropping item #" + dropIndex + " RandomNum=" + randomNum + " " + (randomNum * ((float)drops.Length)) + " drops#" + drops.Length);

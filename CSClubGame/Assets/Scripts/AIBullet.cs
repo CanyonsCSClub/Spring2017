@@ -118,7 +118,7 @@ public class AIBullet : MonoBehaviour
         {
             if(tag.Contains(target))
             {
-                Debug.Log("Valid Tag" + tag);
+                //Debug.Log("Valid Tag " + tag);
                 isValid = true;
                 break;
             }
