@@ -28,7 +28,7 @@ public class AIBullet : MonoBehaviour
         start = transform.position;
         bulletBody = GetComponent<Rigidbody2D>();
         bulletBody.AddForce(gameObject.transform.up * speed);
-        Debug.Log("AI bullet speed " + speed);
+        //Debug.Log("AI bullet speed " + speed);
         //what is this for?
         if (isPiercing == null)
             isPiercing = false;
@@ -49,7 +49,7 @@ public class AIBullet : MonoBehaviour
         {
             // Vector3 bloodPosDelta = new Vector3(0, 0, 0.5f);
             // Instantiate(bloodSplatter, target.transform.position + bloodPosDelta, target.transform.rotation);
-            Debug.Log(damage);
+            //Debug.Log(damage);
             targetObject.GetComponent<Player>().TakeDamage(damage, playerID);
 
             //Vector3 bloodPosDelta = new Vector3(0, 0, 0.5f);

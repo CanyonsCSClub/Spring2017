@@ -63,7 +63,7 @@ public class SubMachineGun : RangedWeapon
 
             nextFire = Time.time + fireRate;
             BulletSpawn(shot, bulletSpawn);          //change to charge if its a charge up attack
-            Debug.Log(string.Format("Firing: {0}/{1} : {2}", currentMagazine, magazineSize, ammoCount));
+            //Debug.Log(string.Format("Firing: {0}/{1} : {2}", currentMagazine, magazineSize, ammoCount));
         }
     }
 
