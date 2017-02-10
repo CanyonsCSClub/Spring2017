@@ -12,7 +12,9 @@ Guide to how to use GitHub is here: https://guides.github.com/
 Tools needed.
 
 Visual Studio   - https://beta.visualstudio.com/downloads/ Or use MonoDevelop.
+    
     MonoDevelop is good from those who use Apple, because it comes with Unity (below)
+
 Unity           - https://unity3d.com/unity 
 
 
