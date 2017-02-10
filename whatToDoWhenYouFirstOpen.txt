@@ -19,3 +19,5 @@ others can follow if they edit it later.
 So what next: 
 go on github and create your own branch. This is were you will submit all your code.
 
+then, start coding and start creating. good luck y'all - Chris 
+
