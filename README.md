@@ -1,7 +1,7 @@
 # canyonsCSclub
 Canyons CS Club Program
 
-Hello 2016 Club Members!
+Hello 2017 Club Members!
 
 This is the depot we will be using to upload, merge, branch and distribute our code.  
 
@@ -12,7 +12,7 @@ Guide to how to use GitHub is here: https://guides.github.com/
 Tools needed.
 
 Visual Studio   - https://beta.visualstudio.com/downloads/ Or use MonoDevelop
-
+    MonoDevelop is good from those who use Apple, because it comes with Unity (below)
 Unity           - https://unity3d.com/unity 
 
 
@@ -30,4 +30,4 @@ GitHub Desktop  - https://github.com/integrations/github-desktop (Easier way to 
 Paint.net       - http://www.getpaint.net/index.html (If you don't have Adobe)
 
 
-If you have any questions be sure to ask me at tabui@my.canyons.edu
+If you have any questions be sure to ask me at chris.leal@outlook.com
