@@ -24,10 +24,11 @@ GitHub Desktop  - https://github.com/integrations/github-desktop (Easier way to 
 
 1) Download:  https://desktop.github.com/ <p>
 2) Do the Tutorial. Delete Tutorial.<p>
-3) Go to: https://github.com/Tb64/canyonsCSclub<p>
+3) Go to: https://github.com/RealDealLea1/canyonsCSclub<p>
 4) Click on the Green "Clone or download" button, then select Open in Desktop<p>
 5) Click on the branch, and make a branch with your name.<p>
-6) Do all the edits to the project using this folder, and make a Pull Request when you want to share your work!<p>
+6) Click on Publish button in the upper right to commit your branch.<p>
+7) Do all the edits to the project using this folder, and make a Pull Request when you want to share your work!<p>
 
 Paint.net       - http://www.getpaint.net/index.html (If you don't have Adobe)
 
