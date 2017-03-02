@@ -1,0 +1,23 @@
+When you first open this project in unity the first thing you should do
+is create a new scene. 
+If you are unfimilair with unity here's how:
+  https://www.youtube.com/watch?v=qJtCJ-L7uP4
+Any changes you make or object you create will go in this scene.
+Reason why we do this is so that merging on the github side is alot easier.
+
+Also another note:
+If you are coding in an existing script make sure that you do note delete
+the original owners code. COMMENT IT OUT. In the real world doing this can get you in a lot of 
+trouble. Make sure to also comment any lines you add as well.
+
+If you are making a new script:
+here's how:
+  https://docs.unity3d.com/Manual/CreatingAndUsingScripts.html
+please make sure to somment your code at least a little bit so that
+others can follow if they edit it later.
+
+So what next: 
+go on github and create your own branch. This is were you will submit all your code.
+
+then, start coding and start creating. good luck y'all - Chris 
+
