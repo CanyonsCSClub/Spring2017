@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;//health slider
 
 public class FactoryBoss : Enemy
 {
@@ -24,6 +25,12 @@ public class FactoryBoss : Enemy
 
     private float moveTime = 50f;
 
+	//for the health slider.
+	public Color zeroHealthColor = Color.red;
+	public Color fullHealthColor = Color.green;
+	public Slider slider;
+	public Image fillImage;
+
     void Start()
     {
         ConfigEnemy("Drone Boss", 1, true, setrange, setsight, 10, sethealth, 5, setdamage, setfireRate, 5);
@@ -34,6 +41,7 @@ public class FactoryBoss : Enemy
         weapon.setPerm(this.setdamage, this.setrange, this.setweaponVelocity, this.setfireRate);
         this.sightLine = 20;
         convertGObj2Vector3();
+		SetHealthUI();
     }
 
     void Update()
@@ -74,7 +82,16 @@ public class FactoryBoss : Enemy
         base.TakeDamage(damageTaken, GO);
 
         Debug.Log("Boss Health: " + health);
+
+		SetHealthUI ();//health slider
+
     }
+
+	public void SetHealthUI(){//health slider
+		slider.value = health;
+		fillImage.color = Color.Lerp(Color.red, fullHealthColor, getHealthPercentage());
+
+	}
 
     void convertGObj2Vector3()
     {

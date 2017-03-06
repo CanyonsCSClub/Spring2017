@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Pause_Menu : MonoBehaviour {
 
@@ -28,12 +29,25 @@ public class Pause_Menu : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Escape)){
 			paused = !paused;
 		}
+		if (Input.GetKeyDown (KeyCode.R) && paused) {
+			Restart ();
+		}
+		if (Input.GetKeyDown (KeyCode.M) && paused) {
+			SceneManager.LoadScene ("MainMenu");
+		}
 	}
 
 	public void Resume(){
 		paused = false;
 	}
 
+	public void quitToMain(){
+		SceneManager.LoadScene ("MainMenu");
+	}
+
+	public void QTM(Scene s){
+		SceneManager.LoadScene (s.name);
+	}
 	//other options?
 
 	public void OpenSettings(){
@@ -43,8 +57,8 @@ public class Pause_Menu : MonoBehaviour {
 			//???
 	}
 
-	public void QuitToMain(){
-
+	public void Restart(){
+		Application.LoadLevel(Application.loadedLevel);
 	}
 }
 

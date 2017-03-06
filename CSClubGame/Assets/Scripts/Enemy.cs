@@ -4,6 +4,7 @@ using System.Collections;
 public class Enemy : MonoBehaviour{
 
 	public GameObject bloodSplatter;
+	public bool bloodOn;
 	public GameObject deadZombie;
 	public GameObject expOrb;
 	public GameObject damageTakenNumber;
@@ -113,6 +114,13 @@ public class Enemy : MonoBehaviour{
 	public GameObject getAggro(){
 		return aggroOnPlayer;
 	}
+
+	public float getHealthPercentage(){
+		//returns 0 -> 1
+		float hpPercentage = (float)health / (float)MAXHEALTH;
+
+		return hpPercentage;
+	}
 	#endregion
 	//End Mutators & Accessors_________________________________________________________
 
@@ -198,9 +206,12 @@ public class Enemy : MonoBehaviour{
 		//damage Taken numbers ..... (if we want em)
 		//Instantiate (damageTakenNumber, transform.position + new Vector3(0,0,1), transform.rotation);
 		if(timesDamaged%4 == 0 || damageTaken > MAXHEALTH/4){//limits the amount of blood on the screen at once
-            if(this.bloodSplatter != null)
-			    Instantiate(bloodSplatter,transform.position + new Vector3(0,0, .5f),transform.rotation);
+			if(this.bloodSplatter != null){
+				//if (bloodOn) {
+				//	Instantiate (bloodSplatter, transform.position + new Vector3 (0, 0, .5f), transform.rotation);
+				//}
 		//maybe you want sparks instead of blood for drones....eyes on you Prescott
+			}
 		}
 		if (health <= 0)
 			OnDeath();
