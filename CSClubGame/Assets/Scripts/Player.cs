@@ -10,7 +10,9 @@ public class Player : MonoBehaviour
     protected int playerLevel;
     protected Rigidbody2D PlayerRB2D;
     protected Animator anim;
-    protected int health { get; set; }
+	//was protected
+
+	public int health { get; set; }
     protected int BASE_HEALTH = 0;  //Perhaps we can overheal characters, base health will maintain original health value to limit or allow this feature
     protected float speed;
     protected bool alive;

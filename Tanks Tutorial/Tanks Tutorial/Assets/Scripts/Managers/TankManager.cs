@@ -2,6 +2,7 @@
 using UnityEngine;
 
 [Serializable]
+//saying to unity...when you have an instance of this you can see it in the inspector
 public class TankManager
 {
     public Color m_PlayerColor;            

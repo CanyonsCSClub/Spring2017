@@ -6,7 +6,7 @@ public class Pause_Menu : MonoBehaviour {
 
 	public bool paused = false;
 	public GameObject pauseMenu;
-	public GameObject HUD;
+	//public GameObject HUD;
 
 	// Use this for initialization
 	void Start () {
@@ -18,11 +18,11 @@ public class Pause_Menu : MonoBehaviour {
 		//turning the pause on and off
 		if (paused) {//on
 			Time.timeScale = 0f;
-			HUD.SetActive (false);//de-activates the HUD
+			//HUD.SetActive (false);//de-activates the HUD
 			pauseMenu.SetActive (true);
 		} else {//off
 			Time.timeScale = 1f;
-			HUD.SetActive (true);//re-activates the HUD
+			//HUD.SetActive (true);//re-activates the HUD
 			pauseMenu.SetActive (false);
 		}
 		//press the escape key to pause/un-pause

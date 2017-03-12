@@ -11,3 +11,5 @@ EditorBuildSettings:
     path: Assets/_Scenes/ZombieWave.unity
   - enabled: 1
     path: Assets/_Scenes/Factory.unity
+  - enabled: 1
+    path: Assets/_Scenes/MainMenu.unity
