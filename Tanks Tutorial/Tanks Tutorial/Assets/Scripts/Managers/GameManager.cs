@@ -11,7 +11,9 @@ public class GameManager : MonoBehaviour
     public CameraControl m_CameraControl;   
     public Text m_MessageText;              
     public GameObject m_TankPrefab;         
-	public TankManager[] m_Tanks; //the array of tank mangers           
+	public TankManager[] m_Tanks; //the array of tank mangers 
+	public GameObject pauseMenu;
+	private bool active = false;
 
 
     private int m_RoundNumber;              
@@ -30,6 +32,10 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(GameLoop());
     }
+
+	private void Update(){
+		
+	}
 
 
     private void SpawnAllTanks()
