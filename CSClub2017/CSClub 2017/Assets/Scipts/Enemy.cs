@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour {
 	//Components__________________________________
 	private Transform currentWaypoint;
 	private Rigidbody enemyBody;
+	private NavMeshAgent enemyNav;
 	//eventually the cone field of vision
 
 	private bool patrolling = true;
@@ -25,7 +26,8 @@ public class Enemy : MonoBehaviour {
 
 
 	void Start () {
-		enemyBody = GetComponent<Rigidbody> ();
+		//enemyBody = GetComponent<Rigidbody> ();
+		enemyNav = GetComponent<NavMeshAgent> ();
 	}
 	
 	// Update is called once per frame
@@ -42,6 +44,7 @@ public class Enemy : MonoBehaviour {
 
 	private void Patrol(){
 		Transform currentPos = this.transform;
+		Vector3 target;
 		if (currentPos.position.x == waypoints [waypointNum].position.x &&
 		    currentPos.position.z == waypoints [waypointNum].position.z) {
 			if (waypointNum >= waypoints.Length - 1) {
@@ -55,10 +58,13 @@ public class Enemy : MonoBehaviour {
 			} else {
 				waypointNum--;
 			}
-
-			MoveTo (waypoints [waypointNum]);
+			target = new Vector3 (waypoints [waypointNum].position.x, 
+				waypoints [waypointNum].position.y, waypoints [waypointNum].position.z);
+			enemyNav.SetDestination (target);
 		} else {
-			MoveTo (waypoints [waypointNum]);
+			target = new Vector3 (waypoints [waypointNum].position.x, 
+				waypoints [waypointNum].position.y, waypoints [waypointNum].position.z);
+			enemyNav.SetDestination (target);
 		}
 
 	}
