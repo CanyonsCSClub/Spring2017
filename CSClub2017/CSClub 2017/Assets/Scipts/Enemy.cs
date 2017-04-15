@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour {
 			//we talked about the enemy patroling versus staying in one place
 	private bool patrolComplete;
 	private int waypointNum = 0;
+	private bool looked;
 
 
 	#endregion
@@ -47,25 +48,52 @@ public class Enemy : MonoBehaviour {
 		Vector3 target;
 		if (currentPos.position.x == waypoints [waypointNum].position.x &&
 		    currentPos.position.z == waypoints [waypointNum].position.z) {
-			if (waypointNum >= waypoints.Length - 1) {
-				patrolComplete = true;
-			} else if (waypointNum == 0) {
-				patrolComplete = false;
-			}
 
-			if (patrolComplete == false) {
-				waypointNum++;
+			if (waypoints [waypointNum].gameObject.CompareTag ("LookWaypoint") && !looked) {
+				lookAtPoints (waypoints [waypointNum].gameObject);
 			} else {
-				waypointNum--;
+
+				if (waypointNum >= waypoints.Length - 1) {
+					patrolComplete = true;
+				} else if (waypointNum == 0) {
+					patrolComplete = false;
+				}
+
+				if (patrolComplete == false) {
+					waypointNum++;
+				} else {
+					waypointNum--;
+				}
+				target = new Vector3 (waypoints [waypointNum].position.x, 
+					waypoints [waypointNum].position.y, waypoints [waypointNum].position.z);
+				enemyNav.SetDestination (target);
 			}
-			target = new Vector3 (waypoints [waypointNum].position.x, 
-				waypoints [waypointNum].position.y, waypoints [waypointNum].position.z);
-			enemyNav.SetDestination (target);
 		} else {
 			target = new Vector3 (waypoints [waypointNum].position.x, 
 				waypoints [waypointNum].position.y, waypoints [waypointNum].position.z);
 			enemyNav.SetDestination (target);
 		}
+
+	}
+
+	 void lookAtPoints(GameObject gO){//gameobject containing the waypoint
+		if (gO != null) {
+			int i = 0;
+			Transform[] lookingSpots = gO.GetComponent<LookWaypoint> ().lookWaypoints;
+			float magnitude = Mathf.Sqrt (Mathf.Pow (lookingSpots [i].position.x, 2)
+			                + Mathf.Pow (lookingSpots [i].position.y, 2) 
+							+ Mathf.Pow (lookingSpots [i].position.z, 2));
+
+
+			transform.LookAt (lookingSpots [i]);
+
+		
+		}
+		
+	
+
+			
+
 
 	}
 
