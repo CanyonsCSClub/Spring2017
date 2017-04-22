@@ -1,0 +1,8 @@
+Fall 2016 Project Stored in "Fall2016" Branch
+https://github.com/RealDealLea1/canyonsCSclub/tree/Fall2016
+
+Folder found here:
+
+https://github.com/RealDealLea1/canyonsCSclub/tree/Fall2016/CSClubGameFA2016/Assets
+
+To restore branch, do a pull requestion on the Fall 2016 Branch
