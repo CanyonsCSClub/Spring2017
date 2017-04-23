@@ -39,7 +39,6 @@ public class PlayerControl : MonoBehaviour
 
 	void Start() // Used a tutorial, hopefully going to be expanding on this method to suit the game's needs and funtionalities.
 	{
-		Cursor.visible = false;
 		rb = GetComponent<Rigidbody>(); // Getting the Rigidbody Component from Unity. (My guess)
 	}
 
@@ -64,35 +63,17 @@ public class PlayerControl : MonoBehaviour
 
 	void PlayerMovement()
 	{
-		float xAxis 	= Input.GetAxis("Horizontal"); // Declaring xAxis and assigning the Player's position along the x-axis to it. (My guess)
-		float zAxis 	= Input.GetAxis("Vertical"); // Declaring zAxis and assigning the Player's position along the z-axis to it. (My guess)
-		//Debug.Log( "x: " + xAxis + " z: " + zAxis);
+		float xAxis = Input.GetAxis("Horizontal"); // Declaring xAxis and assigning the Player's position along the x-axis to it. (My guess)
+		float zAxis = Input.GetAxis("Vertical"); // Declaring zAxis and assigning the Player's position along the z-axis to it. (My guess)
+		Debug.Log( "x: " + xAxis + " z: " + zAxis);
 
-		//Converting EularAngles to Radians, Adding 90 degrees for Left Right Radian converting
-		float radiansLR 	= ((mainCamera.transform.rotation.eulerAngles.y  + 90) * Mathf.PI) / 180f ;
-		
-		//Mathf uses Radians only!
-		float modCos 		= Mathf.Cos (radians);
-		float modSin 		= Mathf.Sin (radians);
-		
-		float modCosLR 	= Mathf.Cos (radiansLR);
-		float modSinLR 	= Mathf.Sin (radiansLR);
-		
-		float newXDirec 	= zAxis * modSin 	+  xAxis * modSinLR; 
-		float newZDirec 	= zAxis * modCos 	+ xAxis * modCosLR; 
+		float newXDirec = xAxis * Mathf.Cos (mainCamera.transform.rotation.y) + zAxis * Mathf.Sin (mainCamera.transform.rotation.y);
+		float newZDirec = xAxis * Mathf.Sin (mainCamera.transform.rotation.y) - zAxis * Mathf.Cos (mainCamera.transform.rotation.y);
 
-		//Debug.Log( "x: " + modCos + " z: " + modSin + " Cam: " +  mainCamera.transform.rotation.eulerAngles.y 
-		//	+  " Cam2: " +  radians  + " Pos: " + transform.position.x + " " + transform.position.z);
-		
-		//Debug.Log( "x: " + newXDirec + " z: " + newZDirec);
-		//Debug.Log( "Cam Rot: " + mainCamera.transform.rotation.eulerAngles.y);
-		
 		Vector3 movement = new Vector3(newXDirec, 0f, newZDirec) * speed * Time.deltaTime;
-		
-		//Assigning the player's movement to the movement variable. (My guess)
+					// Assigning the player's movement to the movement variable. (My guess)
 
 		//transform.position += transform.forward * xAxis + transform.forward * zAxis; Another way to make the player move, expect it doesn't allow the player to strafe sideways left and right.
-
 		rb.MovePosition(transform.position + movement); // Adding player's input movement to the new position, allowing the player to move. (My guess)
 	}
 
