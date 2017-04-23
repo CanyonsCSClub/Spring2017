@@ -69,6 +69,7 @@ public class PlayerControl : MonoBehaviour
 		//Debug.Log( "x: " + xAxis + " z: " + zAxis);
 
 		//Converting EularAngles to Radians, Adding 90 degrees for Left Right Radian converting
+		float radians		= (mainCamera.transform.rotation.eulerAngles.y * Mathf.PI) / 180f ;
 		float radiansLR 	= ((mainCamera.transform.rotation.eulerAngles.y  + 90) * Mathf.PI) / 180f ;
 		
 		//Mathf uses Radians only!
