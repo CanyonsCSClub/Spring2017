@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour {
 	//Components__________________________________
 	private Transform currentWaypoint;
 	private Rigidbody enemyBody;
-	private UnityEngine.AI.NavMeshAgent enemyNav;
+	private NavMeshAgent enemyNav;
 	//eventually the cone field of vision
 
 	private bool patrolling = true;
@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour {
 
 	void Start () {
 		//enemyBody = GetComponent<Rigidbody> ();
-		enemyNav = GetComponent<UnityEngine.AI.NavMeshAgent> ();
+		enemyNav = GetComponent<NavMeshAgent> ();
 	}
 	
 	// Update is called once per frame
