@@ -1,4 +1,6 @@
 # canyonsCSclub
+
+### CLUB MEMBERS, THIS REPO HAS MOVED TO THE ORGANIZATION AT https://github.com/CanyonsCSClub 
 Canyons CS Club Program
 
 Hello 2017 Club Members!
