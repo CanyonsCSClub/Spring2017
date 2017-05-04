@@ -35,18 +35,22 @@ public class PlayerControl : MonoBehaviour
 	public int minVertical = -90; // Controls the minimum value along the vertical axis that the player can look.
 
 	public Camera mainCamera;
+	public Light flashlight;
+	private bool lightOn = false;
 
-
-	void Start() // Used a tutorial, hopefully going to be expanding on this method to suit the game's needs and funtionalities.
+	void Start() 
 	{
 		Cursor.visible = false;
-		rb = GetComponent<Rigidbody>(); // Getting the Rigidbody Component from Unity. (My guess)
+		rb = GetComponent<Rigidbody>();
 	}
 
 
 	private void Update()
 	{
-
+		if (Input.GetKeyDown(KeyCode.F)) {
+			lightOn = !lightOn;
+		}
+		flashlight.enabled = lightOn;
 	} 
 
 	// Update is called once per frame
