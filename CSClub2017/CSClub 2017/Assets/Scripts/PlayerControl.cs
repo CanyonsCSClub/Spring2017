@@ -19,34 +19,40 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
 
-	public float speed = 3; // Declaring a variable that holds the player's speed.
-	private Rigidbody rb; // Declaring a Rigidbody variable.
+	public float speed = 3; 						// Declaring a variable that holds the player's speed.
+	private Rigidbody rb; 							// Declaring a Rigidbody variable.
 
-	float xRotationV = 0.0f; // The velocity along the x-axis. SmoothDamp function requires you to have a saved velocity variable.
-	float yRotationV = 0.0f; // The velocity along the y-axis. SmoothDamp function requires you to have a saved velocity variable.
-	float yRotation; // Variable that holds the value that the character rotates along the y-axis. (Where the player turns too)
-	float xRotation; // Variable that holds the value that the character rotates along the x-axis. (Where the player turns too)
-	public float currentRotationX; // Variable that holds the current value of the XRotation, prior to the camera movement.
-	public float currentRotationY; // Variable that holds the current value of the YRotation, priotr to the camera movement.
-	public float lookSmoothDamp = 0.1f; // Controls the smoothness of the player's look. (controls how smooth or jarring the camera is)
-	public float lookSensitivityX = 5.0f; // Variable that controls the sensitivity of the horizontal look.
-	public float lookSensitivityY = 5.0f; // Variable that controls the sensitivty of the vertical look.
-	public int maxVertical = 90; // Controls the maximum value along the vertical axis that the player can look.
-	public int minVertical = -90; // Controls the minimum value along the vertical axis that the player can look.
+	float xRotationV = 0.0f; 						// The velocity along the x-axis. SmoothDamp function requires you to have a saved velocity variable.
+	float yRotationV = 0.0f; 						// The velocity along the y-axis. SmoothDamp function requires you to have a saved velocity variable.
+	float yRotation; 									// Variable that holds the value that the character rotates along the y-axis. (Where the player turns too)
+	float xRotation; 									// Variable that holds the value that the character rotates along the x-axis. (Where the player turns too)
+	public float currentRotationX; 			// Variable that holds the current value of the XRotation, prior to the camera movement.
+	public float currentRotationY; 				// Variable that holds the current value of the YRotation, priotr to the camera movement.
+	public float lookSmoothDamp = 0.1f; 	// Controls the smoothness of the player's look. (controls how smooth or jarring the camera is)
+	public float lookSensitivityX = 5.0f; 	// Variable that controls the sensitivity of the horizontal look.
+	public float lookSensitivityY = 5.0f; 	// Variable that controls the sensitivty of the vertical look.
+	public int maxVertical = 90; 				// Controls the maximum value along the vertical axis that the player can look.
+	public int minVertical = -90; 				// Controls the minimum value along the vertical axis that the player can look.
 
 	public Camera mainCamera;
+	public Light flashlight;
+	private bool lightOn = false;
+	private bool mouseBound = true;
 
-
-	void Start() // Used a tutorial, hopefully going to be expanding on this method to suit the game's needs and funtionalities.
+	void Start() 
 	{
-		Cursor.visible = false;
-		rb = GetComponent<Rigidbody>(); // Getting the Rigidbody Component from Unity. (My guess)
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = !mouseBound;
+		rb = GetComponent<Rigidbody>();
 	}
 
 
 	private void Update()
 	{
-
+		if (Input.GetKeyDown(KeyCode.F)) {
+			lightOn = !lightOn;
+		}
+		flashlight.enabled = lightOn;
 	} 
 
 	// Update is called once per frame
@@ -58,6 +64,7 @@ public class PlayerControl : MonoBehaviour
 		//PlayerCrouch(); // Calls upon the PlayerCrouch() function.
 		//PlayerLean(); // Calls upon the PlayerLean() function.
 		//PlayerProne(); // Calls upon the PlayerProne() function.
+		PlayerPause();
 	}
 
 
@@ -110,6 +117,26 @@ public class PlayerControl : MonoBehaviour
 		currentRotationY = Mathf.SmoothDamp(currentRotationY, yRotation, ref yRotationV, lookSmoothDamp); // Gets the new y rotation on the y-axis by accounting for all of the variables that affect it's movement.
 
 		mainCamera.transform.rotation = Quaternion.Euler(currentRotationX, currentRotationY, 0); // Transforms from the previous rotations to the new rotations.
+	}
+	
+	void PlayerPause()
+	{
+		if (Input.GetButtonDown("Cancel")) // When user presses down on the left shift, speed is set to 8.
+		{
+			mouseBound = !mouseBound;
+			//Debug.Log("Escape " + mouseBound);
+			if(mouseBound)
+			{
+				Cursor.lockState = CursorLockMode.Confined;
+				Cursor.visible = !mouseBound;
+			}
+			else
+			{
+				Cursor.lockState = CursorLockMode.None;
+				Cursor.visible = !mouseBound;
+			}
+		}
+		
 	}
 
 

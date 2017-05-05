@@ -39,6 +39,7 @@ public class Enemy : MonoBehaviour {
 		if (patrolling) {
 			Patrol ();
 		}
+			
 		//check time of day...if "close" to morning....disappear 
 		//player in view? chase
 	}
