@@ -38,6 +38,9 @@ public class PlayerControl : MonoBehaviour
 	public Light flashlight;
 	private bool lightOn = false;
 	private bool mouseBound = true;
+    private bool lookEnabled = true;
+    private bool moveEnabled = true;
+    private bool isHiding = false;
 
 	void Start() 
 	{
@@ -71,6 +74,8 @@ public class PlayerControl : MonoBehaviour
 
 	void PlayerMovement()
 	{
+        if (!this.moveEnabled)
+            return;
 		float xAxis 	= Input.GetAxis("Horizontal"); // Declaring xAxis and assigning the Player's position along the x-axis to it. (My guess)
 		float zAxis 	= Input.GetAxis("Vertical"); // Declaring zAxis and assigning the Player's position along the z-axis to it. (My guess)
 		//Debug.Log( "x: " + xAxis + " z: " + zAxis);
@@ -108,6 +113,9 @@ public class PlayerControl : MonoBehaviour
 
 	void PlayerRotation()
 	{
+        if (!this.lookEnabled)
+            return;
+
 		xRotation += 0 - (Input.GetAxis("Mouse Y") * lookSensitivityY); // Stores the mouse's input along the y-axis (like a hinge, rotating left and right) and multiplying it to the lookSensitivity to get the value for the xRotation. Subtracting from zero corrects the axis from being inversed.
 		yRotation -= 0 - (Input.GetAxis("Mouse X") * lookSensitivityX); // Stores the mouse's input along the x-axis (like a hinge, rotating up and down) and multiplies it to the lookSensitivity to get the value for the yRotation. Subtracting from zero corrects the axis from being inversed.
 
@@ -121,19 +129,25 @@ public class PlayerControl : MonoBehaviour
 	
 	void PlayerPause()
 	{
-		if (Input.GetButtonDown("Cancel")) // When user presses down on the left shift, speed is set to 8.
+		if (Input.GetButtonDown("Cancel")) 
 		{
 			mouseBound = !mouseBound;
-			//Debug.Log("Escape " + mouseBound);
-			if(mouseBound)
+			Debug.Log("Escape " + mouseBound);
+			if(mouseBound)  
 			{
-				Cursor.lockState = CursorLockMode.Confined;
-				Cursor.visible = !mouseBound;
+                //In gameplay
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = !mouseBound;
+                this.MoveEnable();
+                this.LookEnable();
 			}
-			else
+			else 
 			{
-				Cursor.lockState = CursorLockMode.None;
+                //In menu
+                Cursor.lockState = CursorLockMode.None;
 				Cursor.visible = !mouseBound;
+                this.LookDisable();
+                this.MoveDisable();
 			}
 		}
 		
@@ -202,4 +216,59 @@ public class PlayerControl : MonoBehaviour
 	{
 		// Insert Player Prone Stuff. Might have to call upon the PlayerMovement function here to change the value of speed so it is slower when crawling.
 	}
+
+    /// <summary>
+    /// True when the player is Hiding
+    /// </summary>
+    /// <returns></returns>
+    public bool isHidden()
+    {
+        return isHiding;
+    }
+
+    //Player Enable/Disable
+
+    public void HideEnable()
+    {
+        this.isHiding = true;
+        Debug.Log("Player is Hiding");
+    }
+
+    public void HideDisable()
+    {
+        this.isHiding = false;
+        Debug.Log("Player is not Hiding");
+    }
+
+    /// <summary>
+    /// Enable Player Look controls
+    /// </summary>
+    public void LookEnable()
+    {
+        this.lookEnabled = true;
+    }
+
+    /// <summary>
+    /// Disable Player Look controls
+    /// </summary>
+    public void LookDisable()
+    {
+        this.lookEnabled = false;
+    } 
+
+    /// <summary>
+    /// Enable Player move controls
+    /// </summary>
+    public void MoveEnable()
+    {
+        this.moveEnabled = true;
+    }
+
+    /// <summary>
+    /// Disable Player move controls
+    /// </summary>
+    public void MoveDisable()
+    {
+        this.moveEnabled = false;
+    }
 }
