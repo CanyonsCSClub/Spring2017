@@ -1,7 +1,7 @@
 ﻿/*
  * 
  * Author: Spencer Wilson
- * Date: 3/14/2017 (Happy Pi-Day everyone!)
+ * Date: 5/5/2017, 11:28 pm
  * File: PlayerControl.cs
  * Description: This file contains the code that takes user input in order to control the character.
  * Disclaimer: A  majority of this code I have gotten from tutorials. I have not been simply copying them, I have been
@@ -62,10 +62,10 @@ public class PlayerControl : MonoBehaviour
 	void FixedUpdate() // Used a tutorial, hopefully going to be expanding on this method to suit the game's needs and functionalities.
 	{
 		PlayerRotation(); // Calls upon the PlayerRotation() function.
-		//PlayerRun(); // Calls upon the PlayerRun() function.
+		PlayerRun(); // Calls upon the PlayerRun() function.
 		PlayerMovement(); // Calls upon the PlayerMovement() function.
 		//PlayerCrouch(); // Calls upon the PlayerCrouch() function.
-		//PlayerLean(); // Calls upon the PlayerLean() function.
+		PlayerLean(); // Calls upon the PlayerLean() function.
 		//PlayerProne(); // Calls upon the PlayerProne() function.
 		PlayerPause();
 	}
@@ -192,27 +192,41 @@ public class PlayerControl : MonoBehaviour
 
 
 
-	void PlayerLean()
-	{
-		if (Input.GetKeyDown("q"))
-		{
-			// Insert Lean Left Code Here
-		}
-		if (Input.GetKeyUp("q"))
-		{
-			// Insert Return To Normal Posture Code Here
-		}
-		if (Input.GetKeyDown("e"))
-		{
-			// Insert Lean Right Code Here
-		}
-		if (Input.GetKeyUp("e"))
-		{
-			// Insert Return To Normal Posture Code Here
-		}
-	}
+    void PlayerLean()
+    {
+        float zRotation = 10f; // Holds value for rotation along the z-axis. 
+        float yRotation = 0; // Holds value for rotation along the y-axis.
+        const float MAXZROTATION = (3f * Mathf.PI) / 2f;
+        const float MINZROTATION = (Mathf.PI) / 4f;
+        float newXRotation;
 
-	void PlayerProne()
+        if (Input.GetKeyDown("q"))
+        {
+            Debug.Log("Lean Left");
+            transform.localEulerAngles = new Vector3(0f, 0f, zRotation);
+            // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
+        }
+        if (Input.GetKeyUp("q"))
+        {
+            Debug.Log("Upright position");
+            transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+            // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
+        }
+        if (Input.GetKeyDown("e"))
+        {
+            Debug.Log("Lean Right");
+            transform.localEulerAngles = new Vector3(0f, 0f, -zRotation);
+            // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
+        }
+        if (Input.GetKeyUp("e"))
+        {
+            Debug.Log("Upright position");
+            transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+            // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
+        }
+    }
+
+    void PlayerProne()
 	{
 		// Insert Player Prone Stuff. Might have to call upon the PlayerMovement function here to change the value of speed so it is slower when crawling.
 	}
