@@ -20,6 +20,7 @@ public class PlayerControl : MonoBehaviour
 {
 
 	public float speed = 3; // Declaring a variable that holds the player's speed.
+    public GameObject Camera;
 	private Rigidbody rb; // Declaring a Rigidbody variable.
 
 	//float xRotationV = 0.0f; // The velocity along the x-axis. SmoothDamp function requires you to have a saved velocity variable.
@@ -131,9 +132,12 @@ public class PlayerControl : MonoBehaviour
 
 	void PlayerLean()
 	{
+        float xRotation;
+
+
 		if (Input.GetKeyDown("q"))
 		{
-			// Insert Lean Left Code Here
+			//
 		}
 		if (Input.GetKeyUp("q"))
 		{
