@@ -1,12 +1,9 @@
 ﻿/*
  * 
  * Author: Spencer Wilson
- * Date: 5/5/2017, 11:28 pm
+ * Date: 5/6/2017, 11:28 pm
  * File: PlayerControl.cs
  * Description: This file contains the code that takes user input in order to control the character.
- * Disclaimer: A  majority of this code I have gotten from tutorials. I have not been simply copying them, I have been
- * trying to understand them and how they effect the gameplay mechanics in the Unity engine so that I may write code on my
- * own one day. Simply put, they are a learning aid and have helped guide me along the process of creation.
  * 
  */
 
@@ -194,8 +191,10 @@ public class PlayerControl : MonoBehaviour
 
     void PlayerLean()
     {
-        float zRotation = 10f; // Holds value for rotation along the z-axis. 
-        float yRotation = 0; // Holds value for rotation along the y-axis.
+        float zBodyRotation = 10f; // Holds value for rotation along the z-axis. 
+        float yBodyRotation = 0; // Holds value for rotation along the y-axis.
+        float zHeadRotation;
+        float yHeadRotation;
         const float MAXZROTATION = (3f * Mathf.PI) / 2f;
         const float MINZROTATION = (Mathf.PI) / 4f;
         float newXRotation;
@@ -203,19 +202,23 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetKeyDown("q"))
         {
             Debug.Log("Lean Left");
-            transform.localEulerAngles = new Vector3(0f, 0f, zRotation);
+
+            transform.Rotate(0f, Time.deltaTime * (1 / 4), 10f);
+            //transform.localEulerAngles = new Vector3(0f, 0f, zBodyRotation); // Leans the "body" (a.k.a the capsule) to the left 10 degrees.
+            //Camera.transform.localEulerAngles = new Vector3(0f, 0f, zRotation); // Leans the "head" (a.k.a the camera) to simulate head peeking while leaning.
             // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
         }
         if (Input.GetKeyUp("q"))
         {
             Debug.Log("Upright position");
-            transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+            transform.Rotate(0f, 0f, -10f);
+            //transform.localEulerAngles = new Vector3(0f, 0f, 0f);
             // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
         }
         if (Input.GetKeyDown("e"))
         {
             Debug.Log("Lean Right");
-            transform.localEulerAngles = new Vector3(0f, 0f, -zRotation);
+            transform.localEulerAngles = new Vector3(0f, 0f, -zBodyRotation);
             // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
         }
         if (Input.GetKeyUp("e"))
