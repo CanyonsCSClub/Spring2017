@@ -1,49 +1,59 @@
-﻿using UnityEngine;
+﻿/* Author: Gerardo Bonnet
+ * Date: 5/5/17
+ */
+ using UnityEngine;
 using System.Collections;
 
-public class radioScript : MonoBehaviour {
+//Description: when a Cassette object is inserted to the Radio, audio output changes to AudioSource of Cassette.
+/*at the moment, this script holds placeholder methods to simulate Cassette objects being inserted, 
+and therefore must be adapted to implement storage of Cassette GameObjects
+    */
 
-	public GameObject cassette;
+public class radioScript : MonoBehaviour
+{
 
-	private AudioSource radioOut; //to be assigned audio from cassette objects
+		public GameObject cassette;  // inserted cassettes placed here
+		private AudioSource radioOut; //to be assigned audio from cassette objects
 
-	void Start () 
-	{
-		radioOut = GetComponent<AudioSource> (); // assigns radio output
-		//radioOut = cass.GetComponent<AudioSource>();
-	}
-
-	void Update () 
-	{
-/*		if (Input.GetKeyUp (KeyCode.E)) {
-			radioOut.enabled = false; 
-			casette = null;
-				}
-		*/
-		if (Input.GetKeyUp (KeyCode.Space)) {
-						radioOut.enabled = !radioOut.enabled;
-				}
-
-/*		if (Input.GetKeyUp (KeyCode.Space)) { //reads UI of Space key// turns radio output On and Off
-		
-						cassette.GetComponent<AudioSource> ().enabled = !cassette.GetComponent<AudioSource>().enabled;
-				}
-*/		
-		
-		if (Input.GetKeyUp (KeyCode.T)) {
-			cassette = GameObject.Find ("Casette");
-			radioOut = cassette.GetComponent<AudioSource>();
-			Debug.Log ("casette");
+		void Start ()
+		{
+				radioOut = GetComponent<AudioSource> (); // assigns radio output
 		}
 
-		if (Input.GetKeyUp (KeyCode.R)) {
-			cassette = GameObject.Find ("Casette_R");
-			radioOut = cassette.GetComponent<AudioSource>();
-			Debug.Log ("casette_R");
+		void Update ()
+		{
+
+				if (Input.GetKeyUp (KeyCode.Space)) {  //turns radio on and off
+						radioOut.enabled = !radioOut.enabled;
+			Debug.Log ("Radio on/off Toggled: " + radioOut.enabled);
 				}
-	}
+		
+				if (Input.GetKeyUp (KeyCode.E)) {   //ejects current cassette
+						radioOut.enabled = false;
+						radioOut = GetComponent<AudioSource> (); 
+						cassette = null;  // needs to place cassette in player inventory (?)
+			Debug.Log ("cassette ejected.  Cassette content: " + cassette);
+				}
+		
+				if (Input.GetKeyUp (KeyCode.T)) { //insert a cassette  -- PLACEHOLDER TO SIMULATE GAMEPLAY
+						cassette = GameObject.Find ("Cassette"); //needs to remove cassette from player inventory (?)
+						cassetteInput ();
+						Debug.Log (cassette + " - Bramble Blast inserted");
+				}
+
+				if (Input.GetKeyUp (KeyCode.R)) {  //insert other cassette --- PLACEHOLDER TO SIMULATE GAMEPLAY
+						cassette = GameObject.Find ("Cassette_R"); //needs to remove cassette from player inventory(?)
+						cassetteInput ();
+						Debug.Log (cassette + " - Batman Theme inserted");
+				}
+		}
+
+		void cassetteInput ()  //changes audio output
+		{
+				radioOut.enabled = false;
+				radioOut = cassette.GetComponent<AudioSource> ();
+		}
+
 }
 
-//set to shift cassette audio to radioOut when cassette inserted
 //add cassette insertion and removal
-//default to original static without casette
