@@ -6,7 +6,7 @@ public class SetSunLight : MonoBehaviour {
 
     Material sky;
 
-    //public Transform stars;
+    public Transform stars;
     //public Transform moon; 
 
 	// Use this for initialization
@@ -16,7 +16,7 @@ public class SetSunLight : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //stars.transform.rotation = transform.rotation;
+        stars.transform.rotation = transform.rotation;
         //moon.transform.rotation = transform.rotation;
 	}
 }
