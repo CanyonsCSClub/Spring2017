@@ -15,15 +15,16 @@ public class ItemStore : MonoBehaviour
         // Write input stream that stores the object's tag in the string tagStr 
         // ^ NEI on the objects to do this 
 
-        GameObject[] nightStand; 
-        if (nightStand.length == 0) 
-        {
-            nightStand[0] = GameObject.FindGameObjectsWithTag(tagStr); // Stores the object the user is holding in the nightStand array 
-        }
-        else
-        {
-            playerArray[0] = GameObject.FindGameObjectsWithTag(tagStr); // Stores the object in the nightStand array to the playerArray (or whatever the player array is called) 
-        }
+	//Removed Code, it is broken. 
+        //GameObject[] nightStand; 
+        //if (nightStand.length == 0) 
+        //{
+        //    nightStand[0] = GameObject.FindGameObjectsWithTag(tagStr); // Stores the object the user is holding in the nightStand array 
+        //}
+        //else
+        //{
+        //    playerArray[0] = GameObject.FindGameObjectsWithTag(tagStr); // Stores the object in the nightStand array to the playerArray (or whatever the player array is called) 
+        //}
         
     }
 	
