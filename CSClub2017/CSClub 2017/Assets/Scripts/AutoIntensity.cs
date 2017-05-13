@@ -4,10 +4,20 @@ using UnityEngine;
 
 public class AutoIntensity : MonoBehaviour {
 
+    public ParticleSystem stars;
+
+    /*
+    private ParticleSystem.Particle[] starParticles;
+    */
+
+    float sunAngle;
+    float starBrightness;
+    int maxStars;
+
     public Gradient nightDayColor;
     public float maxIntensity = 3f;
     public float minIntensity = 0f;
-    public float minPoint = -0.2f;
+    public float minPoint = -0.1f;
 
     public float maxAmbient = 1f;
     public float minAmbient = 0f;
@@ -35,7 +45,14 @@ public class AutoIntensity : MonoBehaviour {
 	void Start () {
         mainLight = GetComponent<Light>();
         skyMat = RenderSettings.skybox;
-	}
+
+        if (stars == null)
+            stars = GetComponent<ParticleSystem>();
+        /*
+        if (starParticles == null || starParticles.Length < stars.maxParticles)
+            starParticles = new ParticleSystem.Particle[stars.maxParticles];
+         */
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -59,13 +76,35 @@ public class AutoIntensity : MonoBehaviour {
         i = ((dayAtmosphereThickness - nightAtmosphereThickness) * dot) + nightAtmosphereThickness;
         skyMat.SetFloat("_AtmosphereThickness", i);
 
-        if (dot > 0)
+        /*
+        sunAngle = dot * Mathf.PI;
+        starBrightness = Mathf.Sin(sunAngle + Mathf.PI);
+        maxStars = (int)(starBrightness * 1000f);
+        
+        if (maxStars < 0)
+            maxStars = 0;
+         */
+
+        if (dot > 0){
             transform.Rotate(dayRotateSpeed * Time.deltaTime * skySpeed);
-        else
+            stars.Stop();//
+        }
+        else{
             transform.Rotate(nightRotateSpeed * Time.deltaTime * skySpeed);
+            stars.Play();//
+        }
 
         if (Input.GetKeyDown(KeyCode.Q)) skySpeed *= 0.5f;
         if (Input.GetKeyDown(KeyCode.E)) skySpeed *= 2f;
 
 	}
+    /*
+    public void starIntensity()
+    {
+        if (stars == null)
+            return;
+
+        stars.SetParticles(starParticles, 0);
+    }
+    */
 }
