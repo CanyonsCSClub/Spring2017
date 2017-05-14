@@ -51,14 +51,12 @@ public class AutoIntensity : MonoBehaviour {
             Debug.Log("Stars not assigned");
             stars = GetComponent<ParticleSystem>();
         }
-<<<<<<< HEAD
             
-=======
+
         /*
         if (starParticles == null || starParticles.Length < stars.maxParticles)
             starParticles = new ParticleSystem.Particle[stars.maxParticles];
          */
->>>>>>> refs/remotes/origin/master
     }
 	
 	// Update is called once per frame
@@ -95,11 +93,7 @@ public class AutoIntensity : MonoBehaviour {
         if (dot > 0){
             transform.Rotate(dayRotateSpeed * Time.deltaTime * skySpeed);
             if (stars != null)
-<<<<<<< HEAD
-                stars.Stop();//
-=======
                 stars.Stop();
->>>>>>> refs/remotes/origin/master
         }
         else{
             transform.Rotate(nightRotateSpeed * Time.deltaTime * skySpeed);
