@@ -21,7 +21,9 @@ public class HideZone : MonoBehaviour {
 
         if(other.tag == "Player" && !other.GetComponent<PlayerControl>().isHidden())
         {
-            if(Door.GetComponent<MeshRenderer>().enabled)
+            if(Door != null && Door.GetComponent<MeshRenderer>().enabled)
+                other.GetComponent<PlayerControl>().HideEnable();
+            else
                 other.GetComponent<PlayerControl>().HideEnable();
         }
     }
