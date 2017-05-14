@@ -11,12 +11,15 @@ public class SetSunLight : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        if (stars == null)
+            Debug.Log("Stars not assigned");
         sky = RenderSettings.skybox;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        stars.transform.rotation = transform.rotation;
+        if(stars != null)
+            stars.transform.rotation = transform.rotation;
         //moon.transform.rotation = transform.rotation;
 	}
 }
