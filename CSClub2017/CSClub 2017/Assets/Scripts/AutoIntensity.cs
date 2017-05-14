@@ -47,7 +47,10 @@ public class AutoIntensity : MonoBehaviour {
         skyMat = RenderSettings.skybox;
 
         if (stars == null)
+        {
+            Debug.Log("Stars not assigned");
             stars = GetComponent<ParticleSystem>();
+        }
         /*
         if (starParticles == null || starParticles.Length < stars.maxParticles)
             starParticles = new ParticleSystem.Particle[stars.maxParticles];
@@ -87,11 +90,13 @@ public class AutoIntensity : MonoBehaviour {
 
         if (dot > 0){
             transform.Rotate(dayRotateSpeed * Time.deltaTime * skySpeed);
-            stars.Stop();//
+            if (stars != null)
+                stars.Stop();
         }
         else{
             transform.Rotate(nightRotateSpeed * Time.deltaTime * skySpeed);
-            stars.Play();//
+            if (stars != null)
+                stars.Play();//
         }
 
         if (Input.GetKeyDown(KeyCode.Q)) skySpeed *= 0.5f;
