@@ -15,20 +15,38 @@ Platform assembly: E:\GitHub\canyonsCSclub\Compiled\Spring2017\Horror_Data\Manag
 Loading E:\GitHub\canyonsCSclub\Compiled\Spring2017\Horror_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
 Platform assembly: E:\GitHub\canyonsCSclub\Compiled\Spring2017\Horror_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
 Loading E:\GitHub\canyonsCSclub\Compiled\Spring2017\Horror_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-- Completed reload, in  0.028 seconds
+- Completed reload, in  0.015 seconds
 Platform assembly: E:\GitHub\canyonsCSclub\Compiled\Spring2017\Horror_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: E:\GitHub\canyonsCSclub\Compiled\Spring2017\Horror_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1200 60Hz; virtual: 3520x1200 at -1600,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 0.822928 ms
+UnloadTime: 0.827782 ms
 Current Dir E:\GitHub\canyonsCSclub\Compiled\Spring2017
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Setting up 4 worker threads for Enlighten.
-  Thread -> id: 2f18 -> priority: 1 
-  Thread -> id: 3e34 -> priority: 1 
-  Thread -> id: 235c -> priority: 1 
-  Thread -> id: 2fc0 -> priority: 1 
+  Thread -> id: 1b8f8 -> priority: 1 
+  Thread -> id: 1ebd8 -> priority: 1 
+  Thread -> id: 1ea9c -> priority: 1 
+  Thread -> id: 1ebf8 -> priority: 1 
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 5.532093 ms
+
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 3434.
+Total: 5.722432 ms (FindLiveObjects: 0.114203 ms CreateObjectMapping: 0.047520 ms MarkObjects: 0.362538 ms  DeleteObjects: 5.197403 ms)
+
+trigger start
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+trigger start
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Escape False
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
