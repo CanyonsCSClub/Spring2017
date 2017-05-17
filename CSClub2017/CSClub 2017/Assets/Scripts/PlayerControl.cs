@@ -13,6 +13,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 
@@ -21,8 +22,9 @@ public class PlayerControl : MonoBehaviour
 
 	public float speed = 3; 						// Declaring a variable that holds the player's speed.
 	private Rigidbody rb; 							// Declaring a Rigidbody variable.
+    private Text player_ui_text;
 
-	float xRotationV = 0.0f; 						// The velocity along the x-axis. SmoothDamp function requires you to have a saved velocity variable.
+    float xRotationV = 0.0f; 						// The velocity along the x-axis. SmoothDamp function requires you to have a saved velocity variable.
 	float yRotationV = 0.0f; 						// The velocity along the y-axis. SmoothDamp function requires you to have a saved velocity variable.
 	float yRotation; 									// Variable that holds the value that the character rotates along the y-axis. (Where the player turns too)
 	float xRotation; 									// Variable that holds the value that the character rotates along the x-axis. (Where the player turns too)
@@ -36,17 +38,28 @@ public class PlayerControl : MonoBehaviour
 
 	public Camera mainCamera;
 	public Light flashlight;
+    public Shader EffectsShader;
 	private bool lightOn = false;
 	private bool mouseBound = true;
     private bool lookEnabled = true;
     private bool moveEnabled = true;
     private bool isHiding = false;
 
+    private float currentTimeScale;
+
 	void Start() 
 	{
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = !mouseBound;
 		rb = GetComponent<Rigidbody>();
+        this.player_ui_text = GetComponentInChildren<Canvas>().GetComponentInChildren<Text>();
+        currentTimeScale = Time.timeScale;
+
+        if(mainCamera != null && EffectsShader != null)
+        {
+            Debug.Log("Loading Custom Shaders");
+            mainCamera.SetReplacementShader(EffectsShader, "");
+        }
 	}
 
 
@@ -140,7 +153,9 @@ public class PlayerControl : MonoBehaviour
                 Cursor.visible = !mouseBound;
                 this.MoveEnable();
                 this.LookEnable();
-			}
+                UI_Clear_Text();
+                //Time.timeScale = currentTimeScale;
+            }
 			else 
 			{
                 //In menu
@@ -148,7 +163,9 @@ public class PlayerControl : MonoBehaviour
 				Cursor.visible = !mouseBound;
                 this.LookDisable();
                 this.MoveDisable();
-			}
+                UI_Set_Text("Menu Mode");
+                //Time.timeScale = 0.001f;
+            }
 		}
 		
 	}
@@ -270,5 +287,38 @@ public class PlayerControl : MonoBehaviour
     public void MoveDisable()
     {
         this.moveEnabled = false;
+    }
+
+    public void UI_Clear_Text()
+    {
+        if (this.player_ui_text != null)
+        {
+            this.player_ui_text.text = "";
+        }
+    }
+  
+
+
+    /********************************
+     *      Get/Set Functions
+     ********************************/
+
+
+    public void UI_Set_Text(string input)
+    {
+        if(this.player_ui_text != null)
+        {
+            this.player_ui_text.text = input;
+        }
+    }
+
+    public string UI_Get_Text()
+    {
+        if (this.player_ui_text != null)
+        {
+            return this.player_ui_text.text;
+        }
+
+        return "";
     }
 }
