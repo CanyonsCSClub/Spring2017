@@ -51,6 +51,8 @@ public class AutoIntensity : MonoBehaviour {
             Debug.Log("Stars not assigned");
             stars = GetComponent<ParticleSystem>();
         }
+            
+
         /*
         if (starParticles == null || starParticles.Length < stars.maxParticles)
             starParticles = new ParticleSystem.Particle[stars.maxParticles];

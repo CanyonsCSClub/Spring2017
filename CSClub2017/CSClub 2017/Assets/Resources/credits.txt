@@ -1,0 +1,7 @@
+https://canyonsCSclub.github.io/
+President: NAME
+Vice President: NAME
+Treasure: NAME
+CIC Rep: NAME
+Advisor: NAME
+Member: NAME

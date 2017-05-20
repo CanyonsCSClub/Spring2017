@@ -7,7 +7,8 @@ public class HideZone : MonoBehaviour {
     public GameObject Door;
 	// Use this for initialization
 	void Start () {
-		
+        if(Door == null)
+            Debug.Log("No object attached to Hide Zone");
 	}
 	
 	// Update is called once per frame
@@ -21,7 +22,9 @@ public class HideZone : MonoBehaviour {
 
         if(other.tag == "Player" && !other.GetComponent<PlayerControl>().isHidden())
         {
-            if(Door.GetComponent<MeshRenderer>().enabled)
+            if(Door == null)
+                other.GetComponent<PlayerControl>().HideEnable();
+            if (Door != null && !Door.GetComponent<OpenDoor>().isOpen())
                 other.GetComponent<PlayerControl>().HideEnable();
         }
     }
