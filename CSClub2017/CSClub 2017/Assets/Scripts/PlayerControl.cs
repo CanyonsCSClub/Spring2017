@@ -17,9 +17,6 @@ using UnityEngine.UI;
 public class PlayerControl : MonoBehaviour
 {
 
-    public GameObject pivotPoint; // Public GameObject pivotPoint holds the point of which the player rotates around when leaning.
-    float upRightPos; // Holds the upright position for the Player.
-
 	public float speed = 3; 						// Declaring a variable that holds the player's speed.
 	private Rigidbody rb; 							// Declaring a Rigidbody variable.
     private Text player_ui_text;
@@ -211,28 +208,42 @@ public class PlayerControl : MonoBehaviour
 
     void PlayerLean()
     {
+        float zBodyRotation = 10f; // Holds value for rotation along the z-axis. 
+        float yBodyRotation = 0; // Holds value for rotation along the y-axis.
+        float zHeadRotation;
+        float yHeadRotation;
+        const float MAXZROTATION = (3f * Mathf.PI) / 2f;
+        const float MINZROTATION = (Mathf.PI) / 4f;
+        float newXRotation;
 
-        if (Input.GetKeyDown("q")) // Leans player to the left when 'q' is pressed down on the keyboard.
+        if (Input.GetKeyDown("q"))
         {
             Debug.Log("Lean Left");
-            transform.Rotate(0f, 0f, 10f);
+
+            transform.Rotate(0f, Time.deltaTime * (1 / 4), 10f);
+            //transform.localEulerAngles = new Vector3(0f, 0f, zBodyRotation); // Leans the "body" (a.k.a the capsule) to the left 10 degrees.
+            //Camera.transform.localEulerAngles = new Vector3(0f, 0f, zRotation); // Leans the "head" (a.k.a the camera) to simulate head peeking while leaning.
+            // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
         }
-        if (Input.GetKeyUp("q")) // Reorients player upon releasing 'q' to a upright position.
+        if (Input.GetKeyUp("q"))
         {
             Debug.Log("Upright position");
             transform.Rotate(0f, 0f, -10f);
+            //transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+            // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
         }
-        if (Input.GetKeyDown("e")) // Leans player to the right when 'e' is pressed down on the keyboard.
+        if (Input.GetKeyDown("e"))
         {
             Debug.Log("Lean Right");
-            transform.Rotate(0f, 0f, -10f);
+            transform.localEulerAngles = new Vector3(0f, 0f, -zBodyRotation);
+            // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
         }
         if (Input.GetKeyUp("e"))
         {
-            Debug.Log("Upright position"); // Reorients player upon releasing 'e' to a upright position.
-            transform.Rotate(0f, 0f, 10f);
+            Debug.Log("Upright position");
+            transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+            // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
         }
-
     }
 
     void PlayerProne()
