@@ -1,7 +1,7 @@
 ﻿/*
  * 
  * Author: Spencer Wilson
- * Date: 5/6/2017, 11:28 pm
+ * Date: 5/31/2017, 7:10 pm
  * File: PlayerControl.cs
  * Description: This file contains the code that takes user input in order to control the character.
  * 
@@ -17,134 +17,138 @@ using UnityEngine.UI;
 public class PlayerControl : MonoBehaviour
 {
 
-	public float speed = 3; 						// Declaring a variable that holds the player's speed.
-	private Rigidbody rb; 							// Declaring a Rigidbody variable.
+    public float speed = 3;                         // Declaring a variable that holds the player's speed.
+    private Rigidbody rb; 							// Declaring a Rigidbody variable.
+    public GameObject pivotCen; // Area that the player rotates around when leaning.
     private Text player_ui_text;
 
-    float xRotationV = 0.0f; 						// The velocity along the x-axis. SmoothDamp function requires you to have a saved velocity variable.
-	float yRotationV = 0.0f; 						// The velocity along the y-axis. SmoothDamp function requires you to have a saved velocity variable.
-	float yRotation; 									// Variable that holds the value that the character rotates along the y-axis. (Where the player turns too)
-	float xRotation; 									// Variable that holds the value that the character rotates along the x-axis. (Where the player turns too)
-	public float currentRotationX; 			// Variable that holds the current value of the XRotation, prior to the camera movement.
-	public float currentRotationY; 				// Variable that holds the current value of the YRotation, priotr to the camera movement.
-	public float lookSmoothDamp = 0.1f; 	// Controls the smoothness of the player's look. (controls how smooth or jarring the camera is)
-	public float lookSensitivityX = 5.0f; 	// Variable that controls the sensitivity of the horizontal look.
-	public float lookSensitivityY = 5.0f; 	// Variable that controls the sensitivty of the vertical look.
-	public int maxVertical = 90; 				// Controls the maximum value along the vertical axis that the player can look.
-	public int minVertical = -90; 				// Controls the minimum value along the vertical axis that the player can look.
+    float xRotationV = 0.0f;                        // The velocity along the x-axis. SmoothDamp function requires you to have a saved velocity variable.
+    float yRotationV = 0.0f;                        // The velocity along the y-axis. SmoothDamp function requires you to have a saved velocity variable.
+    float yRotation;                                    // Variable that holds the value that the character rotates along the y-axis. (Where the player turns too)
+    float xRotation;                                    // Variable that holds the value that the character rotates along the x-axis. (Where the player turns too)
+    public float currentRotationX;          // Variable that holds the current value of the XRotation, prior to the camera movement.
+    public float currentRotationY;              // Variable that holds the current value of the YRotation, priotr to the camera movement.
+    public float lookSmoothDamp = 0.1f;     // Controls the smoothness of the player's look. (controls how smooth or jarring the camera is)
+    public float lookSensitivityX = 5.0f;   // Variable that controls the sensitivity of the horizontal look.
+    public float lookSensitivityY = 5.0f;   // Variable that controls the sensitivty of the vertical look.
+    public int maxVertical = 90;                // Controls the maximum value along the vertical axis that the player can look.
+    public int minVertical = -90;               // Controls the minimum value along the vertical axis that the player can look.
 
-	public Camera mainCamera;
-	public Light flashlight;
+    public Camera mainCamera;
+    public Light flashlight;
     public Shader EffectsShader;
-	private bool lightOn = false;
-	private bool mouseBound = true;
+    private bool lightOn = false;
+    private bool mouseBound = true;
     private bool lookEnabled = true;
     private bool moveEnabled = true;
     private bool isHiding = false;
 
     private float currentTimeScale;
 
-	void Start() 
-	{
-		Cursor.lockState = CursorLockMode.Locked;
-		Cursor.visible = !mouseBound;
-		rb = GetComponent<Rigidbody>();
+    void Start()
+    {
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = !mouseBound;
+        rb = GetComponent<Rigidbody>();
         this.player_ui_text = GetComponentInChildren<Canvas>().GetComponentInChildren<Text>();
         currentTimeScale = Time.timeScale;
 
-        if(mainCamera != null && EffectsShader != null)
+        if (mainCamera != null && EffectsShader != null)
         {
             Debug.Log("Loading Custom Shaders");
             mainCamera.SetReplacementShader(EffectsShader, "");
         }
-	}
+    }
 
 
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.F)) {
-			lightOn = !lightOn;
-		}
-		flashlight.enabled = lightOn;
-	} 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            lightOn = !lightOn;
+        }
+        flashlight.enabled = lightOn;
+    }
 
-	// Update is called once per frame
-	void FixedUpdate() // Used a tutorial, hopefully going to be expanding on this method to suit the game's needs and functionalities.
-	{
-		PlayerRotation(); // Calls upon the PlayerRotation() function.
-		PlayerRun(); // Calls upon the PlayerRun() function.
-		PlayerMovement(); // Calls upon the PlayerMovement() function.
-		//PlayerCrouch(); // Calls upon the PlayerCrouch() function.
-		PlayerLean(); // Calls upon the PlayerLean() function.
-		//PlayerProne(); // Calls upon the PlayerProne() function.
-		PlayerPause();
-	}
+    // Update is called once per frame
+    void FixedUpdate() // Used a tutorial, hopefully going to be expanding on this method to suit the game's needs and functionalities.
+    {
+        PlayerRotation(); // Calls upon the PlayerRotation() function.
+        PlayerRun(); // Calls upon the PlayerRun() function.
+        PlayerMovement(); // Calls upon the PlayerMovement() function.
+        //PlayerCrouch(); // Calls upon the PlayerCrouch() function.
+        PlayerLean(); // Calls upon the PlayerLean() function.
+        PlayerProne(); // Calls upon the PlayerProne() function.
+        PlayerPause();
+    }
 
 
 
-	void PlayerMovement()
-	{
+    void PlayerMovement()
+    {
         if (!this.moveEnabled)
             return;
-		float xAxis 	= Input.GetAxis("Horizontal"); // Declaring xAxis and assigning the Player's position along the x-axis to it. (My guess)
-		float zAxis 	= Input.GetAxis("Vertical"); // Declaring zAxis and assigning the Player's position along the z-axis to it. (My guess)
-		//Debug.Log( "x: " + xAxis + " z: " + zAxis);
+        float xAxis = Input.GetAxis("Horizontal"); // Declaring xAxis and assigning the Player's position along the x-axis to it. (My guess)
+        float zAxis = Input.GetAxis("Vertical"); // Declaring zAxis and assigning the Player's position along the z-axis to it. (My guess)
+                                                 //Debug.Log( "x: " + xAxis + " z: " + zAxis);
 
-		//Converting EularAngles to Radians, Adding 90 degrees for Left Right Radian converting
-		float radians		= (mainCamera.transform.rotation.eulerAngles.y * Mathf.PI) / 180f ;
-		float radiansLR 	= ((mainCamera.transform.rotation.eulerAngles.y  + 90) * Mathf.PI) / 180f ;
-		
-		//Mathf uses Radians only!
-		float modCos 		= Mathf.Cos (radians);
-		float modSin 		= Mathf.Sin (radians);
-		
-		float modCosLR 	= Mathf.Cos (radiansLR);
-		float modSinLR 	= Mathf.Sin (radiansLR);
-		
-		float newXDirec 	= zAxis * modSin 	+  xAxis * modSinLR; 
-		float newZDirec 	= zAxis * modCos 	+ xAxis * modCosLR; 
+        //Converting EularAngles to Radians, Adding 90 degrees for Left Right Radian converting
+        float radians = (mainCamera.transform.rotation.eulerAngles.y * Mathf.PI) / 180f;
+        float radiansLR = ((mainCamera.transform.rotation.eulerAngles.y + 90) * Mathf.PI) / 180f;
 
-		//Debug.Log( "x: " + modCos + " z: " + modSin + " Cam: " +  mainCamera.transform.rotation.eulerAngles.y 
-		//	+  " Cam2: " +  radians  + " Pos: " + transform.position.x + " " + transform.position.z);
-		
-		//Debug.Log( "x: " + newXDirec + " z: " + newZDirec);
-		//Debug.Log( "Cam Rot: " + mainCamera.transform.rotation.eulerAngles.y);
-		
-		Vector3 movement = new Vector3(newXDirec, 0f, newZDirec) * speed * Time.deltaTime;
-		
-		//Assigning the player's movement to the movement variable. (My guess)
+        //Mathf uses Radians only!
+        float modCos = Mathf.Cos(radians);
+        float modSin = Mathf.Sin(radians);
 
-		//transform.position += transform.forward * xAxis + transform.forward * zAxis; Another way to make the player move, expect it doesn't allow the player to strafe sideways left and right.
+        float modCosLR = Mathf.Cos(radiansLR);
+        float modSinLR = Mathf.Sin(radiansLR);
 
-		rb.MovePosition(transform.position + movement); // Adding player's input movement to the new position, allowing the player to move. (My guess)
-	}
+        float newXDirec = zAxis * modSin + xAxis * modSinLR;
+        float newZDirec = zAxis * modCos + xAxis * modCosLR;
+
+        //Debug.Log( "x: " + modCos + " z: " + modSin + " Cam: " +  mainCamera.transform.rotation.eulerAngles.y 
+        //	+  " Cam2: " +  radians  + " Pos: " + transform.position.x + " " + transform.position.z);
+
+        //Debug.Log( "x: " + newXDirec + " z: " + newZDirec);
+        //Debug.Log( "Cam Rot: " + mainCamera.transform.rotation.eulerAngles.y);
+
+        Vector3 movement = new Vector3(newXDirec, 0f, newZDirec) * speed * Time.deltaTime;
+
+        //Assigning the player's movement to the movement variable. (My guess)
+
+        //transform.position += transform.forward * xAxis + transform.forward * zAxis; Another way to make the player move, expect it doesn't allow the player to strafe sideways left and right.
+
+        rb.MovePosition(transform.position + movement); // Adding player's input movement to the new position, allowing the player to move. (My guess)
+    }
 
 
 
-	void PlayerRotation()
-	{
+    void PlayerRotation()
+    {
         if (!this.lookEnabled)
             return;
 
-		xRotation += 0 - (Input.GetAxis("Mouse Y") * lookSensitivityY); // Stores the mouse's input along the y-axis (like a hinge, rotating left and right) and multiplying it to the lookSensitivity to get the value for the xRotation. Subtracting from zero corrects the axis from being inversed.
-		yRotation -= 0 - (Input.GetAxis("Mouse X") * lookSensitivityX); // Stores the mouse's input along the x-axis (like a hinge, rotating up and down) and multiplies it to the lookSensitivity to get the value for the yRotation. Subtracting from zero corrects the axis from being inversed.
+        xRotation += 0 - (Input.GetAxis("Mouse Y") * lookSensitivityY); // Stores the mouse's input along the y-axis (like a hinge, rotating left and right) and multiplying it to the lookSensitivity to get the value for the xRotation. Subtracting from zero corrects the axis from being inversed.
+        yRotation -= 0 - (Input.GetAxis("Mouse X") * lookSensitivityX); // Stores the mouse's input along the x-axis (like a hinge, rotating up and down) and multiplies it to the lookSensitivity to get the value for the yRotation. Subtracting from zero corrects the axis from being inversed.
 
-		xRotation = Mathf.Clamp(xRotation, minVertical, maxVertical); // Makes sure the character has a realistic range of vertical head movement, clapms between minimumn and maximum. (Look Variable, minimum look, maximum look)
+        xRotation = Mathf.Clamp(xRotation, minVertical, maxVertical); // Makes sure the character has a realistic range of vertical head movement, clapms between minimumn and maximum. (Look Variable, minimum look, maximum look)
 
-		currentRotationX = Mathf.SmoothDamp(currentRotationX, xRotation, ref xRotationV, lookSmoothDamp); // Gets the new x rotation on the x-axis by accounting for all of the variables that affect it's movement.
-		currentRotationY = Mathf.SmoothDamp(currentRotationY, yRotation, ref yRotationV, lookSmoothDamp); // Gets the new y rotation on the y-axis by accounting for all of the variables that affect it's movement.
+        currentRotationX = Mathf.SmoothDamp(currentRotationX, xRotation, ref xRotationV, lookSmoothDamp); // Gets the new x rotation on the x-axis by accounting for all of the variables that affect it's movement.
+        currentRotationY = Mathf.SmoothDamp(currentRotationY, yRotation, ref yRotationV, lookSmoothDamp); // Gets the new y rotation on the y-axis by accounting for all of the variables that affect it's movement.
 
-		mainCamera.transform.rotation = Quaternion.Euler(currentRotationX, currentRotationY, 0); // Transforms from the previous rotations to the new rotations.
-	}
-	
-	void PlayerPause()
-	{
-		if (Input.GetButtonDown("Cancel")) 
-		{
-			mouseBound = !mouseBound;
-			Debug.Log("Escape " + mouseBound);
-			if(mouseBound)  
-			{
+        mainCamera.transform.rotation = Quaternion.Euler(currentRotationX, currentRotationY, 0f); // Transforms from the previous rotations to the new rotations.
+        pivotCen.transform.rotation = Quaternion.Euler(0f, currentRotationY, 0f); // Rotates the Pivot Point gameobject in an attepmt to tie the new rotation with the z rotation in PlayerLean().
+    }
+
+    void PlayerPause()
+    {
+        if (Input.GetButtonDown("Cancel"))
+        {
+            mouseBound = !mouseBound;
+            Debug.Log("Escape " + mouseBound);
+            if (mouseBound)
+            {
                 //In gameplay
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = !mouseBound;
@@ -153,103 +157,146 @@ public class PlayerControl : MonoBehaviour
                 UI_Clear_Text();
                 //Time.timeScale = currentTimeScale;
             }
-			else 
-			{
+            else
+            {
                 //In menu
                 Cursor.lockState = CursorLockMode.None;
-				Cursor.visible = !mouseBound;
+                Cursor.visible = !mouseBound;
                 this.LookDisable();
                 this.MoveDisable();
                 UI_Set_Text("Menu Mode");
                 //Time.timeScale = 0.001f;
             }
-		}
-		
-	}
+        }
+
+    }
 
 
 
-	void PlayerRun() // Creating a function that get's input in order to run.
-	{
-		if (Input.GetKey("left shift")) // When user presses down on the left shift, speed is set to 8.
-		{
-			speed = 8;
-		}
-		if (Input.GetKeyUp("left shift")) // When user lets go of the left shift, speed is set to 3.
-		{
-			speed = 3;
-		}
-		if (Input.GetKey("right shift")) // When user presses down on the right shift, speed is set to 8.
-		{
-			speed = 8;
-		}
-		if (Input.GetKeyUp("right shift")) // When user lets go of the right shift, speed is set to 3.
-		{
-			speed = 3;
-		}
-	}
+    void PlayerRun() // Creating a function that get's input in order to run.
+    {
+        if (Input.GetKey("left shift")) // When user presses down on the left shift, speed is set to 8.
+        {
+            speed = 8;
+        }
+        if (Input.GetKeyUp("left shift")) // When user lets go of the left shift, speed is set to 3.
+        {
+            speed = 3;
+        }
+        if (Input.GetKey("right shift")) // When user presses down on the right shift, speed is set to 8.
+        {
+            speed = 8;
+        }
+        if (Input.GetKeyUp("right shift")) // When user lets go of the right shift, speed is set to 3.
+        {
+            speed = 3;
+        }
+    }
 
 
 
-	void PlayerCrouch()
-	{
-		if (Input.GetKeyDown("x"))
-		{
-			// Insert crouch code here
-		}
+    void PlayerCrouch()
+    {
+        if (Input.GetKeyDown("x"))
+        {
+            // Insert crouch code here
+        }
 
-		if (Input.GetKeyUp("x"))
-		{
-			// Insert standing up code here
-		}
-	}
+        if (Input.GetKeyUp("x"))
+        {
+            // Insert standing up code here
+        }
+    }
 
 
 
     void PlayerLean()
     {
-        float zBodyRotation = 10f; // Holds value for rotation along the z-axis. 
-        float yBodyRotation = 0; // Holds value for rotation along the y-axis.
-        float zHeadRotation;
-        float yHeadRotation;
-        const float MAXZROTATION = (3f * Mathf.PI) / 2f;
-        const float MINZROTATION = (Mathf.PI) / 4f;
-        float newXRotation;
+        //float zBodyRotation = 10f; // Holds value for rotation along the z-axis. 
+        //float yBodyRotation = 0; // Holds value for rotation along the y-axis.
+        //float zHeadRotation;
+        //float yHeadRotation;
+        //const float MAXZROTATION = (3f * Mathf.PI) / 2f;
+        //const float MINZROTATION = (Mathf.PI) / 4f;
+        //float newXRotation;
 
-        if (Input.GetKeyDown("q"))
-        {
-            Debug.Log("Lean Left");
+        Transform objTransform = pivotCen.GetComponent<Transform>();
+        Vector3 pivotPointPos = objTransform.position;
 
-            transform.Rotate(0f, Time.deltaTime * (1 / 4), 10f);
-            //transform.localEulerAngles = new Vector3(0f, 0f, zBodyRotation); // Leans the "body" (a.k.a the capsule) to the left 10 degrees.
-            //Camera.transform.localEulerAngles = new Vector3(0f, 0f, zRotation); // Leans the "head" (a.k.a the camera) to simulate head peeking while leaning.
-            // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
-        }
-        if (Input.GetKeyUp("q"))
+        bool heldQ = Input.GetKey("q");
+        bool heldE = Input.GetKey("e");
+
+        float currentRotationAng = rb.rotation.eulerAngles.z;
+        const float MINANGLE = -45;
+        const float MAXANGLE = 45;
+        float leanAngle = 10f;
+
+        if (heldQ == true)
         {
-            Debug.Log("Upright position");
-            transform.Rotate(0f, 0f, -10f);
-            //transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-            // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
+            //if ((currentRotationAng > 0) && (currentRotationAng < 90))
+            //{
+                Debug.Log("Player Lean Left");
+                pivotCen.transform.Rotate(pivotPointPos, 70f);
+                transform.RotateAround(pivotPointPos, Vector3.forward, leanAngle); // Leans the player to the left.
+                //rb.freezeRotation;
+            //}
         }
-        if (Input.GetKeyDown("e"))
+        else if (heldE == true)
         {
-            Debug.Log("Lean Right");
-            transform.localEulerAngles = new Vector3(0f, 0f, -zBodyRotation);
-            // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
+            //if ((currentRotationAng < 0) && (currentRotationAng > -90))
+            //{
+                Debug.Log("Player Lean Right");
+                transform.RotateAround(pivotPointPos, Vector3.forward, -leanAngle); // Leans the player to the right.
+            //}
         }
-        if (Input.GetKeyUp("e"))
+        else
         {
-            Debug.Log("Upright position");
-            transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-            // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
+            Debug.Log("Player is upright.");
         }
+
+        //if (Input.GetKeyDown("q"))
+        //{
+        //    Debug.Log("Lean Left");
+
+        //    transform.Rotate(0f, Time.deltaTime * (1 / 4), 10f);
+        //    //transform.localEulerAngles = new Vector3(0f, 0f, zBodyRotation); // Leans the "body" (a.k.a the capsule) to the left 10 degrees.
+        //    //Camera.transform.localEulerAngles = new Vector3(0f, 0f, zRotation); // Leans the "head" (a.k.a the camera) to simulate head peeking while leaning.
+        //    // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
+        //}
+        //if (Input.GetKeyUp("q"))
+        //{
+        //    Debug.Log("Upright position");
+        //    transform.Rotate(0f, 0f, -10f);
+        //    //transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+        //    // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
+        //}
+        //if (Input.GetKeyDown("e"))
+        //{
+        //    Debug.Log("Lean Right");
+        //    transform.localEulerAngles = new Vector3(0f, 0f, -zBodyRotation);
+        //    // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
+        //}
+        //if (Input.GetKeyUp("e"))
+        //{
+        //    Debug.Log("Upright position");
+        //    transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+        //    // Mathf.Clamp(zRotation, MINZROTATION, MAXZROTATION); // Clamps rotation between two values to give a realistic range of leaning.
+        //}
     }
 
     void PlayerProne()
-	{
-		// Insert Player Prone Stuff. Might have to call upon the PlayerMovement function here to change the value of speed so it is slower when crawling.
-	}
+    {
+        bool proneKey = Input.GetKey("c");
+
+        if (proneKey == true)
+        {
+            Debug.Log("Player is prone.");
+        }
+        else
+        {
+            Debug.Log("Player is standing.");
+        }
+    }
 
     /// <summary>
     /// True when the player is Hiding
@@ -288,7 +335,7 @@ public class PlayerControl : MonoBehaviour
     public void LookDisable()
     {
         this.lookEnabled = false;
-    } 
+    }
 
     /// <summary>
     /// Enable Player move controls
@@ -313,7 +360,7 @@ public class PlayerControl : MonoBehaviour
             this.player_ui_text.text = "";
         }
     }
-  
+
 
 
     /********************************
@@ -323,7 +370,7 @@ public class PlayerControl : MonoBehaviour
 
     public void UI_Set_Text(string input)
     {
-        if(this.player_ui_text != null)
+        if (this.player_ui_text != null)
         {
             this.player_ui_text.text = input;
         }
