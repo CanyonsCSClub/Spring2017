@@ -31,6 +31,8 @@ GitHub Desktop  - https://github.com/integrations/github-desktop (Easier way to 
 6) Click on Publish button in the upper right to commit your branch.<p>
 7) Do all the edits to the project using this folder, and make a Pull Request when you want to share your work!<p>
 
+Or you can use GitKraken.
+
 Paint.net       - http://www.getpaint.net/index.html (If you don't have Adobe)
 
 
